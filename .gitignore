@@ -2,3 +2,5 @@
 .vscode/launch.json
 .Rproj.user
 STATS202.Rproj
+.RData
+.Rhistory
