@@ -26,3 +26,4 @@ test.accuracy <- mean(
 )
 
 log.loss <- LogLoss(y_pred=test.fit.prob, y_true=df$test$Pass)
+auc <- AUC(y_pred=test.fit.prob, y_true=df$test$Pass)
