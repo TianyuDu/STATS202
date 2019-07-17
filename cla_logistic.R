@@ -1,6 +1,7 @@
 library(MLmetrics)
 source("./util.R")
 
+setwd("/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/STATS202/STATS202/")
 # Prepare the dataset
 df.main <- read.csv("./data/train.csv", header=TRUE)
 df <- TrainTestSplit(df.main, verbose=TRUE)
