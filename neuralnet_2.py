@@ -22,6 +22,15 @@ class NN(tf.keras.Model):
         return self.out(x)
 
 
+@tf.function
+def train_step(x, y):
+    with tf.GradientTape() as tape:
+        pred = model(x)
+        loss = loss_object(y, pred)
+    grad = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grad, model.trainable_variables))
+
+
 if __name__ == "__main__":
     print(tf.__version__)
     df = data.load_whole("./data/")
