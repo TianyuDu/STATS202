@@ -29,6 +29,19 @@ def train_step(x, y):
         loss = loss_object(y, pred)
     grad = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(grad, model.trainable_variables))
+    train_loss(loss)
+    train_accuracy(y, pred)
+
+
+@tf.function
+def test_step(x, y):
+    # Test and validation step have the same operation.
+    pred = model(x)
+    loss = loss_object(y, pred)
+    test_loss(loss)
+    test_accuracy(y, pred)
+    test_auc.update_state(y, pred)
+    print(test_auc.result().numpy())
 
 
 if __name__ == "__main__":
