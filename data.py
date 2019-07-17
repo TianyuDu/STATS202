@@ -9,7 +9,8 @@ def load_individual(path: str) -> pd.DataFrame:
 
 def gen_label(df: pd.DataFrame) -> pd.DataFrame:
     df_cp = df.copy()
-    df_cp["Pass"] = (df_cp["LeadStatus"] == "Passed").astype(np.int)
+    # Either flagged or assigned to CS:
+    df_cp["Alert"] = 1 - (df_cp["LeadStatus"] == "Passed").astype(np.int)
     return df_cp
 
 
@@ -23,6 +24,12 @@ def load_whole(path: str) -> pd.DataFrame:
     assert len(df) == sum(lengths)
     return gen_label(df)
 
+
+def gen_sup(raw: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
+    PANSS = [f"P{i}" for i in range(1, 8)] \
+        + [f"N{i}" for i in range(1, 8)] \
+        + [f"G{i}" for i in range(1, 17)]
+    return raw[PANSS], raw["Alert"]
 
 if __name__ == "__main__":
     df = load_whole("./data/")
