@@ -11,20 +11,15 @@ import data
 class NN(tf.keras.Model):
     def __init__(self):
         super(NN, self).__init__()
-        self.d1 = tf.keras.layers.Dense(
-            256,
-            kernel_initializer="normal",
-            activation="relu"
-        )
-        self.d2 = tf.keras.layers.Dense(
-            1,
-            kernel_initializer="normal",
-            activation="sigmoid"
-        )
+        self.d1 = tf.keras.layers.Dense(64, activation="relu")
+        self.d2 = tf.keras.layers.Dense(32, activation="relu")
+        # Output layer.
+        self.out = tf.keras.layers.Dense(1, activation="linear")
 
     def call(self, x):
         x = self.d1(x)
-        return self.d2(x)
+        x = self.d2(x)
+        return self.out(x)
 
 
 if __name__ == "__main__":
