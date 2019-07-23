@@ -1,5 +1,5 @@
 """
-The naive NN approach, use PANSS scores only.
+DNN Classifier.
 """
 import numpy as np
 import tensorflow as tf
@@ -15,7 +15,7 @@ class NN(tf.keras.Model):
     def __init__(self):
         super(NN, self).__init__()
         self.d1 = tf.keras.layers.Dense(256, activation="relu")
-        self.drop1 = tf.keras.layers.Dropout(0.2)
+        self.drop1 = tf.keras.layers.Dropout(0.5)
         self.d2 = tf.keras.layers.Dense(128, activation="relu")
         # Output layer.
         self.out = tf.keras.layers.Dense(1, activation="sigmoid")
@@ -49,10 +49,10 @@ def test_step(x, y):
 
 if __name__ == "__main__":
     # Hyper-parameters
-    EPOCHS = 500
-    BATCH_SIZE = 32
-    LR = 1e-5 * 3
-    print(tf.__version__)
+    EPOCHS = 100
+    BATCH_SIZE = 2048
+    LR = 1e-5
+    print("Tenserflow version: ", tf.__version__)
     # Prepare Data
     df = data.load_whole("./data/")
     X, y = data.gen_sup(df)
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     y = y.reshape(-1, 1)
 
     # Create Polynomial Features
-    poly = preprocessing.PolynomialFeatures(degree=2)
+    poly = preprocessing.PolynomialFeatures(degree=3)
     X = poly.fit_transform(X)
 
 
@@ -73,6 +73,9 @@ if __name__ == "__main__":
     scaler.fit(X_train)
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
+
+    print("X_train@", X_train.shape)
+    print("X_test@", X_test.shape)
 
     train_ds = tf.data.Dataset.from_tensor_slices(
         (X_train, y_train)).shuffle(int(1e6)).batch(BATCH_SIZE)
@@ -107,13 +110,14 @@ if __name__ == "__main__":
         for t_x, t_y in test_ds:
             test_step(t_x, t_y)
 
-        report = "Epoch {:d}, Loss: {:0.6f}, Accuracy: {:0.6f}, Validation Loss: {:0.6f}, Validation Accuracy: {:0.6f}"
-        print(report.format(
-            epoch+1,
-            train_loss.result(),
-            train_accuracy.result()*100,
-            test_loss.result(),
-            test_accuracy.result()*100))
+        if epoch % 5 == 0:
+            report = "Epoch {:d}, Loss: {:0.6f}, Accuracy: {:0.6f}, Validation Loss: {:0.6f}, Validation Accuracy: {:0.6f}"
+            print(report.format(
+                epoch+1,
+                train_loss.result(),
+                train_accuracy.result()*100,
+                test_loss.result(),
+                test_accuracy.result()*100))
 
         # Record loss
         trace["train"].append(train_loss.result())
@@ -129,8 +133,10 @@ if __name__ == "__main__":
     print(f"AUC on Training Set: {auc_train: 0.6f}")
     print(f"AUC on Testing Set: {auc_test: 0.6f}")
 
-    plt.plot(trace["train"])
-    plt.plot(trace["val"])
+    plt.plot(np.log(trace["train"]))
+    plt.plot(np.log(trace["val"]))
     plt.xlabel("Epochs")
+    plt.ylabel("Log Cross Entropy Loss")
     plt.legend(["Training", "Validation"])
+    plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
     plt.show()
