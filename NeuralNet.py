@@ -1,52 +1,90 @@
+"""
+The naive NN approach, use PANSS scores only.
+"""
+import tensorflow as tf
+from sklearn import model_selection
 import numpy as np
-import pandas as pd
-import torch
+
+import data
 
 
-class Net(torch.nn.Module):
+class NN(tf.keras.Model):
     def __init__(self):
-        super().__init__()
-        self.fc1 = torch.nn.Linear(50, 50)
-        self.relu1 = torch.nn.ReLU()
-        self.dout = torch.nn.Dropout(0.2)
-        self.fc2 = torch.nn.Linear(50, 100)
-        self.prelu = torch.nn.PReLU(1)
-        self.out = torch.nn.Linear(100, 1)
-        self.out_act = torch.nn.Sigmoid()
+        super(NN, self).__init__()
+        self.d1 = tf.keras.layers.Dense(256, activation="sigmoid")
+        # self.drop1 = tf.keras.layers.Dropout(0.2)
+        self.d2 = tf.keras.layers.Dense(512, activation="sigmoid")
+        # Output layer.
+        self.out = tf.keras.layers.Dense(1, activation="sigmoid")
 
-    def forward(self, input_):
-        a1 = self.fc1(input_)
-        h1 = self.relu1(a1)
-        dout = self.dout(h1)
-        a2 = self.fc2(dout)
-        h2 = self.prelu(a2)
-        a3 = self.out(h2)
-        y = self.out_act(a3)
-        return y
+    def call(self, x):
+        x = self.d1(x)
+        # X = self.drop1(x)
+        x = self.d2(x)
+        return self.out(x)
 
 
-net = Net()
-opt = torch.optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999))
-criterion = torch.nn.BCELoss()
+@tf.function
+def train_step(x, y):
+    with tf.GradientTape() as tape:
+        pred = model(x)
+        loss = loss_object(y, pred)
+    grad = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grad, model.trainable_variables))
+    train_loss(loss)
+    train_accuracy(y, pred)
 
 
-def train_epoch(model, opt, criterion, batch_size=50):
-    model.train()
-    losses = []
-    for beg_i in range(0, X.size(0), batch_size):
-        x_batch = X[beg_i:beg_i + batch_size, :]
-        y_batch = Y[beg_i:beg_i + batch_size, :]
-        x_batch = Variable(x_batch)
-        y_batch = Variable(y_batch)
+@tf.function
+def test_step(x, y):
+    # Test and validation step have the same operation.
+    pred = model(x)
+    loss = loss_object(y, pred)
+    test_loss(loss)
+    test_accuracy(y, pred)
 
-        opt.zero_grad()
-        # (1) Forward
-        y_hat = net(x_batch)
-        # (2) Compute diff
-        loss = criterion(y_hat, y_batch)
-        # (3) Compute gradients
-        loss.backward()
-        # (4) update weights
-        opt.step()
-        losses.append(loss.data.numpy())
-    return losses
+
+if __name__ == "__main__":
+    print(tf.__version__)
+    df = data.load_whole("./data/")
+    X, y = data.gen_sup(df)
+    X = X.astype(np.float32)
+    X, y = map(lambda z: z.values, (X, y))
+    y = y.reshape(-1, 1)
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
+        X, y, test_size=0.2, random_state=None, shuffle=True)
+
+    train_ds = tf.data.Dataset.from_tensor_slices(
+        (X_train, y_train)).shuffle(10000).batch(32)
+
+    test_ds = tf.data.Dataset.from_tensor_slices(
+        (X_test, y_test)).batch(32)
+
+    model = NN()
+    loss_object = tf.keras.losses.BinaryCrossentropy()
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
+
+    train_loss = tf.keras.metrics.Mean(name="train_loss")
+    train_accuracy = tf.keras.metrics.BinaryAccuracy(
+        name="train_accuracy")
+
+    test_loss = tf.keras.metrics.Mean(name="test_loss")
+    test_accuracy = tf.keras.metrics.BinaryAccuracy(
+        name="test_accuracy")
+
+    EPOCHS = 100
+    for epoch in range(EPOCHS):
+        for x, y in train_ds:
+            train_step(x, y)
+
+        for t_x, t_y in test_ds:
+            test_step(t_x, t_y)
+
+        template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
+        print(template.format(
+            epoch+1,
+            train_loss.result(),
+            train_accuracy.result()*100,
+            test_loss.result(),
+            test_accuracy.result()*100)
+        )
