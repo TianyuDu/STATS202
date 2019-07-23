@@ -6,9 +6,11 @@ setwd("/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer S
 df.main <- read.csv("./data/train.csv", header=TRUE)
 df <- TrainTestSplit(df.main, verbose=TRUE)
 
+
 model.fit <- glm(
-  formula=Alert ~ .-X-Study-Country+as.factor(Country)
-  -PatientID-SiteID-RaterID-AssessmentiD-TxGroup+as.factor(TxGroup)-LeadStatus,
+  formula=Alert ~ P1+P2+P3+P4+P5+P6+P7
+    +N1+N2+N3+N4+N5+N6+N7
+    +G1+G2+G3+G4+G5+G6+G7+G8+G9+G10+G11+G12+G13+G14+G15+G16,
   family=binomial(link="logit"),
   data=df$train
 )
