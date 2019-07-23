@@ -110,7 +110,7 @@ if __name__ == "__main__":
         for t_x, t_y in test_ds:
             test_step(t_x, t_y)
 
-        if epoch % 5 == 0:
+        if (epoch+1) % 5 == 0:
             report = "Epoch {:d}, Loss: {:0.6f}, Accuracy: {:0.6f}, Validation Loss: {:0.6f}, Validation Accuracy: {:0.6f}"
             print(report.format(
                 epoch+1,
