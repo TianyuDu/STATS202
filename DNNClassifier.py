@@ -64,8 +64,15 @@ if __name__ == "__main__":
     poly = preprocessing.PolynomialFeatures(degree=2)
     X = poly.fit_transform(X)
 
+
     X_train, X_test, y_train, y_test = model_selection.train_test_split(
         X, y, test_size=0.2, random_state=None, shuffle=True)
+
+    # Standardize features
+    scaler = preprocessing.StandardScaler()
+    scaler.fit(X_train)
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
 
     train_ds = tf.data.Dataset.from_tensor_slices(
         (X_train, y_train)).shuffle(int(1e6)).batch(BATCH_SIZE)
