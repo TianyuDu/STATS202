@@ -80,8 +80,8 @@ if __name__ == "__main__":
         for t_x, t_y in test_ds:
             test_step(t_x, t_y)
 
-        template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
-        print(template.format(
+        report = "Epoch {:d}, Loss: {:0.6f}, Accuracy: {:0.6f}, Validation Loss: {:0.6f}, Validation Accuracy: {:0.6f}"
+        print(report.format(
             epoch+1,
             train_loss.result(),
             train_accuracy.result()*100,
