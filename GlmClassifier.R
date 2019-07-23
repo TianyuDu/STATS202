@@ -30,4 +30,3 @@ test.accuracy <- mean(
 
 log.loss <- LogLoss(y_pred=test.fit.prob, y_true=df$test$Alert)
 auc <- AUC(y_pred=test.fit.prob, y_true=df$test$Alert)
-
