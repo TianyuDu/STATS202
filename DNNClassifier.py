@@ -14,15 +14,17 @@ import data
 class NN(tf.keras.Model):
     def __init__(self):
         super(NN, self).__init__()
+        self.drop1 = tf.keras.layers.Dropout(0.8)
         self.d1 = tf.keras.layers.Dense(256, activation="relu")
-        self.drop1 = tf.keras.layers.Dropout(0.5)
+        self.drop2 = tf.keras.layers.Dropout(0.5)
         self.d2 = tf.keras.layers.Dense(128, activation="relu")
         # Output layer.
         self.out = tf.keras.layers.Dense(1, activation="sigmoid")
 
     def call(self, x):
+        x = self.drop1(x)
         x = self.d1(x)
-        X = self.drop1(x)
+        X = self.drop2(x)
         x = self.d2(x)
         return self.out(x)
 
@@ -49,7 +51,7 @@ def test_step(x, y):
 
 if __name__ == "__main__":
     # Hyper-parameters
-    EPOCHS = 100
+    EPOCHS = 5
     BATCH_SIZE = 2048
     LR = 1e-5
     print("Tenserflow version: ", tf.__version__)
@@ -83,7 +85,12 @@ if __name__ == "__main__":
     test_ds = tf.data.Dataset.from_tensor_slices(
         (X_test, y_test)).batch(BATCH_SIZE)
 
+    num_fea = X_train.shape[1]
+    # input_layer = tf.keras.layers.Input(shape=(num_fea,))
+    # modules = NN()(input_layer)
+    # model = tf.keras.Model(inputs=input_layer, outputs=modules)
     model = NN()
+
     loss_object = tf.keras.losses.BinaryCrossentropy()
     optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
 
@@ -139,4 +146,5 @@ if __name__ == "__main__":
     plt.ylabel("Log Cross Entropy Loss")
     plt.legend(["Training", "Validation"])
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
-    plt.show()
+    # plt.show()
+    model.summary()
