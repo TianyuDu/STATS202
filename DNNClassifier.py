@@ -51,9 +51,10 @@ def test_step(x, y):
 
 if __name__ == "__main__":
     # Hyper-parameters
-    EPOCHS = 5
+    EPOCHS = 50
+    PERIOD = 1  # Report period
     BATCH_SIZE = 2048
-    LR = 1e-5
+    LR = 1e-4
     print("Tenserflow version: ", tf.__version__)
     # Prepare Data
     df = data.load_whole("./data/")
@@ -91,7 +92,7 @@ if __name__ == "__main__":
     # model = tf.keras.Model(inputs=input_layer, outputs=modules)
     model = NN()
 
-    loss_object = tf.keras.losses.BinaryCrossentropy()
+    loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
 
     train_loss = tf.keras.metrics.Mean(name="train_loss")
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         for t_x, t_y in test_ds:
             test_step(t_x, t_y)
 
-        if (epoch+1) % 5 == 0:
+        if (epoch+1) % PERIOD == 0:
             report = "Epoch {:d}, Loss: {:0.6f}, Accuracy: {:0.6f}, Validation Loss: {:0.6f}, Validation Accuracy: {:0.6f}"
             print(report.format(
                 epoch+1,
@@ -146,5 +147,5 @@ if __name__ == "__main__":
     plt.ylabel("Log Cross Entropy Loss")
     plt.legend(["Training", "Validation"])
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
-    # plt.show()
+    plt.show()
     model.summary()
