@@ -53,8 +53,9 @@ if __name__ == "__main__":
     # Hyper-parameters
     EPOCHS = 50
     PERIOD = 1  # Report period
+    POLY_DEGREE = 3  # In feature engerineering.
     BATCH_SIZE = 2048
-    LR = 1e-4
+    LR = 1e-5
     print("Tenserflow version: ", tf.__version__)
     # Prepare Data
     df = data.load_whole("./data/")
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     y = y.reshape(-1, 1)
 
     # Create Polynomial Features
-    poly = preprocessing.PolynomialFeatures(degree=3)
+    poly = preprocessing.PolynomialFeatures(degree=POLY_DEGREE)
     X = poly.fit_transform(X)
 
 
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     # model = tf.keras.Model(inputs=input_layer, outputs=modules)
     model = NN()
 
-    loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+    loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=False)
     optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
 
     train_loss = tf.keras.metrics.Mean(name="train_loss")
@@ -148,4 +149,4 @@ if __name__ == "__main__":
     plt.legend(["Training", "Validation"])
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
     plt.show()
-    model.summary()
+    # model.summary()
