@@ -29,33 +29,40 @@ class NN(tf.keras.Model):
         return self.out(x)
 
 
-@tf.function
-def train_step(x, y):
-    with tf.GradientTape() as tape:
+def main(
+        EPOCHS: int = 10,
+        PERIOD: int = 5,
+        POLY_DEGREE: int = 3,
+        BATCH_SIZE: int = 256,
+        LR: float = 1e-5,
+) -> None:
+    """
+    Main function.
+    """
+    # Read hyper-parameters
+    # EPOCHS = 50
+    # PERIOD = 1  # Report period
+    # POLY_DEGREE = 3  # In feature engerineering.
+    # BATCH_SIZE = 2048
+    # LR = 1e-5
+    @tf.function
+    def train_step(x, y):
+        with tf.GradientTape() as tape:
+            pred = model(x)
+            loss = loss_object(y, pred)
+        grad = tape.gradient(loss, model.trainable_variables)
+        optimizer.apply_gradients(zip(grad, model.trainable_variables))
+        train_loss.update_state(loss)
+        train_accuracy.update_state(y, pred)
+
+
+    @tf.function
+    def test_step(x, y):
+        # Test and validation step have the same operation.
         pred = model(x)
         loss = loss_object(y, pred)
-    grad = tape.gradient(loss, model.trainable_variables)
-    optimizer.apply_gradients(zip(grad, model.trainable_variables))
-    train_loss.update_state(loss)
-    train_accuracy.update_state(y, pred)
-
-
-@tf.function
-def test_step(x, y):
-    # Test and validation step have the same operation.
-    pred = model(x)
-    loss = loss_object(y, pred)
-    test_loss.update_state(loss)
-    test_accuracy.update_state(y, pred)
-
-
-if __name__ == "__main__":
-    # Hyper-parameters
-    EPOCHS = 50
-    PERIOD = 1  # Report period
-    POLY_DEGREE = 3  # In feature engerineering.
-    BATCH_SIZE = 2048
-    LR = 1e-5
+        test_loss.update_state(loss)
+        test_accuracy.update_state(y, pred)
     print("Tenserflow version: ", tf.__version__)
     # Prepare Data
     df = data.load_whole("./data/")
@@ -150,3 +157,13 @@ if __name__ == "__main__":
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
     plt.show()
     # model.summary()
+
+
+if __name__ == "__main__":
+    hparam_dict = {
+        "EPOCHS": 50,
+        "PERIOD": 1,  # Report period
+        "POLY_DEGREE": 3,  # In feature engerineering.
+        "BATCH_SIZE": 2048,
+        "LR":1e-5}
+    main(**hparam_dict)
