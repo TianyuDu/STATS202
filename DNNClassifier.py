@@ -34,10 +34,9 @@ def main(
         get_data: callable,
         EPOCHS: int = 10,
         PERIOD: int = 5,
-        POLY_DEGREE: int = 3,
         BATCH_SIZE: int = 256,
         LR: float = 1e-5,
-        forecast_dir: str = None,
+        forecast: bool = False,
 ) -> None:
     """
     Main Training Process for DNN classifier
@@ -149,13 +148,6 @@ def main(
     plt.legend(["Training", "Validation"])
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_dev={auc_dev:0.3f}")
     plt.show()
-
-
-if __name__ == "__main__":
-    HPARAMS = {
-        "EPOCHS": 50,
-        "PERIOD": 1,  # Report period
-        "POLY_DEGREE": 3,  # In feature engerineering.
-        "BATCH_SIZE": 2048,
-        "LR":1e-5}
-    main(**HPARAMS)
+    if forecast:
+        pred = model(X_test)
+        return pred.numpy()
