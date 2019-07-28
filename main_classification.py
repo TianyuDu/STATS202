@@ -2,7 +2,7 @@
 Main script.
 """
 import warnings
-from typing import Unino, Optional, Tuple
+from typing import Union, Optional, Tuple
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -57,11 +57,15 @@ if __name__ == "__main__":
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
 
     # Feature engerineering
-    poly_degree = 2
+    poly_degree = 3
     X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
-    DNNClassifier.main(
+    pred = DNNClassifier.main(
         lambda: provide_data(X_train, y_train, X_test),
-        EPOCHS=100, PERIOD=5, POLY_DEGREE=3)
+        EPOCHS=100, PERIOD=5, forecast=True)
+    holder = pd.read_csv("./data/sample_submission_status.csv", header=0)
+    sub_name = input("File name to store submission: ")
+    holder["LeadStatus"] = pred
+    holder.to_csv(f"./submissions/{sub_name}.csv", index=False)
