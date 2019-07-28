@@ -11,11 +11,5 @@ if __name__ == "__main__":
     print(df_train.shape)
     df_test = pd.read_csv("./data/Study_E.csv", header=0)
     print(df_test.shape)
-    K = set(df_train["Country"])
-    print(K)
-    np.mean([
-        val in K
-        for val in df_test["Country"]
-        ])
-    X, y, FEATURE, PANSS = gen_slp_assessment(df_train)
-    C = parse_test_set_countries(X, df_test, FEATURE)
+    X_train, y_train, FEATURE, PANSS = gen_slp_assessment(df_train)
+    X_test = data_proc.parse_test_set(X_train, df_test)
