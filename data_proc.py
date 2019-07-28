@@ -76,8 +76,8 @@ def gen_slp_assessment(
 
 
 def create_dummies(
-    df: pd.DataFrame,
-    columns: list,
+        df: pd.DataFrame,
+        columns: list,
 ) -> pd.DataFrame:
     """
     Change selected quantitive data.
@@ -93,7 +93,7 @@ def create_dummies(
 
 
 def parse_test_set_treatment(
-    df_test: pd.DataFrame,
+        df_test: pd.DataFrame,
 ) -> pd.DataFrame:
     """
     Parse the treatment dummy variable in the testing set.
