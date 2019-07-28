@@ -100,7 +100,7 @@ def parse_test_set(
     Wraps the operations taken for parsing country and treatments.
     """
     parsed = parse_test_set_countries(df_train, df_test)
-    return parse_test_set_treatment(parsed)
+    return parse_test_set_treatment(parsed)[df_train.columns]
 
 
 def parse_test_set_treatment(
