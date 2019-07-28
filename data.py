@@ -26,6 +26,13 @@ def load_whole(path: str) -> pd.DataFrame:
 
 
 def gen_sup(raw: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
+    """
+    Generates supervised learning problem.
+    Args:
+        raw: the raw dataset loaded from csv.
+    Returns:
+        (X, y) Dataframes of the supervised learning problem.
+    """
     PANSS = [f"P{i}" for i in range(1, 8)] \
         + [f"N{i}" for i in range(1, 8)] \
         + [f"G{i}" for i in range(1, 17)]
