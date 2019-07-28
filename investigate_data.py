@@ -18,3 +18,4 @@ if __name__ == "__main__":
         for val in df_test["Country"]
         ])
     X, y, FEATURE, PANSS = gen_slp_assessment(df_train)
+    C = parse_test_set_countries(X, df_test, FEATURE)

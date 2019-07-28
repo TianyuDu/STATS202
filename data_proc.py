@@ -106,9 +106,8 @@ def parse_test_set_treatment(
 
 
 def parse_test_set_countries(
-    df_train: pd.DataFrame,
-    df_test: pd.DataFrame,
-    FEATURE: list,
+        df_train: pd.DataFrame,
+        df_test: pd.DataFrame,
 ) -> pd.DataFrame:
     """
     Parses the country dummies.
