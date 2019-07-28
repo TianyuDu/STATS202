@@ -24,7 +24,7 @@ class NN(tf.keras.Model):
     def call(self, x):
         x = self.drop1(x)
         x = self.d1(x)
-        X = self.drop2(x)
+        x = self.drop2(x)
         x = self.d2(x)
         return self.out(x)
 
