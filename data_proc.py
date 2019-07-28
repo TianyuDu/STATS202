@@ -76,6 +76,34 @@ def gen_slp_assessment(
     return X, y, FEATURE, PANSS
 
 
+def reduce_countries(
+        df: pd.DataFrame,
+        major_countries: list,
+) -> pd.DataFrame:
+    """
+    Reduces countries dummies, so that only countries contributing
+    to significant portion of the sample set are preserved, other
+    countries are reduced to 'Other'
+    Args:
+        df: the raw dataframe, it must contains "Country" column.
+
+        major_countries: a list of strings denoting countries to be 
+            preserved, countries not in this list will be reduced
+            to 'Other'.
+
+    Returns:
+        reduced: A dataframe similar to df, with countries reduced.
+    """
+    if not "Country" in df:
+        raise KeyError("df must have 'Country' column.")
+    reduced = df.copy()
+    for i in range(len):
+        if not reduced.Country[i] in major_countries:
+            reduced.at[i, "Country"] = "Other"
+    assert list(set(reduced.Country)) == major_countries + ["Other"]
+    return reduced
+
+
 def create_dummies(
         df: pd.DataFrame,
         columns: list,
