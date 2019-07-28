@@ -83,5 +83,5 @@ def polynomial_standardized(
     scaler1 = preprocessing.StandardScaler()
     X_poly = scaler1.fit_transform(X_poly)
     df_poly = pd.DataFrame(X_poly, columns=CROSS)
-    df_extend = pd.concat([df_extend, df_poly], axis=1)
+    df_extend = pd.concat([df_perserved, df_extend, df_poly], axis=1)
     return df_extend, CROSS
