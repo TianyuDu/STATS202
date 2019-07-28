@@ -137,7 +137,6 @@ def parse_test_set_countries(
         if f"Country_{country}" in country_list:
             parsed_test.at[i, f"Country_{country}"] = int(1)
         else:
-            print(country)
             parsed_test.at[i, "Country_Other"] = int(1)
     parsed_test.drop(columns=["Country"], inplace=True)
     return parsed_test
