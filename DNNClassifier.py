@@ -2,22 +2,23 @@
 DNN Classifier.
 """
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from sklearn import model_selection
 from sklearn import preprocessing
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-import data
+import data_proc
 
 
 class NN(tf.keras.Model):
     def __init__(self):
         super(NN, self).__init__()
         self.drop1 = tf.keras.layers.Dropout(0.8)
-        self.d1 = tf.keras.layers.Dense(256, activation="relu")
+        self.d1 = tf.keras.layers.Dense(512, activation="relu")
         self.drop2 = tf.keras.layers.Dropout(0.5)
-        self.d2 = tf.keras.layers.Dense(128, activation="relu")
+        self.d2 = tf.keras.layers.Dense(256, activation="relu")
         # Output layer.
         self.out = tf.keras.layers.Dense(1, activation="sigmoid")
 
@@ -30,21 +31,18 @@ class NN(tf.keras.Model):
 
 
 def main(
+        get_data: callable,
         EPOCHS: int = 10,
         PERIOD: int = 5,
         POLY_DEGREE: int = 3,
         BATCH_SIZE: int = 256,
         LR: float = 1e-5,
+        forecast_dir: str = None,
 ) -> None:
     """
-    Main function.
+    Main Training Process for DNN classifier
+    # TODO: Write doc string.
     """
-    # Read hyper-parameters
-    # EPOCHS = 50
-    # PERIOD = 1  # Report period
-    # POLY_DEGREE = 3  # In feature engerineering.
-    # BATCH_SIZE = 2048
-    # LR = 1e-5
     @tf.function
     def train_step(x, y):
         with tf.GradientTape() as tape:
@@ -61,42 +59,38 @@ def main(
         # Test and validation step have the same operation.
         pred = model(x)
         loss = loss_object(y, pred)
-        test_loss.update_state(loss)
-        test_accuracy.update_state(y, pred)
-    print("Tenserflow version: ", tf.__version__)
-    # Prepare Data
-    df = data.load_whole("./data/")
-    X, y = data.gen_sup(df)
-    X = X.astype(np.float32)
-    X, y = map(lambda z: z.values, (X, y))
-    y = y.reshape(-1, 1)
+        dev_loss.update_state(loss)
+        dev_accuracy.update_state(y, pred)
 
-    # Create Polynomial Features
-    poly = preprocessing.PolynomialFeatures(degree=POLY_DEGREE)
-    X = poly.fit_transform(X)
+    # # Prepare Data
+    # X, y = data.gen_sup(df)
+    # X = X.astype(np.float32)
+    # X, y = map(lambda z: z.values, (X, y))
+    # y = y.reshape(-1, 1)
 
-    X_train, X_test, y_train, y_test = model_selection.train_test_split(
-        X, y, test_size=0.2, random_state=None, shuffle=True)
+    # # Create Polynomial Features
+    # poly = preprocessing.PolynomialFeatures(degree=POLY_DEGREE)
+    # X = poly.fit_transform(X)
 
-    # Standardize features
-    scaler = preprocessing.StandardScaler()
-    scaler.fit(X_train)
-    X_train = scaler.transform(X_train)
-    X_test = scaler.transform(X_test)
+    # X_train, X_dev, y_train, y_dev = model_selection.train_dev_split(
+    #     X, y, dev_size=0.2, random_state=None, shuffle=True)
 
-    print("X_train@", X_train.shape)
-    print("X_test@", X_test.shape)
+    # # Standardize features
+    # scaler = preprocessing.StandardScaler()
+    # scaler.fit(X_train)
+    # X_train = scaler.transform(X_train)
+    # X_dev = scaler.transform(X_dev)
 
+    print("Reading data...")
+    X_train, X_dev, y_train, y_dev, X_test = get_data()
+    print(f"X_train@{X_train.shape}, X_dev@{X_dev.shape}")
     train_ds = tf.data.Dataset.from_tensor_slices(
         (X_train, y_train)).shuffle(int(1e6)).batch(BATCH_SIZE)
 
-    test_ds = tf.data.Dataset.from_tensor_slices(
-        (X_test, y_test)).batch(BATCH_SIZE)
+    dev_ds = tf.data.Dataset.from_tensor_slices(
+        (X_dev, y_dev)).batch(BATCH_SIZE)
 
     num_fea = X_train.shape[1]
-    # input_layer = tf.keras.layers.Input(shape=(num_fea,))
-    # modules = NN()(input_layer)
-    # model = tf.keras.Model(inputs=input_layer, outputs=modules)
     model = NN()
 
     loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=False)
@@ -106,23 +100,23 @@ def main(
     train_accuracy = tf.keras.metrics.BinaryAccuracy(
         name="train_accuracy")
 
-    test_loss = tf.keras.metrics.Mean(name="test_loss")
-    test_accuracy = tf.keras.metrics.BinaryAccuracy(
-        name="test_accuracy")
+    dev_loss = tf.keras.metrics.Mean(name="dev_loss")
+    dev_accuracy = tf.keras.metrics.BinaryAccuracy(
+        name="dev_accuracy")
 
     trace = {"train": [], "val": []}
     for epoch in range(EPOCHS):
         train_loss.reset_states()
         train_accuracy.reset_states()
-        test_loss.reset_states()
-        test_accuracy.reset_states()
+        dev_loss.reset_states()
+        dev_accuracy.reset_states()
         # Loop over batches.
         for x, y in train_ds:
             # x @ (batch_size, num_features)
             # y @ (batch_size, 1) --> probit
             train_step(x, y)
 
-        for t_x, t_y in test_ds:
+        for t_x, t_y in dev_ds:
             test_step(t_x, t_y)
 
         if (epoch+1) % PERIOD == 0:
@@ -131,38 +125,37 @@ def main(
                 epoch+1,
                 train_loss.result(),
                 train_accuracy.result()*100,
-                test_loss.result(),
-                test_accuracy.result()*100))
+                dev_loss.result(),
+                dev_accuracy.result()*100))
 
         # Record loss
         trace["train"].append(train_loss.result())
-        trace["val"].append(test_loss.result())
+        trace["val"].append(dev_loss.result())
 
     # AUC
     pred_train = model(X_train).numpy()
-    pred_test = model(X_test).numpy()
+    pred_dev = model(X_dev).numpy()
 
     auc_train = metrics.roc_auc_score(y_true=y_train, y_score=pred_train)
-    auc_test = metrics.roc_auc_score(y_true=y_test, y_score=pred_test)
+    auc_dev = metrics.roc_auc_score(y_true=y_dev, y_score=pred_dev)
 
     print(f"AUC on Training Set: {auc_train: 0.6f}")
-    print(f"AUC on Testing Set: {auc_test: 0.6f}")
+    print(f"AUC on Developing Set: {auc_dev: 0.6f}")
 
     plt.plot(np.log(trace["train"]))
     plt.plot(np.log(trace["val"]))
     plt.xlabel("Epochs")
     plt.ylabel("Log Cross Entropy Loss")
     plt.legend(["Training", "Validation"])
-    plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_test={auc_test:0.3f}")
+    plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_dev={auc_dev:0.3f}")
     plt.show()
-    # model.summary()
 
 
 if __name__ == "__main__":
-    hparam_dict = {
+    HPARAMS = {
         "EPOCHS": 50,
         "PERIOD": 1,  # Report period
         "POLY_DEGREE": 3,  # In feature engerineering.
         "BATCH_SIZE": 2048,
         "LR":1e-5}
-    main(**hparam_dict)
+    main(**HPARAMS)
