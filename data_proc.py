@@ -92,6 +92,17 @@ def create_dummies(
     return X_with_dummy
 
 
+def parse_test_set(
+        df_train: pd.DataFrame,
+        df_test: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Wraps the operations taken for parsing country and treatments.
+    """
+    parsed = parse_test_set_countries(df_train, df_test)
+    return parse_test_set_treatment(parsed)
+
+
 def parse_test_set_treatment(
         df_test: pd.DataFrame,
 ) -> pd.DataFrame:
