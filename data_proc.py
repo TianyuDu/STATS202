@@ -50,8 +50,7 @@ def gen_slp_assessment(
     # List of PANSS Scores.
     PANSS = [f"P{i}" for i in range(1, 8)] \
         + [f"N{i}" for i in range(1, 8)] \
-        + [f"G{i}" for i in range(1, 17)] \
-        + ["PANSS_Total"]
+        + [f"G{i}" for i in range(1, 17)]
 
     SELECT.extend(PANSS)
     if keep_patient_ID:
@@ -91,6 +90,7 @@ def create_dummies(
     # but there is no UK sample in training set
     X_with_dummy["Country_Other"] = int(0)
     return X_with_dummy
+
 
 
 if __name__ == "__main__":
