@@ -16,6 +16,8 @@ def gen_label(df: pd.DataFrame) -> pd.DataFrame:
 
 def load_whole(path: str) -> pd.DataFrame:
     collect, lengths = [], []
+    if not path.endswith("/"):
+        raise ValueError("Path should be a directory (i.e. ends with /)")
     for v in ["A", "B", "C", "D"]:
         df_temp = load_individual_dataset(path + f"Study_{v}.csv")
         collect.append(df_temp)
@@ -25,7 +27,7 @@ def load_whole(path: str) -> pd.DataFrame:
     return gen_label(df)
 
 
-def gen_sup(raw: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
+def gen_slp_assessment(raw: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
     """
     Generates supervised learning problem.
     Args:
