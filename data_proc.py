@@ -49,9 +49,12 @@ def gen_slp_assessment(
     # The list of features in design data frame returned.
     SELECT = ["Country", "TxGroup"]
     # List of PANSS Scores.
-    PANSS = [f"P{i}" for i in range(1, 8)] \
-        + [f"N{i}" for i in range(1, 8)] \
-        + [f"G{i}" for i in range(1, 17)]
+    PANSS = [
+        f"P{i}" for i in range(1, 8)
+    ] + [
+        f"N{i}" for i in range(1, 8)
+    ] + [
+        f"G{i}" for i in range(1, 17)]
 
     SELECT.extend(PANSS)
     if keep_patient_ID:
