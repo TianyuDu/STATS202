@@ -23,6 +23,7 @@ def load_whole(path: str) -> pd.DataFrame:
         collect.append(df_temp)
         lengths.append(len(df_temp))
     df = pd.concat(collect)
+    df.reset_index(inplace=True)
     assert len(df) == sum(lengths)
     return gen_label(df)
 
