@@ -43,7 +43,7 @@ def gen_slp_assessment(
     Returns:
         (X, y): Dataframes of the supervised learning problem.
         FEATURE: A list containing features used for model training.
-        PANSS: A list containing panss names.
+        PANSS: A list containing panss column names.
     """
     # The list of features in design data frame returned.
     SELECT = ["Country", "TxGroup"]
