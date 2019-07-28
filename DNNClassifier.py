@@ -16,17 +16,19 @@ class NN(tf.keras.Model):
     def __init__(self):
         super(NN, self).__init__()
         self.drop1 = tf.keras.layers.Dropout(0.8)
-        self.d1 = tf.keras.layers.Dense(512, activation="relu")
+        self.dense1 = tf.keras.layers.Dense(512, activation="relu")
         self.drop2 = tf.keras.layers.Dropout(0.5)
-        self.d2 = tf.keras.layers.Dense(256, activation="relu")
+        self.dense2 = tf.keras.layers.Dense(256, activation="relu")
+        self.drop3 = tf.keras.layers.Dropout(0.5)
         # Output layer.
         self.out = tf.keras.layers.Dense(1, activation="sigmoid")
 
     def call(self, x):
         x = self.drop1(x)
-        x = self.d1(x)
+        x = self.dense1(x)
         x = self.drop2(x)
-        x = self.d2(x)
+        x = self.dense2(x)
+        x = self.drop3(x)
         return self.out(x)
 
 
