@@ -92,6 +92,19 @@ def create_dummies(
     return X_with_dummy
 
 
+def parse_test_set_treatment(
+    df_test: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Parse the treatment dummy variable in the testing set.
+    """
+    parsed_test = df_test.copy()
+    parsed_test["Treatment"] = (
+        parsed_test["TxGroup"] == "Treatment").astype(int)
+    parsed_test.drop(columns=["TxGroup"], inplace=True)
+    return parsed_test
+
+
 def parse_test_set_countries(
     df_train: pd.DataFrame,
     df_test: pd.DataFrame,
