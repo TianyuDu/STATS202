@@ -92,6 +92,33 @@ def create_dummies(
     return X_with_dummy
 
 
+def parse_test_set_countries(
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    FEATURE: list,
+) -> pd.DataFrame:
+    """
+    Parses the country dummies.
+    """
+    parsed_test = df_test.copy()
+    country_list = [
+        col
+        for col in df_train.columns
+        if col.startswith("Country")
+    ]
+    for country in country_list:
+        # Create empty dummy variables
+        parsed_test[country] = int(0)
+    for i in range(len(df_test)):
+        country = parsed_test.at[i, "Country"]
+        if f"Country_{country}" in country_list:
+            parsed_test.at[i, f"Country_{country}"] = int(1)
+        else:
+            print(country)
+            parsed_test.at[i, "Country_Other"] = int(1)
+    parsed_test.drop(columns=["Country"], inplace=True)
+    return parsed_test
+
 
 if __name__ == "__main__":
     df = load_whole("./data/")
