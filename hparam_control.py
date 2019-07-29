@@ -64,10 +64,11 @@ if __name__ == "__main__":
     FEATURE += CROSS
 
     # Grid Search
+    LOG_DIR = input("Dir to store the hparam tuning log: ")
     grid_search_util.grid_search(
         scope=SCOPE,
         data_feed=lambda: provide_data(X_train, y_train, X_test),
         train_main=DNNClassifier.main,
-        log_dir="./DNNClassifier.csv"
+        log_dir=LOG_DIR
     )
     
