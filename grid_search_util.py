@@ -27,6 +27,7 @@ def grid_search(
     header_written = False
     with open(log_dir, "w") as f:
         for (i, profile) in enumerate(profile_generator(scope)):
+            print(f"**** Profile: {i} ****")
             print(profile)
             result = train_main(data_feed, **profile)
             if not header_written:
