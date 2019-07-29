@@ -64,7 +64,10 @@ if __name__ == "__main__":
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
     pred = DNNClassifier.main(
         lambda: provide_data(X_train, y_train, X_test),
-        EPOCHS=100, PERIOD=5, forecast=True)
+        EPOCHS=100, PERIOD=5, BATCH_SIZE=256,
+        LR=1e-5, NEURONS=[256, 512],
+        forecast=True, tuning=False)
+    # Make predictions.
     holder = pd.read_csv("./data/sample_submission_status.csv", header=0)
     sub_name = input("File name to store submission: ")
     holder["LeadStatus"] = pred
