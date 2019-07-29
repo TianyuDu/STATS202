@@ -2,11 +2,11 @@ import itertools
 from typing import Dict, List
 
 
-def profile_generator(src: Dict[str, List]) -> List[dict]:
+def profile_generator(scope: Dict[str, List]) -> List[dict]:
     """
     This method generates individual profiles from the source.
     """
-    src = src.copy()
+    src = scope.copy()
     for k, v in src.items():
         if type(v) not in [list, tuple]:
             src[k] = [v]
