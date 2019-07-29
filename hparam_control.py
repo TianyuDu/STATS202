@@ -4,17 +4,19 @@ import itertools
 import numpy as np
 import pandas as pd
 
+from sklearn import model_selection
+
 import data_proc
 import features
 import grid_search_util
 
 import DNNClassifier
 
-scope = {
-    "EPOCHS": [120, 130],
-    "BATCH_SIZE": 32,
+SCOPE = {
+    "EPOCHS": [10, 20, 30, 40],
+    "BATCH_SIZE": 1024,
     "LR": 1e-5,
-    "NEURONS": [[100, 200], [200, 300]],
+    "NEURONS": [[32, 64], [16, 32]],
 }
 
 
@@ -56,14 +58,14 @@ if __name__ == "__main__":
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
 
     # Feature Engerineering
-    poly_degree = 3
+    poly_degree = 1
     X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
 
     # Grid Search
     grid_search_util.grid_search(
-        scope=scope,
+        scope=SCOPE,
         data_feed=lambda: provide_data(X_train, y_train, X_test),
         train_main=DNNClassifier.main,
         log_dir="./DNNClassifier.csv"
