@@ -27,7 +27,8 @@ def grid_search(
     header_written = False
     with open(log_dir, "w") as f:
         for profile in profile_generator(scope):
-            result = train_main(data_feed, *profile)
+            print(profile)
+            result = train_main(data_feed, **profile)
             if not header_written:
                 f.write(",".join(result.keys()))
                 f.write("\n")
@@ -36,3 +37,4 @@ def grid_search(
                 [str(x).replace(",", ";") for x in result.values()]
             ))
             f.write("\n")
+    print(f"Log stored to {log_dir}")
