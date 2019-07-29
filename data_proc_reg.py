@@ -13,7 +13,7 @@ import numpy as np
 
 def convert_to_patient(
         df_assessment: pd.DataFrame,
-        min_visit: int,
+        min_visit: int = None,
 ):
     """
     Reshape dataset so that each row of the new dataset corresponds to one
@@ -42,13 +42,9 @@ def convert_to_patient(
     def retrive_info(pid: int):
         return df_assessment[df_assessment["PatientID"] == pid]
 
-    cache = list()
     for pid in patient_ids:
         patient_info = retrive_info(pid)
-        cache.append(len(patient_info))
-    return cache
     
-
     return df_patient
 
 
