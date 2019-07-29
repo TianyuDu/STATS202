@@ -13,7 +13,7 @@ import grid_search_util
 import DNNClassifier
 
 SCOPE = {
-    "EPOCHS": [50, 100, 200, 300, 500],
+    "EPOCHS": [100, 200, 300],
     "BATCH_SIZE": 1024,
     "LR": [1e-5, 1e-5*3, 1e-4, 1e-4*3, 1e-3],
     "NEURONS": [
