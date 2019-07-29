@@ -13,12 +13,12 @@ import data_proc
 
 
 class NN(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, num_neurons):
         super(NN, self).__init__()
         self.drop1 = tf.keras.layers.Dropout(0.8)
-        self.dense1 = tf.keras.layers.Dense(512, activation="relu")
+        self.dense1 = tf.keras.layers.Dense(num_neurons[0], activation="relu")
         self.drop2 = tf.keras.layers.Dropout(0.5)
-        self.dense2 = tf.keras.layers.Dense(256, activation="relu")
+        self.dense2 = tf.keras.layers.Dense(num_neurons[1], activation="relu")
         self.drop3 = tf.keras.layers.Dropout(0.5)
         # Output layer.
         self.out = tf.keras.layers.Dense(1, activation="sigmoid")
@@ -38,7 +38,9 @@ def main(
         PERIOD: int = 5,
         BATCH_SIZE: int = 256,
         LR: float = 1e-5,
+        NEURONS: list = [128, 128],
         forecast: bool = False,
+        tuning: bool = False,
 ) -> None:
     """
     Main Training Process for DNN classifier
@@ -63,25 +65,6 @@ def main(
         dev_loss.update_state(loss)
         dev_accuracy.update_state(y, pred)
 
-    # # Prepare Data
-    # X, y = data.gen_sup(df)
-    # X = X.astype(np.float32)
-    # X, y = map(lambda z: z.values, (X, y))
-    # y = y.reshape(-1, 1)
-
-    # # Create Polynomial Features
-    # poly = preprocessing.PolynomialFeatures(degree=POLY_DEGREE)
-    # X = poly.fit_transform(X)
-
-    # X_train, X_dev, y_train, y_dev = model_selection.train_dev_split(
-    #     X, y, dev_size=0.2, random_state=None, shuffle=True)
-
-    # # Standardize features
-    # scaler = preprocessing.StandardScaler()
-    # scaler.fit(X_train)
-    # X_train = scaler.transform(X_train)
-    # X_dev = scaler.transform(X_dev)
-
     print("Reading data...")
     X_train, X_dev, y_train, y_dev, X_test = get_data()
     print(f"X_train@{X_train.shape}, X_dev@{X_dev.shape}")
@@ -92,7 +75,7 @@ def main(
         (X_dev, y_dev)).batch(BATCH_SIZE)
 
     num_fea = X_train.shape[1]
-    model = NN()
+    model = NN(num_neurons=NEURONS)
 
     loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=False)
     optimizer = tf.keras.optimizers.Adam(learning_rate=LR)
@@ -143,6 +126,19 @@ def main(
     print(f"AUC on Training Set: {auc_train: 0.6f}")
     print(f"AUC on Developing Set: {auc_dev: 0.6f}")
 
+    if forecast:
+        pred = model(X_test)
+        return pred.numpy()
+    if tuning:
+        return {
+            "AUC_TRAIN": auc_train,
+            "AUC_DEV": auc_dev,
+            "LOSS_TRAIN": train_loss.result(),
+            "LOSS_DEV": dev_loss.result(),
+            "ACCURACY_TRAIN": train_accuracy.result(),
+            "ACCURACY_DEV": dev_accuracy.result(),
+        }
+
     plt.plot(np.log(trace["train"]))
     plt.plot(np.log(trace["val"]))
     plt.xlabel("Epochs")
@@ -150,6 +146,3 @@ def main(
     plt.legend(["Training", "Validation"])
     plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_dev={auc_dev:0.3f}")
     plt.show()
-    if forecast:
-        pred = model(X_test)
-        return pred.numpy()
