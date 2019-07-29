@@ -40,7 +40,7 @@ def main(
         LR: float = 1e-5,
         NEURONS: list = [128, 128],
         forecast: bool = False,
-        tuning: bool = False,
+        tuning: bool = True,
 ) -> None:
     """
     Main Training Process for DNN classifier
@@ -131,12 +131,16 @@ def main(
         return pred.numpy()
     if tuning:
         return {
+            "EPOCHS": EPOCHS,
+            "BATCH_SIZE": BATCH_SIZE,
+            "LR": LR,
+            "NEURONS": NEURONS,
             "AUC_TRAIN": auc_train,
             "AUC_DEV": auc_dev,
-            "LOSS_TRAIN": train_loss.result(),
-            "LOSS_DEV": dev_loss.result(),
-            "ACCURACY_TRAIN": train_accuracy.result(),
-            "ACCURACY_DEV": dev_accuracy.result(),
+            "LOSS_TRAIN": train_loss.result().numpy(),
+            "LOSS_DEV": dev_loss.result().numpy(),
+            "ACCURACY_TRAIN": train_accuracy.result().numpy(),
+            "ACCURACY_DEV": dev_accuracy.result().numpy(),
         }
 
     plt.plot(np.log(trace["train"]))
