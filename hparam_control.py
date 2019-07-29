@@ -71,4 +71,3 @@ if __name__ == "__main__":
         train_main=DNNClassifier.main,
         log_dir=LOG_DIR
     )
-    
