@@ -26,13 +26,15 @@ def grid_search(
 ) -> None:
     header_written = False
     with open(log_dir, "w") as f:
-        for profile in profile_generator(scope):
+        for (i, profile) in enumerate(profile_generator(scope)):
             print(profile)
             result = train_main(data_feed, **profile)
             if not header_written:
+                f.write("RUN,")
                 f.write(",".join(result.keys()))
                 f.write("\n")
                 header_written = True
+            f.write(str(i)+",")
             f.write(",".join(
                 [str(x).replace(",", ";") for x in result.values()]
             ))
