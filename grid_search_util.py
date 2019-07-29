@@ -26,8 +26,10 @@ def grid_search(
 ) -> None:
     header_written = False
     with open(log_dir, "w") as f:
-        for (i, profile) in enumerate(profile_generator(scope)):
-            print(f"**** Profile: {i} ****")
+        profile_set = profile_generator(scope)
+        total_profiles = len(profile_set)
+        for (i, profile) in enumerate(profile_set):
+            print(f"**** Profile: [{i+1}/{total_profiles}] ****")
             print(profile)
             result = train_main(data_feed, **profile)
             if not header_written:
