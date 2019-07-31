@@ -5,7 +5,6 @@ import warnings
 from typing import Union, Optional, Tuple
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import model_selection
 
@@ -57,7 +56,7 @@ if __name__ == "__main__":
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
 
     # Feature engerineering
-    poly_degree = 3
+    poly_degree = 1
     X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
