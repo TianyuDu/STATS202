@@ -50,7 +50,54 @@ def build_binary_classifier(
 
 model = build_binary_classifier(30, num_neurons=[int(2**x) for x in (6, 7, 8)])
 
+
 def main(
+        get_data: callable,
+        EPOCHS: int = 10,
+        PERIOD: int = 5,
+        BATCH_SIZE: int = 256,
+        LR: float = 1e-5,
+        NEURONS: list = [128, 128],
+        forecast: bool = False,
+        tuning: bool = True,
+) -> None:
+    print("Reading data...")
+    X_train, X_dev, y_train, y_dev, X_test = get_data()
+    print(f"X_train@{X_train.shape}, X_dev@{X_dev.shape}")
+
+    num_fea = X_train.shape[1]
+    model = build_binary_classifier(num_inputs=num_fea, num_neurons=NEURONS)
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(LR),
+        loss="binary_crossentropy",
+        metrics=["accuracy", "AUC"]
+    )
+    hist = model.fit(
+        X_train, y_train,
+        batch_size=BATCH_SIZE,
+        epochs=EPOCHS,
+        validation_data=(X_dev, y_dev),
+        verbose=0
+    )
+    if forecast:
+        return model.predict(X_test)
+
+    if tuning:
+        measures = {
+            "EPOCHS": EPOCHS,
+            "BATCH_SIZE": BATCH_SIZE,
+            "LR": LR,
+            "NEURONS": NEURONS,
+        }
+        # Retrive the final loss
+        losses = {d: v[-1] for d, v in hist.history.items()}
+        measures.update(losses)
+        return measures
+
+
+
+
+def _main(
         get_data: callable,
         EPOCHS: int = 10,
         PERIOD: int = 5,
