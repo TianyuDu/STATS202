@@ -3,6 +3,7 @@ DNN Classifier.
 """
 import numpy as np
 import pandas as pd
+from typing import List
 import tensorflow as tf
 from sklearn import model_selection
 from sklearn import preprocessing
@@ -31,6 +32,23 @@ class NN(tf.keras.Model):
         x = self.drop3(x)
         return self.out(x)
 
+
+def build_binary_classifier(
+        num_inputs: int,
+        num_neurons: List[int],
+        internal_dropout: float = 0.5,
+) -> tf.keras.Model:
+    inputs = tf.keras.Input(shape=(num_inputs, ), name="input_layer")
+    x = tf.keras.layers.Dropout(0.2)(inputs)
+    for i, neuron in enumerate(num_neurons):
+        x = tf.keras.layers.Dense(
+            units=neuron, activation="relu", name=f"dense_layer_{i}")(x)
+        x = tf.keras.layers.Dropout(internal_dropout)(x)
+    outputs = tf.keras.layers.Dense(
+        units=1, activation="sigmoid", name="output_layer")(x)
+    return tf.keras.Model(inputs, outputs)
+
+model = build_binary_classifier(30, num_neurons=[int(2**x) for x in (6, 7, 8)])
 
 def main(
         get_data: callable,
