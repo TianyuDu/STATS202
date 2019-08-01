@@ -83,7 +83,16 @@ def main(
         return model.predict(X_test)
 
     if tuning:
-        measures = {
+        step = 50  # report step
+        record_lst  = list()
+        for t in range(EPOCHS // step):
+            # Report training histories.
+            record = {"EPOCHS": t * step, "BATCH_SIZE": BATCH_SIZE, "LR": LR, "NEURONS": NEURONS}
+            losses = {d: v[t * step] for d, v in hist.history.items()}
+            record.update(losses)
+            record_lst.append(record)
+        # For the final result.
+        final_record = {
             "EPOCHS": EPOCHS,
             "BATCH_SIZE": BATCH_SIZE,
             "LR": LR,
@@ -91,8 +100,9 @@ def main(
         }
         # Retrive the final loss
         losses = {d: v[-1] for d, v in hist.history.items()}
-        measures.update(losses)
-        return measures
+        final_record.update(losses)
+        record_lst.append(final_record)
+        return record_lst
 
 
 
