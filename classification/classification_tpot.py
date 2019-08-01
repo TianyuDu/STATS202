@@ -29,12 +29,15 @@ if __name__ == "__main__":
     date = datetime.strftime(
         datetime.now(), "%Y_%m_%d_%H_%M")
 
+    GEN = int(input("Number of Generations: "))
+    POP = int(input("Population size: "))
+    
     optimizer = TPOTClassifier(
-        generations=5,
-        population_size=20,
+        generations=GEN,
+        population_size=POP,
         cv=5,
         random_state=42,
-        verbosity=2,
+        verbosity=1,
     )
     optimizer.fit(X_train.values, y_train.values)
     optimizer.export("tpot_{}.py".format(date))
