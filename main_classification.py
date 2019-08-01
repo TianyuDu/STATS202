@@ -8,10 +8,10 @@ import pandas as pd
 import seaborn as sns
 from sklearn import model_selection
 
-import data_proc
-import features
+import util.data_proc
+import util.features
 
-import DNNClassifier
+import classification.DNNClassifier
 
 def plot():
     fig1 = sns.catplot(x="Country", kind="count", data=df_train)
@@ -43,25 +43,25 @@ def provide_data(
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    df_train = data_proc.load_whole(path="./data/")
+    df_train = util.data_proc.load_whole(path="./data/")
     print(df_train.shape)
     df_test = pd.read_csv("./data/Study_E.csv", header=0)
     print(df_test.shape)
     # Reduced countries
     major_countries = ["USA", "Russia", "Ukraine", "China", "Japan"]
-    df_train = features.reduce_countries(df_train, major_countries)
-    df_test = features.reduce_countries(df_test, major_countries)
-    X_train, y_train, FEATURE, PANSS = data_proc.gen_slp_assessment(df_train)
-    X_test = data_proc.parse_test_set(X_train, df_test)
+    df_train = util.features.reduce_countries(df_train, major_countries)
+    df_test = util.features.reduce_countries(df_test, major_countries)
+    X_train, y_train, FEATURE, PANSS = util.data_proc.gen_slp_assessment(df_train)
+    X_test = util.data_proc.parse_test_set(X_train, df_test)
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
 
     # Feature engerineering
     poly_degree = 1
-    X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
-    X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
+    X_train, CROSS = util.features.polynomial_standardized(X_train, PANSS, poly_degree)
+    X_test, _ = util.features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
     print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
-    pred = DNNClassifier.main(
+    pred = classification.DNNClassifier.main(
         lambda: provide_data(X_train, y_train, X_test),
         EPOCHS=100, PERIOD=5, BATCH_SIZE=256,
         LR=1e-5, NEURONS=[256, 512],
