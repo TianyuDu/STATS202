@@ -14,7 +14,7 @@ def profile_generator(scope: Dict[str, List]) -> List[dict]:
     for vals in itertools.product(*list(src.values())):
         gen.append(dict(zip(src.keys(), vals)))
         # yield dict(zip(src.keys(), vals))
-    print(f"Profiles generated: {len(gen)}")
+    print("Profiles generated: {}".format(len(gen)))
     return gen
 
 
@@ -29,7 +29,7 @@ def grid_search(
         profile_set = profile_generator(scope)
         total_profiles = len(profile_set)
         for (i, profile) in enumerate(profile_set):
-            print(f"**** Profile: [{i+1}/{total_profiles}] ****")
+            print("**** Profile: [{}/{}] ****".format(i+1, total_profiles))
             print(profile)
             result = train_main(data_feed, **profile)
             if not header_written:
@@ -42,4 +42,4 @@ def grid_search(
                 [str(x).replace(",", ";") for x in result.values()]
             ))
             f.write("\n")
-    print(f"Log stored to {log_dir}")
+    print("Log stored to {}".format(log_dir))
