@@ -55,14 +55,14 @@ if __name__ == "__main__":
     df_test = util.features.reduce_countries(df_test, major_countries)
     X_train, y_train, FEATURE, PANSS = util.data_proc.gen_slp_assessment(df_train)
     X_test = util.data_proc.parse_test_set(X_train, df_test)
-    print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
+    print("Design_train: {}, Design_test: {}".fotmat(X_train.shape, X_test.shape))
 
     # Feature engerineering
     poly_degree = 1
     X_train, CROSS = util.features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = util.features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
-    print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
+    print("Design_train: {}, Design_test: {}".format(X_train.shape, X_test.shape))
     pred = classification.DNNClassifier.main(
         lambda: provide_data(X_train, y_train, X_test),
         EPOCHS=100, PERIOD=5, BATCH_SIZE=256,
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     holder = pd.read_csv("./data/sample_submission_status.csv", header=0)
     sub_name = input("File name to store submission: ")
     holder["LeadStatus"] = pred
-    holder.to_csv(f"./submissions/{sub_name}.csv", index=False)
+    holder.to_csv("./submissions/{}.csv".format(sub_name), index=False)
