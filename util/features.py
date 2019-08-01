@@ -73,7 +73,7 @@ def polynomial_standardized(
     print("Generating Polynomial Features...")
     poly = preprocessing.PolynomialFeatures(degree=poly_degree)
     X_poly = poly.fit_transform(df_extend)  # this is a numpy array.
-    CROSS = [f"Cross_{i}" for i in range(X_poly.shape[1])]
+    CROSS = ["Cross_" + str(i) for i in range(X_poly.shape[1])]
 
     print("Standardizing Data...")
     scaler0 = preprocessing.StandardScaler()
