@@ -60,7 +60,7 @@ if __name__ == "__main__":
     df_test = features.reduce_countries(df_test, major_countries)
     X_train, y_train, FEATURE, PANSS = data_proc.gen_slp_assessment(df_train)
     X_test = data_proc.parse_test_set(X_train, df_test)
-    print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
+    print("X_train: {}, X_test: {}".fotmat(X_train.shape, X_test.shape))
 
     # Feature Engerineering
     poly_degree = 3
