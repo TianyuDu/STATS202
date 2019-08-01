@@ -14,7 +14,6 @@ import util.features
 
 
 if __name__ == "__main__":
-    client = Client(n_workers=4, threads_per_worker=1)
     df_train = util.data_proc.load_whole(path="../data/")
     print(df_train.shape)
     df_test = pd.read_csv("../data/Study_E.csv", header=0)
