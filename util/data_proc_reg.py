@@ -21,7 +21,13 @@ def select_patient(
     """
     Filters the patient ids, return a sub-dataframe of df_test that
     contains patient IDs in sample submission.
+    Args:
+        Both df_test and sample_submission must contains "PatientID" column.
     """
+    if "PatientID" not in df_test.columns:
+        raise KeyError("df_test must have PatientID column.")
+    if "PatientID" not in sample_submission.columns:
+        raise KeyError("sample_submission must have PatientID column.")
     valid_idx = [
         (x in list(sample_submission["PatientID"]))
         for x in df_test["PatientID"]
