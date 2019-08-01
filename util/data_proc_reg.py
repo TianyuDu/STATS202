@@ -7,8 +7,29 @@ For the classification task, training instances are indexed using
 AssessmentIDs, and for the regression task, trainining instances
 are indexed using PatientIDs.
 """
+import sys
 import pandas as pd
 import numpy as np
+
+sys.path.append("../")
+
+
+def select_patient(
+        df_test: pd.DataFrame,
+        sample_submission: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Filters the patient ids, return a sub-dataframe of df_test that
+    contains patient IDs in sample submission.
+    """
+    valid_idx = [
+        (x in list(sample_submission["PatientID"]))
+        for x in df_test["PatientID"]
+    ]
+    selected = df_test[valid_idx]
+    print(f"Propotion selected: {len(selected) / len(df_test): 0.6f}")
+    return selected
+
 
 
 def convert_to_patient(
@@ -42,9 +63,12 @@ def convert_to_patient(
     def retrive_info(pid: int):
         return df_assessment[df_assessment["PatientID"] == pid]
 
+    cache = list()
     for pid in patient_ids:
         patient_info = retrive_info(pid)
-    
+        cache.append(len(patient_info))
+    return cache
+
     return df_patient
 
 
