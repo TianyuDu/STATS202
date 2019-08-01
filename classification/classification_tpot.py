@@ -37,7 +37,7 @@ if __name__ == "__main__":
         population_size=POP,
         cv=5,
         random_state=42,
-        verbosity=1,
+        verbosity=2,
     )
     optimizer.fit(X_train.values, y_train.values)
     optimizer.export("tpot_{}.py".format(date))
