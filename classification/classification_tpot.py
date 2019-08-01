@@ -24,7 +24,7 @@ if __name__ == "__main__":
     df_test = util.features.reduce_countries(df_test, major_countries)
     X_train, y_train, FEATURE, PANSS = util.data_proc.gen_slp_assessment(df_train)
     X_test = util.data_proc.parse_test_set(X_train, df_test)
-    print(f"Design_train: {X_train.shape}, Design_test: {X_test.shape}")
+    print("Design_train: {}, Design_test: {}".fotmat(X_train.shape, X_test.shape))
 
     date = datetime.strftime(
         datetime.now(), "%Y_%m_%d_%H_%M")
@@ -37,6 +37,6 @@ if __name__ == "__main__":
         verbosity=2,
     )
     optimizer.fit(X_train.values, y_train.values)
-    optimizer.export(f"tpot_{date}.py")
-    print(f"Pipeline file exported to: tpot_{date}.py")
+    optimizer.export("tpot_{}.py".format(date))
+    print("Pipeline file exported to: tpot_{}.py".format(date))
 
