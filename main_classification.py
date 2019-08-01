@@ -2,12 +2,14 @@
 Main script.
 """
 import warnings
+import sys
 from typing import Union, Optional, Tuple
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn import model_selection
 
+sys.path.append("../")
 import util.data_proc
 import util.features
 
@@ -43,9 +45,9 @@ def provide_data(
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    df_train = util.data_proc.load_whole(path="./data/")
+    df_train = util.data_proc.load_whole(path="../data/")
     print(df_train.shape)
-    df_test = pd.read_csv("./data/Study_E.csv", header=0)
+    df_test = pd.read_csv("../data/Study_E.csv", header=0)
     print(df_test.shape)
     # Reduced countries
     major_countries = ["USA", "Russia", "Ukraine", "China", "Japan"]
