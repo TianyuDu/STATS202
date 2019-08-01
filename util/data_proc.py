@@ -47,7 +47,7 @@ def gen_slp_assessment(
         PANSS: A list containing panss column names.
     """
     # The list of features in design data frame returned.
-    SELECT = ["Country", "TxGroup"]
+    SELECT = ["Country", "TxGroup", "PANSS_Total"]
     # List of PANSS Scores.
     PANSS = [
         f"P{i}" for i in range(1, 8)
