@@ -14,10 +14,9 @@ import numpy as np
 
 from tqdm import tqdm
 
-import util.data_proc
-
 sys.path.append("../")
-
+import util.data_proc
+from CONSTANTS import PANSS
 
 def select_patient(
         df_test: pd.DataFrame,
@@ -38,7 +37,7 @@ def select_patient(
         for x in df_test["PatientID"]
     ]
     selected = df_test[valid_idx]
-    print(f"Propotion selected: {len(selected) / len(df_test): 0.6f}")
+    print("Propotion selected: {:0.6f}".format(len(selected) / len(df_test)))
     return selected
 
 
@@ -87,7 +86,7 @@ def convert_to_patient(
             # print("Patient dropped.")
             pass
 
-    print(f"Numer of patients found: {len(X_lst)}")
+    print("Numer of patients found: {}".format(len(X_lst)))
     X = pd.concat(X_lst)
     if include_label:
         y = pd.DataFrame({"Final_PANSS_Total": y_lst})
@@ -101,17 +100,12 @@ def reduce_patient_features(
         patient_info: pd.DataFrame,
         include_label: bool,
 ) -> (pd.DataFrame, Union[pd.DataFrame, None]):
-    PANSS = [
-        f"P{i}" for i in range(1, 8)
-    ] + [
-        f"N{i}" for i in range(1, 8)
-    ] + [
-        f"G{i}" for i in range(1, 17)]
     PANSS.append("PANSS_Total")
     # Assert all assessments belong to single patient.
     if len(set(patient_info["PatientID"])) != 1:
         raise ValueError(
-            f"Collection of patient assessments should belong to one single patient, got: {set(patient_info['PatientID'])}"
+            "Collection of patient assessments should belong to one single patient, got: {}".format(
+                set(patient_info['PatientID']))
         )
     reduced = dict()
     info = patient_info.reset_index(drop=True)
@@ -130,7 +124,7 @@ def reduce_patient_features(
         if prefix is not None:
             prefix += "_"
         for k, v in src.items():
-            target[f"{prefix}{k}"] = v
+            target[str(prefix) + str(k)] = v
 
     # *** Create TxGroup Dummies ***
     reduced["Treatment"] = int(info["Treatment"][0])
