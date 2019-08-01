@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+import sys
+sys.path.append("../")
+from CONSTANTS import PANSS
 
 def load_individual_dataset(path: str) -> pd.DataFrame:
     df = pd.read_csv(path, header=0)
@@ -19,7 +22,7 @@ def load_whole(path: str) -> pd.DataFrame:
     if not path.endswith("/"):
         raise ValueError("Path should be a directory (i.e. ends with /)")
     for v in ["A", "B", "C", "D"]:
-        df_temp = load_individual_dataset(path + f"Study_{v}.csv")
+        df_temp = load_individual_dataset(path + "Study_{}.csv".format(v))
         collect.append(df_temp)
         lengths.append(len(df_temp))
     df = pd.concat(collect)
@@ -48,13 +51,6 @@ def gen_slp_assessment(
     """
     # The list of features in design data frame returned.
     SELECT = ["Country", "TxGroup", "PANSS_Total"]
-    # List of PANSS Scores.
-    PANSS = [
-        f"P{i}" for i in range(1, 8)
-    ] + [
-        f"N{i}" for i in range(1, 8)
-    ] + [
-        f"G{i}" for i in range(1, 17)]
 
     SELECT.extend(PANSS)
     if keep_patient_ID:
@@ -138,8 +134,8 @@ def parse_test_set_countries(
         parsed_test[country] = int(0)
     for i in range(len(df_test)):
         country = parsed_test.at[i, "Country"]
-        if f"Country_{country}" in country_list:
-            parsed_test.at[i, f"Country_{country}"] = int(1)
+        if "Country_{}".format(country) in country_list:
+            parsed_test.at[i, "Country_{}".format(country)] = int(1)
         else:
             parsed_test.at[i, "Country_Other"] = int(1)
     parsed_test.drop(columns=["Country"], inplace=True)
