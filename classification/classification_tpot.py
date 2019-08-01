@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     GEN = int(input("Number of Generations: "))
     POP = int(input("Population size: "))
-    
+
     optimizer = TPOTClassifier(
         generations=GEN,
         population_size=POP,
