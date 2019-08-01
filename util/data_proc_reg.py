@@ -12,6 +12,10 @@ from typing import Optional, Union
 import pandas as pd
 import numpy as np
 
+from tqdm import tqdm
+
+import util.data_proc
+
 sys.path.append("../")
 
 
@@ -40,6 +44,7 @@ def select_patient(
 
 def convert_to_patient(
         df_assessment: pd.DataFrame,
+        include_label: bool = True,
         min_visit: int = None,
 ) -> (pd.DataFrame, Optional[pd.DataFrame]):
     """
@@ -70,23 +75,80 @@ def convert_to_patient(
         return df_assessment[df_assessment["PatientID"] == pid]
 
     X_lst, y_lst = [], []
-    for pid in patient_ids:
-        patient_X, patient_y = reduce_patient_features(retrive_info(pid), include_label=include_label)
-        if min_visit is None or len(patient_X) >= min_visit:
+    print("Creating Patient Information...")
+    for pid in tqdm(patient_ids):
+        individual_info = retrive_info(pid)
+        if min_visit is None or len(individual_info) >= min_visit:
+            patient_X, patient_y = reduce_patient_features(
+                individual_info, include_label=include_label)
             X_lst.append(patient_X)
             y_lst.append(patient_y)
         else:
-            print("Patient dropped.")
+            # print("Patient dropped.")
+            pass
 
     print(f"Numer of patients found: {len(X_lst)}")
     X = pd.concat(X_lst)
     if include_label:
-        y = pd.concat(y_lst)
+        y = pd.DataFrame({"Final_PANSS_Total": y_lst})
         assert len(X) == len(y)
         return X, y
     else:
         return X
 
-    return df_patient
 
+def reduce_patient_features(
+        patient_info: pd.DataFrame,
+        include_label: bool,
+) -> (pd.DataFrame, Union[pd.DataFrame, None]):
+    PANSS = [
+        f"P{i}" for i in range(1, 8)
+    ] + [
+        f"N{i}" for i in range(1, 8)
+    ] + [
+        f"G{i}" for i in range(1, 17)]
+    PANSS.append("PANSS_Total")
+    # Assert all assessments belong to single patient.
+    if len(set(patient_info["PatientID"])) != 1:
+        raise ValueError(
+            f"Collection of patient assessments should belong to one single patient, got: {set(patient_info['PatientID'])}"
+        )
+    reduced = dict()
+    info = patient_info.reset_index(drop=True)
+    if include_label:
+        if len(info) == 1:
+            raise ValueError(
+                "Include label is True, but there is only one assessment for patient.")
+        # Generate the label
+        y = info.iloc[-1, :]["PANSS_Total"]
+        # Drop the last assessment.
+        info.drop([info.index[-1]], axis=0, inplace=True)
+    else:
+        y = None
 
+    def add_feature(src: pd.DataFrame, target: dict, prefix: str = None) -> None:
+        if prefix is not None:
+            prefix += "_"
+        for k, v in src.items():
+            target[f"{prefix}{k}"] = v
+
+    # *** Create TxGroup Dummies ***
+    reduced["Treatment"] = int(info["Treatment"][0])
+    # *** Create Country Dummies ***
+    country_list = [x for x in info.columns if x.startswith("Country")]
+    country_one_hot = info[country_list].iloc[0, :]
+    add_feature(country_one_hot, reduced, None)
+    # *** Create Initial Measures ***
+    add_feature(info.iloc[0, :][PANSS], reduced, "initial")
+    # *** Create Last (before the 18-th week) Measures ***
+    add_feature(info.iloc[-1, :][PANSS], reduced, "last")
+    # *** Create Mean Measures ***
+    add_feature(info[PANSS].mean(), reduced, "mean")
+    # *** Create Std Measures ***
+    add_feature(info[PANSS].std(), reduced, "std")
+
+    # Convert values to lists of values so that reduced
+    # is compaticable with DataFrame.
+    for k, v in reduced.items():
+        reduced[k] = [v]
+    return pd.DataFrame.from_dict(reduced), y
