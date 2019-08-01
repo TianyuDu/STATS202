@@ -6,3 +6,12 @@ STATS202.Rproj
 .Rhistory
 __pycache__/data_proc.cpython-37.pyc
 __pycache__/data_proc.cpython-37.pyc
+util/__pycache__/data_proc.cpython-37.pyc
+classification/dask-worker-space/global.lock
+classification/dask-worker-space/purge.lock
+classification/dask-worker-space/worker-807v09e3.dirlock
+classification/dask-worker-space/worker-k4k448v8.dirlock
+classification/dask-worker-space/worker-ki_j9y75.dirlock
+classification/dask-worker-space/worker-tukg80if.dirlock
+util/__pycache__/data_proc_reg.cpython-37.pyc
+util/__pycache__/features.cpython-37.pyc
