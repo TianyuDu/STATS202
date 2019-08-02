@@ -1,6 +1,7 @@
 """
 DNN Classifier.
 """
+import sys
 import numpy as np
 import pandas as pd
 from typing import List
@@ -10,7 +11,8 @@ from sklearn import preprocessing
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-import data_proc
+sys.path.append("../")
+from util import data_proc
 
 
 class NN(tf.keras.Model):
@@ -77,7 +79,7 @@ def main(
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         validation_data=(X_dev, y_dev),
-        verbose=0
+        verbose=1
     )
     if forecast:
         return model.predict(X_test)

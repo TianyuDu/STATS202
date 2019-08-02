@@ -1,4 +1,5 @@
 # The controlling for hyper-parameter searching
+import sys
 import warnings
 import itertools
 import numpy as np
@@ -6,14 +7,16 @@ import pandas as pd
 
 from sklearn import model_selection
 
-import data_proc
-import features
-import grid_search_util
+sys.path.append("../")
+
+from util import data_proc
+from util import features
+from util import grid_search_util
 
 import DNNClassifier
 
 SCOPE = {
-    "EPOCHS": [100, 200, 300],
+    "EPOCHS": 1000,
     "BATCH_SIZE": 1024,
     "LR": [1e-5, 1e-5*3, 1e-4, 1e-4*3, 1e-3],
     "NEURONS": [
@@ -21,8 +24,19 @@ SCOPE = {
         [1024, 1024],
         [512, 1024, 1024],
         [512, 1024, 2048],
+        [512, 512, 512, 512]
     ]
 }
+
+# SCOPE = {
+#     "EPOCHS": 50,
+#     "BATCH_SIZE": 1024,
+#     "LR": [1e-5, 1e-5*3, 1e-4],
+#     "NEURONS": [
+#         [32, 64],
+#         [32, 64, 128],
+#     ],
+# }
 
 
 def provide_data(
@@ -50,9 +64,9 @@ def provide_data(
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    df_train = data_proc.load_whole(path="./data/")
+    df_train = data_proc.load_whole(path="../data/")
     print(df_train.shape)
-    df_test = pd.read_csv("./data/Study_E.csv", header=0)
+    df_test = pd.read_csv("../data/Study_E.csv", header=0)
     print(df_test.shape)
     # Reduced countries
     major_countries = ["USA", "Russia", "Ukraine", "China", "Japan"]
@@ -63,7 +77,7 @@ if __name__ == "__main__":
     print("X_train: {}, X_test: {}".format(X_train.shape, X_test.shape))
 
     # Feature Engerineering
-    poly_degree = 3
+    poly_degree = 2
     X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
