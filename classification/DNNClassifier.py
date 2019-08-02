@@ -86,7 +86,7 @@ def main(
 
     if tuning:
         step = 50  # report step
-        record_lst  = list()
+        record_lst = list()
         for t in range(EPOCHS // step):
             # Report training histories.
             record = {"EPOCHS": t * step, "BATCH_SIZE": BATCH_SIZE, "LR": LR, "NEURONS": NEURONS}
