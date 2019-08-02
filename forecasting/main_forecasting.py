@@ -11,7 +11,32 @@ sys.path.append("../")
 from util import data_proc
 from util import data_proc_reg
 from util import features
+from util import grid_search_util
 from forecasting import DNNRegressor
+
+
+SCOPE = {
+    "EPOCHS": 1000,
+    "BATCH_SIZE": 32,
+    "LR": [0.03, 0.01, 0.003, 0.01],
+    "NEURONS": [
+        [64, 128],
+        [128, 256],
+        [64, 128, 256],
+        [128, 256, 512],
+    ],
+}
+
+SCOPE = {
+    "EPOCHS": 10,
+    "BATCH_SIZE": 32,
+    "LR": [0.03, 0.01],
+    "NEURONS": [
+        [64, 128],
+    ],
+}
+
+PARAMS = dict()
 
 
 def get_data() -> List[pd.DataFrame]:
@@ -45,11 +70,41 @@ def forecasting_write_to_file(forecast: np.ndarray, path: str) -> None:
     """
     holder = pd.read_csv("../data/sample_submission_PANSS.csv", header=0)
     assert len(holder) == len(forecast)
-    hodler["PANSS_Total"] 
+    holder["PANSS_Total"] = forecast
+    holder.to_csv(path, index=False)
+    print("File written to: {}".format(path))
+
 
 if __name__ == "__main__":
-    df_train, df_test, X_train, y_train, X_test = get_data()
-    hist = DNNRegressor.main(
-        X_train=X_train, y_train=y_train, X_test=X_test,
-        EPOCHS=30, LR=0.01, NEURONS=[128, 256]
-    )
+    X_train, y_train, X_test = read_from_disk()
+
+    # hist = DNNRegressor.main(
+    #     X_train=X_train, y_train=y_train, X_test=X_test,
+    #     EPOCHS=30, LR=0.01, NEURONS=[128, 256]
+    # )
+
+    do_grid_search = bool(int(input(
+        "Task to perform on DNNClassifier: [0] Generate Prediction, [1] Perform Grid Search >>> "
+    )))
+    if do_grid_search:
+        print("Perform grid search on hyper-parameters.")
+        # Grid Search
+        LOG_DIR = input("Dir to store the hparam tuning log: ")
+        grid_search_util.grid_search(
+            scope=SCOPE,
+            data_feed=lambda: (X_train, y_train, X_test),
+            train_main=DNNRegressor.main,
+            log_dir=LOG_DIR
+        )
+    else:
+        print("Generate prediction on test set...")
+        pred = DNNRegressor.main(
+            lambda: (X_train, y_train, X_test),
+            forecast=True, tuning=False,
+            **PARAMS
+        )
+        # Save predictions.
+        holder = pd.read_csv("../data/sample_submission_status.csv", header=0)
+        submission_name = input("File name to store submission: ")
+        holder["LeadStatus"] = pred
+        holder.to_csv("../submissions/{}".format(submission_name), index=False)
