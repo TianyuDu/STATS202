@@ -64,6 +64,8 @@ def main(
     print("Reading data...")
     X_train, X_dev, y_train, y_dev, X_test = get_data()
     print("X_train@{}, X_dev@{}".format(X_train.shape, X_dev.shape))
+    # Mute keras output when running grid search.
+    verbose = int(not tuning)
 
     num_fea = X_train.shape[1]
     model = build_binary_classifier(num_inputs=num_fea, num_neurons=NEURONS)
