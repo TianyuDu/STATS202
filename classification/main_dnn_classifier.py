@@ -31,15 +31,15 @@ SCOPE = {
 }
 
 # This is a smaller hyper-parameter searching scope for quick debugging.
-SCOPE = {
-    "EPOCHS": 50,
-    "BATCH_SIZE": 1024,
-    "LR": [1e-5*3, 1e-4],
-    "NEURONS": [
-        [32, 64],
-        [16, 32],
-    ],
-}
+# SCOPE = {
+#     "EPOCHS": 50,
+#     "BATCH_SIZE": 1024,
+#     "LR": [1e-5*3, 1e-4],
+#     "NEURONS": [
+#         [32, 64],
+#         [16, 32],
+#     ],
+# }
 
 PARAMS = {
     "EPOCHS": 200,
@@ -49,13 +49,14 @@ PARAMS = {
     "NEURONS": [512, 512, 512, 512],
 }
 
-PARAMS = {
-    "EPOCHS": 10,
-    "PERIOD": 5,
-    "BATCH_SIZE": 4096,
-    "LR": 0.01,
-    "NEURONS": [16, 32]
-}
+# small sample data
+# PARAMS = {
+#     "EPOCHS": 10,
+#     "PERIOD": 5,
+#     "BATCH_SIZE": 4096,
+#     "LR": 0.01,
+#     "NEURONS": [16, 32]
+# }
 
 
 def provide_data(
