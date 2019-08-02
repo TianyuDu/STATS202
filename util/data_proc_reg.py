@@ -121,7 +121,9 @@ def reduce_patient_features(
         y = None
 
     def add_feature(src: pd.DataFrame, target: dict, prefix: str = None) -> None:
-        if prefix is not None:
+        if prefix is None:
+            prefix = ""
+        else:
             prefix += "_"
         for k, v in src.items():
             target[str(prefix) + str(k)] = v
