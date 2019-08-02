@@ -28,6 +28,7 @@ SCOPE = {
     ]
 }
 
+# This is a smaller hyper-parameter searching scope for quick debugging.
 # SCOPE = {
 #     "EPOCHS": 50,
 #     "BATCH_SIZE": 1024,

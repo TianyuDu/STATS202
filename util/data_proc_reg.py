@@ -15,8 +15,10 @@ import numpy as np
 from tqdm import tqdm
 
 sys.path.append("../")
-import util.data_proc
+from util import data_proc
+from util import features
 from CONSTANTS import PANSS
+
 
 def select_patient(
         df_test: pd.DataFrame,
@@ -41,7 +43,7 @@ def select_patient(
     return selected
 
 
-def convert_to_patient(
+def gen_slp_patient(
         df_assessment: pd.DataFrame,
         include_label: bool = True,
         min_visit: int = None,
@@ -66,7 +68,7 @@ def convert_to_patient(
         df_patient:
             A dataframe with rows indexed by Patient ID.
     """
-    if not "PatientID" in df_assessment:
+    if "PatientID" not in df_assessment:
         raise KeyError("df_assessment DataFame must contain a 'PatientID' column.")
     patient_ids = list(set(df_assessment["PatientID"]))
 
@@ -86,7 +88,7 @@ def convert_to_patient(
             # print("Patient dropped.")
             pass
 
-    print("Numer of patients found: {}".format(len(X_lst)))
+    print("Number of patients found: {}".format(len(X_lst)))
     X = pd.concat(X_lst)
     if include_label:
         y = pd.DataFrame({"Final_PANSS_Total": y_lst})
@@ -121,7 +123,9 @@ def reduce_patient_features(
         y = None
 
     def add_feature(src: pd.DataFrame, target: dict, prefix: str = None) -> None:
-        if prefix is not None:
+        if prefix is None:
+            prefix = ""
+        else:
             prefix += "_"
         for k, v in src.items():
             target[str(prefix) + str(k)] = v
@@ -146,3 +150,36 @@ def reduce_patient_features(
     for k, v in reduced.items():
         reduced[k] = [v]
     return pd.DataFrame.from_dict(reduced), y
+
+
+def prepare_data():
+    df_train = data_proc.load_whole(path="../data/")
+    df_test = pd.read_csv("../data/Study_E.csv", header=0)
+    # Reduced countries
+    major_countries = ["USA", "Russia", "Ukraine", "China", "Japan"]
+    df_train = features.reduce_countries(df_train, major_countries)
+    df_test = features.reduce_countries(df_test, major_countries)
+    # Create treatment column
+    df_train["Treatment"] = (df_train.TxGroup == "Treatment").astype(int)
+    df_train.drop(columns=["LeadStatus"], inplace=True)
+    df_test["Treatment"] = (df_test.TxGroup == "Treatment").astype(int)
+    # df_test.drop(columns=["TxGroup"], inplace=True)
+    # Drop unnecessary features
+    df_train.drop(
+        columns=["Study", "SiteID", "RaterID", "VisitDay", "Alert"],
+        inplace=True)
+    # df_test.drop(
+    #     columns=["Study", "SiteID", "RaterID", "VisitDay"],
+    #     inplace=True)
+    df_train = pd.get_dummies(df_train, prefix="Country")
+    # df_train.drop(columns=["Country"], inplace=True)
+    df_test = data_proc.parse_test_set(df_train, df_test)
+    # df_test.drop(columns=["Country"], inplace=True)
+    # Create dummy variables for country
+    f = lambda x: x.drop(
+        columns=["Country_Control", "Country_Treatment"], inplace=True)
+    f(df_train)
+    f(df_test)
+    print("Training set shape: {}".format(df_train.shape))
+    print("Test set shape: {}".format(df_test.shape))
+    return df_train, df_test
