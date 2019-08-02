@@ -31,15 +31,16 @@ def grid_search(
         for (i, profile) in enumerate(profile_set):
             print("**** Profile: [{}/{}] ****".format(i+1, total_profiles))
             print(profile)
-            result = train_main(data_feed, **profile)
-            if not header_written:
-                f.write("RUN,")
-                f.write(",".join(result.keys()))
+            result_lst = train_main(data_feed, **profile)
+            for result in result_lst:
+                if not header_written:
+                    f.write("RUN,")
+                    f.write(",".join(result.keys()))
+                    f.write("\n")
+                    header_written = True
+                f.write(str(i)+",")
+                f.write(",".join(
+                    [str(x).replace(",", ";") for x in result.values()]
+                ))
                 f.write("\n")
-                header_written = True
-            f.write(str(i)+",")
-            f.write(",".join(
-                [str(x).replace(",", ";") for x in result.values()]
-            ))
-            f.write("\n")
     print("Log stored to {}".format(log_dir))

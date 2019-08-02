@@ -1,6 +1,7 @@
 """
 DNN Classifier.
 """
+import sys
 import numpy as np
 import pandas as pd
 from typing import List
@@ -10,7 +11,8 @@ from sklearn import preprocessing
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-import data_proc
+sys.path.append("../")
+from util import data_proc
 
 
 class NN(tf.keras.Model):
@@ -77,13 +79,22 @@ def main(
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         validation_data=(X_dev, y_dev),
-        verbose=0
+        verbose=1
     )
     if forecast:
         return model.predict(X_test)
 
     if tuning:
-        measures = {
+        step = 50  # report step
+        record_lst  = list()
+        for t in range(EPOCHS // step):
+            # Report training histories.
+            record = {"EPOCHS": t * step, "BATCH_SIZE": BATCH_SIZE, "LR": LR, "NEURONS": NEURONS}
+            losses = {d: v[t * step] for d, v in hist.history.items()}
+            record.update(losses)
+            record_lst.append(record)
+        # For the final result.
+        final_record = {
             "EPOCHS": EPOCHS,
             "BATCH_SIZE": BATCH_SIZE,
             "LR": LR,
@@ -91,8 +102,9 @@ def main(
         }
         # Retrive the final loss
         losses = {d: v[-1] for d, v in hist.history.items()}
-        measures.update(losses)
-        return measures
+        final_record.update(losses)
+        record_lst.append(final_record)
+        return record_lst
 
 
 
