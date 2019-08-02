@@ -6,7 +6,6 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 from tpot import TPOTClassifier
-import dask
 
 sys.path.append("../")
 import util.data_proc
@@ -25,7 +24,6 @@ if __name__ == "__main__":
     X_train, y_train, FEATURE, PANSS = util.data_proc.gen_slp_assessment(df_train)
     X_test = util.data_proc.parse_test_set(X_train, df_test)
     print("Design_train: {}, Design_test: {}".format(X_train.shape, X_test.shape))
-
     date = datetime.strftime(
         datetime.now(), "%Y_%m_%d_%H_%M")
 
@@ -42,4 +40,3 @@ if __name__ == "__main__":
     optimizer.fit(X_train.values, y_train.values)
     optimizer.export("tpot_{}.py".format(date))
     print("Pipeline file exported to: tpot_{}.py".format(date))
-
