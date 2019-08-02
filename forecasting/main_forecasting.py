@@ -39,6 +39,14 @@ def read_from_disk():
     return X_train, y_train, X_test
 
 
+def forecasting_write_to_file(forecast: np.ndarray, path: str) -> None:
+    """
+    Writes the forecasting result to local file for submission.
+    """
+    holder = pd.read_csv("../data/sample_submission_PANSS.csv", header=0)
+    assert len(holder) == len(forecast)
+    hodler["PANSS_Total"] 
+
 if __name__ == "__main__":
     df_train, df_test, X_train, y_train, X_test = get_data()
     hist = DNNRegressor.main(

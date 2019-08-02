@@ -55,7 +55,7 @@ def main(
         get_data: callable,
         EPOCHS: int = 10,
         PERIOD: int = 5,
-        BATCH_SIZE: int = 256,
+        BATCH_SIZE: int = 32,
         LR: float = 1e-5,
         NEURONS: list = [128, 128],
         forecast: bool = False,
@@ -95,7 +95,7 @@ def main(
     if tuning:
         step = 50  # report step
         record_lst = list()
-        for t in range(EPOCHS // step):
+        for t in range(1, EPOCHS // step):
             # Report training histories.
             record = {"EPOCHS": t * step, "BATCH_SIZE": BATCH_SIZE, "LR": LR, "NEURONS": NEURONS}
             losses = {d: v[t * step] for d, v in hist.history.items()}
