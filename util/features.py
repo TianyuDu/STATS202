@@ -31,7 +31,7 @@ def reduce_countries(
     Returns:
         reduced: A dataframe similar to df, with countries reduced.
     """
-    if not "Country" in df:
+    if "Country" not in df:
         raise KeyError("df must have 'Country' column.")
     reduced = df.copy()
     for i in range(len(df)):
