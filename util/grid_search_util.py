@@ -31,6 +31,7 @@ def grid_search(
         for (i, profile) in enumerate(profile_set):
             print("**** Profile: [{}/{}] ****".format(i+1, total_profiles))
             print(profile)
+            print("Training model...")
             result_lst = train_main(data_feed, **profile)
             for result in result_lst:
                 if not header_written:
