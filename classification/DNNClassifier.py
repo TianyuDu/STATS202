@@ -50,8 +50,6 @@ def build_binary_classifier(
         units=1, activation="sigmoid", name="output_layer")(x)
     return tf.keras.Model(inputs, outputs)
 
-model = build_binary_classifier(30, num_neurons=[int(2**x) for x in (6, 7, 8)])
-
 
 def main(
         get_data: callable,
@@ -66,6 +64,8 @@ def main(
     print("Reading data...")
     X_train, X_dev, y_train, y_dev, X_test = get_data()
     print("X_train@{}, X_dev@{}".format(X_train.shape, X_dev.shape))
+    # Mute keras output when running grid search.
+    verbose = int(not tuning)
 
     num_fea = X_train.shape[1]
     model = build_binary_classifier(num_inputs=num_fea, num_neurons=NEURONS)
@@ -79,7 +79,7 @@ def main(
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         validation_data=(X_dev, y_dev),
-        verbose=0
+        verbose=verbose
     )
     if forecast:
         return model.predict(X_test)
