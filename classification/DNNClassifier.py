@@ -74,13 +74,21 @@ def main(
         loss="binary_crossentropy",
         metrics=["accuracy", "AUC"]
     )
-    hist = model.fit(
-        X_train, y_train,
-        batch_size=BATCH_SIZE,
-        epochs=EPOCHS,
-        validation_data=(X_dev, y_dev),
-        verbose=verbose
-    )
+    if forecast:
+        hist = model.fit(
+            X_train, y_train,
+            batch_size=BATCH_SIZE,
+            epochs=EPOCHS,
+            verbose=verbose
+        )
+    else:
+        hist = model.fit(
+            X_train, y_train,
+            batch_size=BATCH_SIZE,
+            epochs=EPOCHS,
+            validation_data=(X_dev, y_dev),
+            verbose=verbose
+        )
     if forecast:
         return model.predict(X_test)
 

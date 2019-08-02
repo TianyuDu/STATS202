@@ -15,6 +15,7 @@ import util.features
 
 import classification.DNNClassifier
 
+
 def plot():
     fig1 = sns.catplot(x="Country", kind="count", data=df_train)
     fig1.set_xticklabels(rotation=30)

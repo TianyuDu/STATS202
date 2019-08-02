@@ -13,7 +13,7 @@ from util import data_proc
 from util import features
 from util import grid_search_util
 
-import DNNClassifier
+from classification import DNNClassifier
 
 SCOPE = {
     "EPOCHS": 600,
@@ -102,11 +102,29 @@ if __name__ == "__main__":
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
 
-    # Grid Search
-    LOG_DIR = input("Dir to store the hparam tuning log: ")
-    grid_search_util.grid_search(
-        scope=SCOPE,
-        data_feed=lambda: provide_data(X_train, y_train, X_test),
-        train_main=DNNClassifier.main,
-        log_dir=LOG_DIR
-    )
+    do_grid_search = bool(int(input(
+        "Task to perform on DNNClassifier: [0] Generate Prediction, [1] Perform Grid Search >>> "
+    )))
+    if do_grid_search:
+        print("Perform grid search on hyper-parameters.")
+        # Grid Search
+        LOG_DIR = input("Dir to store the hparam tuning log: ")
+        grid_search_util.grid_search(
+            scope=SCOPE,
+            data_feed=lambda: provide_data(
+                X_train, y_train, X_test, dev_ratio=0.2),
+            train_main=DNNClassifier.main,
+            log_dir=LOG_DIR
+        )
+    else:
+        print("Generate prediction on test set...")
+        pred = DNNClassifier.main(
+            lambda: provide_data(X_train, y_train, X_test, dev_ratio=0.0),
+            forecast=True, tuning=False,
+            **PARAMS
+        )
+        # Save predictions.
+        holder = pd.read_csv("../data/sample_submission_status.csv", header=0)
+        submission_name = input("File name to store submission: ")
+        holder["LeadStatus"] = pred
+        holder.to_csv("../submissions/{}".format(submission_name), index=False)
