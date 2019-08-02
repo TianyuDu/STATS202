@@ -58,18 +58,18 @@ if __name__ == "__main__":
     print("Design_train: {}, Design_test: {}".format(X_train.shape, X_test.shape))
 
     # Feature engerineering
-    poly_degree = 1
+    poly_degree = 2
     X_train, CROSS = util.features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = util.features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
     print("Design_train: {}, Design_test: {}".format(X_train.shape, X_test.shape))
     pred = classification.DNNClassifier.main(
         lambda: provide_data(X_train, y_train, X_test),
-        EPOCHS=100, PERIOD=5, BATCH_SIZE=256,
-        LR=1e-5, NEURONS=[256, 512],
+        EPOCHS=200, PERIOD=5, BATCH_SIZE=1024,
+        LR=0.001, NEURONS=[512, 512, 512, 512],
         forecast=True, tuning=False)
     # Make predictions.
-    holder = pd.read_csv("./data/sample_submission_status.csv", header=0)
+    holder = pd.read_csv("../data/sample_submission_status.csv", header=0)
     sub_name = input("File name to store submission: ")
     holder["LeadStatus"] = pred
-    holder.to_csv("./submissions/{}.csv".format(sub_name), index=False)
+    holder.to_csv("../submissions/{}.csv".format(sub_name), index=False)
