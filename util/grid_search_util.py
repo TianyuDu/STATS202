@@ -33,7 +33,9 @@ def grid_search(
             print(profile)
             print("Training model...")
             result_lst = train_main(data_feed, **profile)
+            print("Done, training results: ")
             for result in result_lst:
+                print(result)
                 if not header_written:
                     f.write("RUN,")
                     f.write(",".join(result.keys()))
