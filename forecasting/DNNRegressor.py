@@ -39,18 +39,20 @@ def main(
         NEURONS: list = [128, 128],
         forecast: bool = False,
         tuning: bool = True,
+        verbose: bool = None,
 ) -> Union[dict, np.ndarray]:
     X_train, y_train, X_test = get_data()
     model = build_regressor(
         num_inputs=X_train.shape[1],
         num_neurons=NEURONS
     )
-    if tuning:
-        val_ratio = 0.2
-        verbose = 1
-    else:
-        val_ratio = 0.0
-        verbose = 1
+    if verbose is None:
+        if tuning:
+            val_ratio = 0.2
+            verbose = 0
+        else:
+            val_ratio = 0.0
+            verbose = 1
     model.compile(
         optimizer=tf.keras.optimizers.Adam(LR),
         loss="mean_squared_error",
