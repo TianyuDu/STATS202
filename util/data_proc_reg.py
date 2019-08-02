@@ -86,7 +86,7 @@ def convert_to_patient(
             # print("Patient dropped.")
             pass
 
-    print("Numer of patients found: {}".format(len(X_lst)))
+    print("Number of patients found: {}".format(len(X_lst)))
     X = pd.concat(X_lst)
     if include_label:
         y = pd.DataFrame({"Final_PANSS_Total": y_lst})
