@@ -27,14 +27,14 @@ SCOPE = {
     ],
 }
 
-SCOPE = {
-    "EPOCHS": 10,
-    "BATCH_SIZE": 32,
-    "LR": [0.03, 0.01],
-    "NEURONS": [
-        [64, 128],
-    ],
-}
+# SCOPE = {
+#     "EPOCHS": 10,
+#     "BATCH_SIZE": 32,
+#     "LR": [0.03, 0.01],
+#     "NEURONS": [
+#         [64, 128],
+#     ],
+# }
 
 PARAMS = dict()
 
