@@ -50,8 +50,6 @@ def build_binary_classifier(
         units=1, activation="sigmoid", name="output_layer")(x)
     return tf.keras.Model(inputs, outputs)
 
-model = build_binary_classifier(30, num_neurons=[int(2**x) for x in (6, 7, 8)])
-
 
 def main(
         get_data: callable,
