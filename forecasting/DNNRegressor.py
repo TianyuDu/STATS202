@@ -2,7 +2,10 @@
 DNNRegressor for the forecasting task.
 Aug. 1, 2019
 """
+import numpy as np
+import pandas as pd
 import tensorflow as tf
+from typing import Union, List
 
 
 def build_regressor(
@@ -28,9 +31,7 @@ def build_regressor(
 
 
 def main(
-        X_train: pd.DataFrame, 
-        y_train: pd.DataFrame, 
-        X_test: pd.DataFrame,
+        get_data: callable,
         EPOCHS: int = 10,
         PERIOD: int = 5,
         BATCH_SIZE: int = 32,
@@ -39,6 +40,7 @@ def main(
         forecast: bool = False,
         tuning: bool = True,
 ) -> Union[dict, np.ndarray]:
+    X_train, y_train, X_test = get_data()
     model = build_regressor(
         num_inputs=X_train.shape[1],
         num_neurons=NEURONS
