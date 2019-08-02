@@ -44,7 +44,8 @@ SCOPE = {
 
 def provide_data(
         X_train, y_train, X_test,
-        to_dir: str = None
+        to_dir: str = None,
+        dev_ratio: float = 0.2,
 ):
     """
     NOTE: test set will never be shuffled.
@@ -53,7 +54,7 @@ def provide_data(
         
     """
     X, X_dev, y, y_dev = model_selection.train_test_split(
-        X_train, y_train, test_size=0.2, random_state=None, shuffle=True)
+        X_train, y_train, test_size=dev_ratio, random_state=None, shuffle=True)
 
     # Convert to np.float32, and extract features.
     X, X_dev, y, y_dev, X_test = map(
