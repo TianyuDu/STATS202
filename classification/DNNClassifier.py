@@ -44,7 +44,7 @@ def build_binary_classifier(
     x = tf.keras.layers.Dropout(0.2)(inputs)
     for i, neuron in enumerate(num_neurons):
         x = tf.keras.layers.Dense(
-            units=neuron, activation="relu", name=f"dense_layer_{i}")(x)
+            units=neuron, activation="relu", name="dense_layer_"+str(i))(x)
         x = tf.keras.layers.Dropout(internal_dropout)(x)
     outputs = tf.keras.layers.Dense(
         units=1, activation="sigmoid", name="output_layer")(x)
@@ -65,7 +65,7 @@ def main(
 ) -> None:
     print("Reading data...")
     X_train, X_dev, y_train, y_dev, X_test = get_data()
-    print(f"X_train@{X_train.shape}, X_dev@{X_dev.shape}")
+    print("X_train@{}, X_dev@{}".format(X_train.shape, X_dev.shape))
 
     num_fea = X_train.shape[1]
     model = build_binary_classifier(num_inputs=num_fea, num_neurons=NEURONS)
@@ -144,7 +144,7 @@ def _main(
 
     print("Reading data...")
     X_train, X_dev, y_train, y_dev, X_test = get_data()
-    print(f"X_train@{X_train.shape}, X_dev@{X_dev.shape}")
+    print("X_train@{}, X_dev@{}".format(X_train.shape, X_dev.shape))
     train_ds = tf.data.Dataset.from_tensor_slices(
         (X_train, y_train)).shuffle(int(1e6)).batch(BATCH_SIZE)
 
@@ -200,8 +200,8 @@ def _main(
     auc_train = metrics.roc_auc_score(y_true=y_train, y_score=pred_train)
     auc_dev = metrics.roc_auc_score(y_true=y_dev, y_score=pred_dev)
 
-    print(f"AUC on Training Set: {auc_train: 0.6f}")
-    print(f"AUC on Developing Set: {auc_dev: 0.6f}")
+    print("AUC on Training Set: {: 0.6f}".format(auc_train))
+    print("AUC on Developing Set: {: 0.6f}".format(auc_dev))
 
     if forecast:
         pred = model(X_test)
@@ -225,5 +225,5 @@ def _main(
     plt.xlabel("Epochs")
     plt.ylabel("Log Cross Entropy Loss")
     plt.legend(["Training", "Validation"])
-    plt.title(f"LR={LR}, AUC_train={auc_train:0.3f}, AUC_dev={auc_dev:0.3f}")
+    plt.title("LR={}, AUC_train={:0.3f}, AUC_dev={:0.3f}".format(LR, auc_train, auc_dev))
     plt.show()
