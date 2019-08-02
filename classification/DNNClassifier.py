@@ -79,7 +79,7 @@ def main(
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         validation_data=(X_dev, y_dev),
-        verbose=0
+        verbose=verbose
     )
     if forecast:
         return model.predict(X_test)
