@@ -70,10 +70,10 @@ def polynomial_standardized(
     df_perserved = df_extend[perserved_features]
     df_extend.drop(columns=perserved_features, inplace=True)
 
-    print("Generating Polynomial Features...")
-    poly = preprocessing.PolynomialFeatures(degree=poly_degree)
-    X_poly = poly.fit_transform(df_extend)  # this is a numpy array.
-    CROSS = ["Cross_" + str(i) for i in range(X_poly.shape[1])]
+        print("Generating Polynomial Features...")
+        poly = preprocessing.PolynomialFeatures(degree=poly_degree)
+        X_poly = poly.fit_transform(df_extend)  # this is a numpy array.
+        CROSS = ["Cross_" + str(i) for i in range(X_poly.shape[1])]
 
     print("Standardizing Data...")
     scaler0 = preprocessing.StandardScaler()
