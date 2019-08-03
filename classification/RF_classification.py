@@ -68,7 +68,8 @@ if __name__ == "__main__":
     # warnings.filterwarnings("ignore")
     parser = argparse.ArgumentParser(description="RF for classification.")
     parser.add_argument(
-        "-t", "--task", type=str, help="The task to perform.")
+        "-t", "--task", type=str,
+        help="The task to perform: options: \n\t'classify': run new model for classification. 'grid': grid search for hparams.")
     parser.add_argument(
         "--logdir", default=None, type=str,
         help="The directory to store submission file.")
