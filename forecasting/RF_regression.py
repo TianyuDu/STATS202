@@ -19,7 +19,7 @@ sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
 
-def classify(path: Union[str, None] = None) -> None:
+def regress(path: Union[str, None] = None) -> None:
     """
     Generates the classification result for the given dataset.
     If a path of destination is given, this methods will write
@@ -29,8 +29,8 @@ def classify(path: Union[str, None] = None) -> None:
     X_train, y_train, X_test = utils.read_from_disk()
     # **** Modify model here ****
     PARAMS = {
-        "n_estimators": 500,
-        "max_depth": 100,
+        "n_estimators": 100,
+        "max_depth": 3,
         "criterion": "mse",
     }
     model = RandomForestRegressor(
@@ -55,7 +55,7 @@ def classify(path: Union[str, None] = None) -> None:
     ))
     print("Phase 2: fitting model on the entire training set ...")
     # Re-fit using the entire traininig set.
-    X_train, y_train, X_test = utils.get_data()
+    X_train, y_train, X_test = utils.read_from_disk()
     model.fit(X_train.values, y_train.values)
     print("Predicting on the test set ...")
     pred_test = model.predict(X_test)
@@ -66,7 +66,7 @@ def classify(path: Union[str, None] = None) -> None:
 
 
 def grid_search(path: Union[str, None] = None) -> None:
-    X_train, y_train, X_test = utils.get_data()
+    X_train, y_train, X_test = utils.read_from_disk()
     X_train, X_dev, y_train, y_dev = train_test_split(
         X_train, y_train, test_size=0.3, random_state=0)
 
@@ -119,17 +119,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RF for regression.")
     parser.add_argument(
         "-t", "--task", type=str, default=None,
-        help="The task to perform: options: 'classify': run new model for regression.\
+        help="The task to perform: options: 'regress': run new model for regression.\
             'grid': grid search for hparams.")
     parser.add_argument(
         "--logdir", default=None, type=str,
         help="The directory to store submission file.")
     args = parser.parse_args()
-    if args.task == "classify":
+    if args.task == "regress":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
-        classify(path=args.logdir)
+        regress(path=args.logdir)
     elif args.task == "grid":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
