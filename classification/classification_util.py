@@ -5,6 +5,7 @@ to generate forecastings.
 """
 import numpy as np
 import pandas as pd
+from typing import Tuple
 import sys
 
 sys.path.append("../")
