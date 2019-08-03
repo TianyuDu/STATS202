@@ -75,18 +75,21 @@ def polynomial_standardized(
         poly = preprocessing.PolynomialFeatures(degree=poly_degree)
         X_poly = poly.fit_transform(df_extend)  # this is a numpy array.
         CROSS = ["Cross_" + str(i) for i in range(X_poly.shape[1])]
+        print("Standardizing Data...")
+        scaler0 = preprocessing.StandardScaler()
+        df_extend = pd.DataFrame(
+            scaler0.fit_transform(df_extend.values),
+            columns=df_extend.columns)
+        scaler1 = preprocessing.StandardScaler()
+        X_poly = scaler1.fit_transform(X_poly)
+        df_poly = pd.DataFrame(X_poly, columns=CROSS)
+        df_extend = pd.concat([df_perserved, df_extend, df_poly], axis=1)
+        return df_extend, CROSS
     else:
         print("Polynomial degree is set to 1, no polynomial feature generated.")
-        X_poly = df_extend
-        CROSS = []
-
-    print("Standardizing Data...")
-    scaler0 = preprocessing.StandardScaler()
-    df_extend = pd.DataFrame(
-        scaler0.fit_transform(df_extend.values),
-        columns=df_extend.columns)
-    scaler1 = preprocessing.StandardScaler()
-    X_poly = scaler1.fit_transform(X_poly)
-    df_poly = pd.DataFrame(X_poly, columns=CROSS)
-    df_extend = pd.concat([df_perserved, df_extend, df_poly], axis=1)
-    return df_extend, CROSS
+        scaler0 = preprocessing.StandardScaler()
+        df_extend = pd.DataFrame(
+            scaler0.fit_transform(df_extend.values),
+            columns=df_extend.columns)
+        df_extend = pd.concat([df_perserved, df_extend], axis=1)
+        return df_extend, []
