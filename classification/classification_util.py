@@ -47,11 +47,13 @@ def get_data() -> Tuple[pd.DataFrame]:
     return X_train, y_train, X_test
 
 
-def classification_write_to_file(pred: np.ndarray, path: str) -> None:
+def generate_submission(pred: np.ndarray, path: str) -> None:
     """
     Writes the classification result to local file for submission.
     """
+    # Read the sample submission for assessmentIDs in the test set.
     holder = pd.read_csv("../data/sample_submission_status.csv", header=0)
-    assert len(holder) == len(pred)
+    assert len(holder) == len(pred),\
+        "The numbers of predictions and assessments in the sample submission should be equal."
     holder["LeadStatus"] = pred
     holder.to_csv(path, index=False)
