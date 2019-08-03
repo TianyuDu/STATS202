@@ -70,16 +70,17 @@ def classify(path: Union[str, None] = None) -> None:
 def grid_search(path: Union[str, None] = None) -> None:
     X_train, y_train, X_test = utils.get_data()
     X_train, X_dev, y_train, y_dev = train_test_split(
-        X, y, test_size=0.3, random_state=0)
+        X_train, y_train, test_size=0.3, random_state=0)
 
+    # **** add configuration here ****
     param_scope = {
         "max_depth": [None, 20, 30, 50, 100, 200, 300, 500],
         "n_estimators": [100 * x for x in range(1, 20, 2)],
         "criterion": ["entropy", "gini"],
     }
 
-    # Chooose score here.
     score = "neg_log_loss"
+    # **** end ****
 
     print("# Tuning hyper-parameters for {}\n".format(score))
 
@@ -96,9 +97,9 @@ def grid_search(path: Union[str, None] = None) -> None:
 
     print("Best parameters set found on development set:\n")
     print(model.best_params_)
-    now = datetime.strftime(datetime.now(), "%Y_%m_%d_%H_%M")
-    with open("./RF_grid_search_{}.txt".format(now), "w") as f:
-        f.write(str(model.best_params_))
+    if path is not None:
+        with open(path, "w") as f:
+            f.write(str(model.best_params_))
 
     print("Grid scores on development set:\n")
     means = model.cv_results_["mean_test_score"]
@@ -128,4 +129,9 @@ if __name__ == "__main__":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
+        classify(path=args.logdir)
+    elif args.task == "grid":
+        print("Execute task: {}".format(args.task))
+        if args.logdir is None:
+            print("No log directory is provided, best model chosen will only be printed.")
         classify(path=args.logdir)
