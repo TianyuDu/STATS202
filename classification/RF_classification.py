@@ -17,7 +17,7 @@ from sklearn import metrics
 from sklearn.metrics import log_loss
 
 sys.path.append("../")
-import classification.classification_util as utils
+import classification.classification_utility as utils
 
 
 def classify(path: Union[str, None] = None) -> None:
