@@ -41,7 +41,8 @@ def get_data() -> Tuple[pd.DataFrame]:
     # Feature Engerineering
     # Use polynomial degree 1 means no polynomial's generated.
     poly_degree = 1
-    X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
+    X_train, CROSS = features.polynomial_standardized(
+        X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
     return X_train, y_train, X_test
