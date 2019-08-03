@@ -36,7 +36,6 @@ def get_data() -> Tuple[pd.DataFrame]:
     df_test = features.reduce_countries(df_test, major_countries)
     X_train, y_train, FEATURE, PANSS = data_proc.gen_slp_assessment(df_train)
     X_test = data_proc.parse_test_set(X_train, df_test)
-    print("X_train: {}, X_test: {}".format(X_train.shape, X_test.shape))
 
     # Feature Engerineering
     # Use polynomial degree 1 means no polynomial's generated.
@@ -45,6 +44,9 @@ def get_data() -> Tuple[pd.DataFrame]:
         X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
     FEATURE += CROSS
+    f = lambda x: x.drop(columns=["AssessmentiD", "PatientID"])
+    X_train, X_test = f(X_train), f(X_test)
+    print("X_train: {}, X_test: {}".format(X_train.shape, X_test.shape))
     return X_train, y_train, X_test
 
 
