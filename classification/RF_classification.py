@@ -74,8 +74,8 @@ def grid_search(path: Union[str, None] = None) -> None:
 
     # **** add configuration here ****
     param_scope = {
-        "max_depth": [None, 20, 30, 50, 100, 200, 300, 500],
-        "n_estimators": [100 * x for x in range(1, 20, 2)],
+        "max_depth": [None, 20, 30, 50, 100, 200, 300, 500, 1000, 2000],
+        "n_estimators": [100 * x for x in range(1, 40, 2)],
         "criterion": ["entropy", "gini"],
     }
 
