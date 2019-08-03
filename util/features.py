@@ -78,6 +78,7 @@ def polynomial_standardized(
     else:
         print("Polynomial degree is set to 1, no polynomial feature generated.")
         X_poly = df_extend
+        CROSS = []
 
     print("Standardizing Data...")
     scaler0 = preprocessing.StandardScaler()
