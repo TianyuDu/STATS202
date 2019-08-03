@@ -10,12 +10,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import log_loss
 
-from classification.classification_util import get_data
-from classification.classification_util import classification_write_to_file
+import classification.classification_util as utils
 
 
 def main():
-    X_train, y_train, X_test = get_data()
+    X_train, y_train, X_test = utils.get_data()
     model = RandomForestClassifier(
         n_estimators=500,
         max_depth=100,
