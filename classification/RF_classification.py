@@ -115,7 +115,7 @@ def grid_search(path: Union[str, None] = None) -> None:
 
 
 if __name__ == "__main__":
-    # warnings.filterwarnings("ignore")
+    warnings.filterwarnings("ignore")
     parser = argparse.ArgumentParser(description="RF for classification.")
     parser.add_argument(
         "-t", "--task", type=str, default=None,
