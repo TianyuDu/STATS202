@@ -12,9 +12,18 @@ from util import data_proc
 from util import features
 
 
-def get_data():
+def get_data() -> Tuple[pd.DataFrame]:
     """
-    
+    Prepares and provides the data to the classification task.
+
+    Returns:
+        X_train, y_train:
+            Feature and label data frames for training the model.
+            One should split dev set from this training set.
+
+        X_test:
+            The test set from study E, this is the feature for
+            the test dataset on kaggle competition.
     """
     df_train = data_proc.load_whole(path="../data/")
     print(df_train.shape)
