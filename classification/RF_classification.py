@@ -118,7 +118,7 @@ if __name__ == "__main__":
     # warnings.filterwarnings("ignore")
     parser = argparse.ArgumentParser(description="RF for classification.")
     parser.add_argument(
-        "-t", "--task", type=str,
+        "-t", "--task", type=str, default=None,
         help="The task to perform: options: 'classify': run new model for classification.\
             'grid': grid search for hparams.")
     parser.add_argument(
@@ -135,3 +135,5 @@ if __name__ == "__main__":
         if args.logdir is None:
             print("No log directory is provided, best model chosen will only be printed.")
         classify(path=args.logdir)
+    else:
+        raise SyntaxError("{} task provided is unavaiable.".format(args.task))
