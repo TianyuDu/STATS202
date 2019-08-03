@@ -17,8 +17,8 @@ from main_classification import classification_write_to_file
 def main():
     X_train, y_train, X_test = get_data()
     model = RandomForestClassifier(
-        n_estimators=1000,
-        max_depth=30,
+        n_estimators=500,
+        max_depth=100,
         random_state=0,
         criterion="gini",
         n_jobs=-1,
@@ -31,14 +31,16 @@ def main():
     model.fit(X_train.values, y_train.values)
     pred_dev = model.predict_proba(X_dev)
     # Estimate loss on dev set:
-    print(log_loss(y_true=y_dev, y_pred=pred_dev[:, 1]))
+    print("Log loss: {}".format(log_loss(y_true=y_dev, y_pred=pred_dev[:, 1])))
     # Re-fit using the entire traininig set.
     X_train, y_train, X_test = get_data()
     model.fit(X_train.values, y_train.values)
     pred_test = model.predict_proba(X_test)
     # Write to file.
-    path = input("Path to write predcition: ")
-    classification_write_to_file(pred_test[:, 1], path)
+    gen_sub = bool(int(input("Generate submission file? >>> ")))
+    if gen_sub:
+        path = input("Path to write predcition: ")
+        classification_write_to_file(pred_test[:, 1], path)
 
 
 
