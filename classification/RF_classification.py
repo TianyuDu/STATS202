@@ -10,8 +10,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import log_loss
 
-from main_classification import get_data
-from main_classification import classification_write_to_file
+from classification.classification_util import get_data
+from classification.classification_util import classification_write_to_file
 
 
 def main():
@@ -41,7 +41,6 @@ def main():
     if gen_sub:
         path = input("Path to write predcition: ")
         classification_write_to_file(pred_test[:, 1], path)
-
 
 
 if __name__ == "__main__":

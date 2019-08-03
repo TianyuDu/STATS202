@@ -1,15 +1,21 @@
 """
-Some helpful functions for classification problems.
+Main scripts for the classification task.
+Including data loading utilities and methods
+to generate forecastings.
 """
 import numpy as np
 import pandas as pd
 import sys
+
 sys.path.append("../")
 from util import data_proc
 from util import features
 
 
 def get_data():
+    """
+    
+    """
     df_train = data_proc.load_whole(path="../data/")
     print(df_train.shape)
     df_test = pd.read_csv("../data/Study_E.csv", header=0)
@@ -23,6 +29,7 @@ def get_data():
     print("X_train: {}, X_test: {}".format(X_train.shape, X_test.shape))
 
     # Feature Engerineering
+    # Use polynomial degree 1 means no polynomial's generated.
     poly_degree = 1
     X_train, CROSS = features.polynomial_standardized(X_train, PANSS, poly_degree)
     X_test, _ = features.polynomial_standardized(X_test, PANSS, poly_degree)
