@@ -134,6 +134,6 @@ if __name__ == "__main__":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, best model chosen will only be printed.")
-        classify(path=args.logdir)
+        grid_search(path=args.logdir)
     else:
         raise SyntaxError("{} task provided is unavaiable.".format(args.task))
