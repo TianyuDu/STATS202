@@ -18,13 +18,13 @@ def main(X: pd. DataFrame, y: pd.DataFrame) -> None:
         X, y, test_size=0.3, random_state=0)
 
     param_scope = {
-        "max_depth": [None, 20, 30, 50, 100],
+        "max_depth": [None, 20, 30, 50, 100, 200, 300, 500],
         "n_estimators": [100 * x for x in range(1, 20, 2)],
         "criterion": ["entropy", "gini"],
     }
 
     # Chooose score here.
-    score = "f1"
+    score = "neg_log_loss"
 
     print("# Tuning hyper-parameters for {}\n".format(score))
 
