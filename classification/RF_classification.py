@@ -2,16 +2,18 @@
 The main file for random forest
 """
 import warnings
+from typing import Union
+import sys
+import argparse
 
 import numpy as np
 import pandas as pd
-
-from typing import Union
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import log_loss
 
+sys.path.append("../")
 import classification.classification_util as utils
 
 
@@ -63,5 +65,16 @@ def classify(path: Union[str, None] = None) -> None:
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
-    classify()
+    # warnings.filterwarnings("ignore")
+    parser = argparse.ArgumentParser(description="RF for classification.")
+    parser.add_argument(
+        "-t", "--task", type=str, help="The task to perform.")
+    parser.add_argument(
+        "--logdir", default=None, type=str,
+        help="The directory to store submission file.")
+    args = parser.parse_args()
+    if args.task == "classify":
+        print("Execute task: {}".format(args.task))
+        if args.logdir is None:
+            print("No log directory is provided, no submission file will be generated.")
+        classify(path=args.logdir)
