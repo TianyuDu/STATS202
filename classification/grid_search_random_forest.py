@@ -18,8 +18,8 @@ def main(X: pd. DataFrame, y: pd.DataFrame) -> None:
         X, y, test_size=0.3, random_state=0)
 
     param_scope = {
-        "max_depth": [None],
-        "n_estimators": [100, 300],
+        "max_depth": [None, 20, 30, 50, 100],
+        "n_estimators": [100 * x for x in range(1, 20, 2)],
         "criterion": ["entropy", "gini"],
     }
 
