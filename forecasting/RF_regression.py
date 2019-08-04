@@ -77,13 +77,14 @@ def grid_search(path: Union[str, None] = None) -> None:
     X_test = X_test.values
 
     X_train, X_dev, y_train, y_dev = train_test_split(
-        X_train, y_train, test_size=0.3, random_state=0)
+        X_train, y_train, test_size=0.1, random_state=0)
 
     # **** add configuration here ****
     param_scope = {
-        "max_depth": [None, 20, 30, 50, 100, 200, 300, 500, 1000, 2000],
+        "max_depth": [None] + [2 ** x for x in range(5, 14)],
         "n_estimators": [100 * x for x in range(1, 40, 2)],
         "criterion": ["mse"],
+        "max_features": ["auto", "sqrt", "log2"]
     }
 
     score = "neg_mean_squared_error"
@@ -94,11 +95,11 @@ def grid_search(path: Union[str, None] = None) -> None:
     model = GridSearchCV(
         RandomForestRegressor(),
         param_scope,
-        cv=5,
+        cv=10,
         scoring=score,
         error_score=np.nan,
         n_jobs=-1,
-        verbose=1
+        verbose=1,
     )
     model.fit(X_train, y_train)
 
