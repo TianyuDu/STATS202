@@ -144,7 +144,9 @@ def reduce_patient_features(
     add_feature(info[PANSS].mean(), reduced, "mean")
     # *** Create Std Measures ***
     add_feature(info[PANSS].std(), reduced, "std")
-
+    # *** Max and Min ***
+    add_feature(info[PANSS].min(), reduced, "min")
+    add_feature(info[PANSS].max(), reduced, "max")
     # Convert values to lists of values so that reduced
     # is compaticable with DataFrame.
     for k, v in reduced.items():
