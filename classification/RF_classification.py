@@ -65,6 +65,10 @@ def classify(path: Union[str, None] = None) -> None:
     if path is not None:
         print("Write submission file to {}".format(path))
         utils.generate_submission(pred_test[:, 1], path)
+    # Save CV result to local file
+    if path is not None:
+        pd.DataFrame(model.cv_results_).to_csv(
+            path[:-3] + "csv", index=False)
 
 
 def grid_search(path: Union[str, None] = None) -> None:
