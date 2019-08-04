@@ -86,12 +86,12 @@ def grid_search(path: Union[str, None] = None) -> None:
         "criterion": ["mse"],
         "max_features": ["auto", "sqrt", "log2"]
     }
-    param_scope = {
-        "max_depth": [None],
-        "n_estimators": [10, 20],
-        "criterion": ["mse"],
-        "max_features": ["auto", "sqrt"]
-    }
+    # param_scope = {
+    #     "max_depth": [None],
+    #     "n_estimators": [10, 20],
+    #     "criterion": ["mse"],
+    #     "max_features": ["auto", "sqrt"]
+    # }
 
     score = "neg_mean_squared_error"
     # **** end ****

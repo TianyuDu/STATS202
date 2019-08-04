@@ -5,6 +5,7 @@ import sys
 sys.path.append("../")
 from CONSTANTS import PANSS
 
+
 def load_individual_dataset(path: str) -> pd.DataFrame:
     df = pd.read_csv(path, header=0)
     return df
