@@ -50,7 +50,7 @@ def regress(path: Union[str, None] = None) -> None:
         X_train, y_train, test_size=0.5, random_state=42
     )
     print("Phase 1: fitting model on selected subset of training set...")
-    model.fit(X_train.values, y_train.values)
+    model.fit(X_train, y_train)
     print("Estimating the test loss using a dev set...")
     pred_dev = model.predict(X_dev)
     # Estimate loss on dev set:
@@ -60,7 +60,7 @@ def regress(path: Union[str, None] = None) -> None:
     print("Phase 2: fitting model on the entire training set ...")
     # Re-fit using the entire traininig set.
     X_train, y_train, X_test = utils.read_from_disk()
-    model.fit(X_train.values, y_train.values)
+    model.fit(X_train, y_train)
     print("Predicting on the test set ...")
     pred_test = model.predict(X_test)
     # Write to file.
