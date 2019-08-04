@@ -86,6 +86,12 @@ def grid_search(path: Union[str, None] = None) -> None:
         "criterion": ["mse"],
         "max_features": ["auto", "sqrt", "log2"]
     }
+    param_scope = {
+        "max_depth": [None],
+        "n_estimators": [10, 20],
+        "criterion": ["mse"],
+        "max_features": ["auto", "sqrt"]
+    }
 
     score = "neg_mean_squared_error"
     # **** end ****
@@ -95,7 +101,7 @@ def grid_search(path: Union[str, None] = None) -> None:
     model = GridSearchCV(
         RandomForestRegressor(),
         param_scope,
-        cv=10,
+        cv=2,
         scoring=score,
         error_score=np.nan,
         n_jobs=-1,
@@ -112,6 +118,10 @@ def grid_search(path: Union[str, None] = None) -> None:
     print("Grid scores on development set:\n")
     means = model.cv_results_["mean_test_score"]
     stds = model.cv_results_["std_test_score"]
+    # Save CV result to local file
+    if path is not None:
+        pd.DataFrame(model.cv_results_).to_csv(
+            path[:-3] + "csv", index=False)
     for mean, std, params in zip(means, stds, model.cv_results_["params"]):
         print("%0.3f (+/-%0.03f) for %r"
               % (mean, std * 2, params))
