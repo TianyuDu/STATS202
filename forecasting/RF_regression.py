@@ -33,8 +33,8 @@ def regress(path: Union[str, None] = None) -> None:
     X_test = X_test.values
     # **** Modify model here ****
     PARAMS = {
-        "n_estimators": 100,
-        "max_depth": 3,
+        "n_estimators": 1700,
+        "max_depth": 200,
         "criterion": "mse",
     }
     model = RandomForestRegressor(
