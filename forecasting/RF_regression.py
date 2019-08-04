@@ -101,7 +101,7 @@ def grid_search(path: Union[str, None] = None) -> None:
     model = GridSearchCV(
         RandomForestRegressor(),
         param_scope,
-        cv=2,
+        cv=5,
         scoring=score,
         error_score=np.nan,
         n_jobs=-1,
