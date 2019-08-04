@@ -27,7 +27,10 @@ def regress(path: Union[str, None] = None) -> None:
     """
     # Reading the training data.
     X_train, y_train, X_test = utils.read_from_disk()
-    y_train = y_train.reshape(-1,)
+    # **** Extract ndarray ****
+    X_train = X_train.values
+    y_train = y_train.values.reshape(-1,)
+    X_test = X_test.values
     # **** Modify model here ****
     PARAMS = {
         "n_estimators": 100,
@@ -68,7 +71,11 @@ def regress(path: Union[str, None] = None) -> None:
 
 def grid_search(path: Union[str, None] = None) -> None:
     X_train, y_train, X_test = utils.read_from_disk()
-    y_train = y_train.reshape(-1,)
+    # **** Extract ndarray ****
+    X_train = X_train.values
+    y_train = y_train.values.reshape(-1,)
+    X_test = X_test.values
+
     X_train, X_dev, y_train, y_dev = train_test_split(
         X_train, y_train, test_size=0.3, random_state=0)
 
