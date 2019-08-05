@@ -36,8 +36,8 @@ PARAMS = {'criterion': 'friedman_mse', 'learning_rate': 0.01,
 # Scope for rbf.
 PARAM_SCOPE = {
     "kernel": ["rbf"],
-    "gamma": ["auto", 0.01, 0.03, 0.1, 0.3, 1.0],
-    "C": [2 ** x for x in range(1, 6)],
+    "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
+    "C": [2 ** x for x in range(1, 10)],
 }
 
 SCORE = "neg_mean_squared_error"
