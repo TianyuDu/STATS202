@@ -21,18 +21,7 @@ import classification.classification_utility as utils
 
 
 # **** Modify model here ****
-PARAMS = {
-    "n_estimators": 500,
-    "max_depth": 100,
-    "criterion": "gini",
-}
-PARAMS = {
-    'criterion': 'friedman_mse',
-    'learning_rate': 0.01,
-    'max_depth': 9,
-    'max_features': 'auto',
-    'n_estimators': 1000
-}
+PARAMS = {'max_depth': 6, 'n_estimators': 300, 'max_features': 'sqrt', 'criterion': 'friedman_mse', 'learning_rate': 0.01}
 
 # **** add configuration here ****
 PARAM_SCOPE = {
@@ -61,6 +50,7 @@ def predict(path: Union[str, None] = None) -> None:
         random_state=42,
         verbose=1
     )
+    print("Parameter used: {}".format(PARAMS))
     # **** End modification ****
     # Phase 1: fit the model, and estimate the loss measure on testing set
     # using a development set.
