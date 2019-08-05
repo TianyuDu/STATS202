@@ -1,0 +1,1 @@
+{'max_features': 'sqrt', 'n_estimators': 700, 'criterion': 'friedman_mse', 'max_depth': 6, 'learning_rate': 0.003}
