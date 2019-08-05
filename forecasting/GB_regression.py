@@ -97,8 +97,8 @@ def grid_search(path: Union[str, None] = None) -> None:
     y_train = y_train.values.reshape(-1,)
     X_test = X_test.values
 
-    X_train, X_dev, y_train, y_dev = train_test_split(
-        X_train, y_train, test_size=0.1, random_state=0)
+    # X_train, X_dev, y_train, y_dev = train_test_split(
+    #     X_train, y_train, test_size=0.1, random_state=0)
 
     print("# Tuning hyper-parameters for {}\n".format(SCORE))
 
@@ -129,13 +129,13 @@ def grid_search(path: Union[str, None] = None) -> None:
     for mean, std, params in zip(means, stds, model.cv_results_["params"]):
         print("%0.3f (+/-%0.03f) for %r"
               % (mean, std * 2, params))
-    print("\nDetailed classification report:\n")
-    print("The model is trained on the full development set.")
-    print("The scores are computed on the full evaluation set.")
-    y_true, y_pred = y_dev, model.predict(X_dev)
-    print("MSE: {}".format(
-        metrics.mean_squared_error(y_true, y_pred)
-    ))
+    # print("\nDetailed classification report:\n")
+    # print("The model is trained on the full development set.")
+    # print("The scores are computed on the full evaluation set.")
+    # y_true, y_pred = y_dev, model.predict(X_dev)
+    # print("MSE: {}".format(
+    #     metrics.mean_squared_error(y_true, y_pred)
+    # ))
 
 
 if __name__ == "__main__":
