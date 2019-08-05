@@ -19,25 +19,23 @@ sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
 # **** Modify model here ****
-PARAMS = {
-    "n_estimators": 1700,
-    "max_depth": 200,
-    "learning_rate": 0.1,
-    "loss": "ls",
-    "subsample": 1.0,
-    "criterion": "friedman_mse",
-    "max_features": "auto",
-}
 
-PARAMS = {'criterion': 'friedman_mse', 'learning_rate': 0.01,
-          'max_depth': 3, 'max_features': 'auto', 'n_estimators': 500}
+PARAMS = {'C': 128, 'gamma': 1e-05, 'kernel': 'rbf'}
 
 # **** add configuration here ****
 # Scope for rbf.
+# PARAM_SCOPE = {
+#     "kernel": ["rbf"],
+#     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
+#     "C": [2 ** x for x in range(1, 10)],
+# }
+
+# Scope for poly kernel
 PARAM_SCOPE = {
-    "kernel": ["rbf"],
+    "kernel": ["poly"],
     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
     "C": [2 ** x for x in range(1, 10)],
+    "degree": list(range(1, 20))
 }
 
 SCORE = "neg_mean_squared_error"
