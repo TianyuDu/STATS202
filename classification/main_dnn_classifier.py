@@ -18,7 +18,7 @@ from classification import DNNClassifier
 SCOPE = {
     "EPOCHS": 600,
     "BATCH_SIZE": [32, 512],
-    "LR": [1e-3, 3*1e-3, 1e-4, 3*1e-4],
+    "LR": [1e-3, 3 * 1e-3, 1e-4, 3 * 1e-4],
     "NEURONS": [
         [512] * 4,
         [1024] * 4,
@@ -67,8 +67,6 @@ def provide_data(
     """
     NOTE: test set will never be shuffled.
     Provides training data to model or saves them to local files.
-    Args:
-        
     """
     X, X_dev, y, y_dev = model_selection.train_test_split(
         X_train, y_train, test_size=dev_ratio, random_state=None, shuffle=True)

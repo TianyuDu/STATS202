@@ -20,7 +20,7 @@ sys.path.append("../")
 import classification.classification_utility as utils
 
 
-def classify(path: Union[str, None] = None) -> None:
+def predict(path: Union[str, None] = None) -> None:
     """
     Generates the classification result for the given dataset.
     If a path of destination is given, this methods will write
@@ -120,20 +120,18 @@ def grid_search(path: Union[str, None] = None) -> None:
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    parser = argparse.ArgumentParser(description="RF for classification.")
+    parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", "--task", type=str, default=None,
-        help="The task to perform: options: 'classify': run new model for classification.\
-            'grid': grid search for hparams.")
+        "-t", "--task", type=str, default=None)
     parser.add_argument(
         "--logdir", default=None, type=str,
         help="The directory to store submission file.")
     args = parser.parse_args()
-    if args.task == "classify":
+    if args.task == "predict":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
-        classify(path=args.logdir)
+        predict(path=args.logdir)
     elif args.task == "grid":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
