@@ -19,7 +19,7 @@ sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
 
-def regress(path: Union[str, None] = None) -> None:
+def predict(path: Union[str, None] = None) -> None:
     """
     Generates the classification result for the given dataset.
     If a path of destination is given, this methods will write
@@ -136,20 +136,17 @@ def grid_search(path: Union[str, None] = None) -> None:
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    parser = argparse.ArgumentParser(description="RF for regression.")
+    parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", "--task", type=str, default=None,
-        help="The task to perform: options: 'regress': run new model for regression.\
-            'grid': grid search for hparams.")
+        "-t", "--task", type=str, default=None)
     parser.add_argument(
-        "--logdir", default=None, type=str,
-        help="The directory to store submission file.")
+        "--logdir", default=None, type=str)
     args = parser.parse_args()
     if args.task == "regress":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
-        regress(path=args.logdir)
+        predict(path=args.logdir)
     elif args.task == "grid":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
