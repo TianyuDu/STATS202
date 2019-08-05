@@ -28,8 +28,8 @@ PARAMS = {
 
 # **** add configuration here ****
 PARAM_SCOPE = {
-    "max_depth": [None] + [2 ** x for x in range(5, 15)],
-    "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "max_depth": [None] + [2 ** x for x in range(5, 11)],
+    "n_estimators": [100 * x for x in range(1, 20, 2)],
     "criterion": ["entropy", "gini"],
     "max_features": ["auto", "sqrt", "log2"],
 }
