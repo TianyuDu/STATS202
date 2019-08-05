@@ -19,11 +19,8 @@ sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
 # **** Modify model here ****
-PARAMS = {
-    "n_estimators": 1700,
-    "max_depth": 200,
-    "criterion": "mse",
-}
+PARAMS = {'criterion': 'mse', 'max_depth': 4096,
+          'max_features': 'auto', 'n_estimators': 500}
 
 # **** add configuration here ****
 PARAM_SCOPE = {
@@ -50,7 +47,7 @@ def predict(path: Union[str, None] = None) -> None:
     classification prediction to the destination file.
     """
     # Reading the training data.
-    X_train, y_train, X_test = utils.get_data()
+    X_train, y_train, X_test = utils.read_from_disk()
     # **** Extract ndarray ****
     X_train = X_train.values
     y_train = y_train.values.reshape(-1,)
@@ -71,13 +68,12 @@ def predict(path: Union[str, None] = None) -> None:
     model.fit(X_train, y_train)
     print("Estimating the test loss using a dev set...")
     pred_dev = model.predict(X_dev)
-    # Estimate loss on dev set:
-    print("Log loss on dev set : {}".format(
+    print("Loss on dev set : {}".format(
         metrics.mean_squared_error(y_true=y_dev, y_pred=pred_dev)
     ))
     print("Phase 2: fitting model on the entire training set ...")
     # Re-fit using the entire traininig set.
-    X_train, y_train, X_test = utils.get_data()
+    X_train, y_train, X_test = utils.read_from_disk()
     model.fit(X_train, y_train)
     print("Predicting on the test set ...")
     pred_test = model.predict(X_test)
@@ -143,7 +139,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--logdir", default=None, type=str)
     args = parser.parse_args()
-    if args.task == "regress":
+    if args.task == "predict":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")

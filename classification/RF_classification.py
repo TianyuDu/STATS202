@@ -51,7 +51,7 @@ def classify(path: Union[str, None] = None) -> None:
     print("Estimating the test loss using a dev set...")
     pred_dev = model.predict_proba(X_dev)
     # Estimate loss on dev set:
-    print("Log loss on dev set : {}".format(
+    print("Loss on dev set : {}".format(
         log_loss(y_true=y_dev, y_pred=pred_dev[:, 1])
     ))
     print("Phase 2: fitting model on the entire training set ...")

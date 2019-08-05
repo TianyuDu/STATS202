@@ -37,11 +37,10 @@ PARAMS = {
 # **** add configuration here ****
 PARAM_SCOPE = {
     # "max_depth": [2 ** x for x in range(5, 14)],
-    "max_depth": [3, 6, 9, 12],
-    "learning_rate": [0.01, 0.03, 0.1],
-    # "n_estimators": [100 * x for x in range(1, 40, 2)],
-    "n_estimators": [100, 300, 500, 1000],
-    "max_features": ["auto"],
+    "max_depth": [3, 6, 9, 12, 15, 18],
+    "learning_rate": [0.01, 0.03, 0.1, 0.3],
+    "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "max_features": ["auto", "sqrt", "log2"],
     "criterion": ["friedman_mse"],
 }
 
@@ -73,7 +72,7 @@ def predict(path: Union[str, None] = None) -> None:
     print("Estimating the test loss using a dev set...")
     pred_dev = model.predict_proba(X_dev)
     # Estimate loss on dev set:
-    print("Log loss on dev set : {}".format(
+    print("Loss on dev set : {}".format(
         log_loss(y_true=y_dev, y_pred=pred_dev[:, 1])
     ))
     print("Phase 2: fitting model on the entire training set ...")
