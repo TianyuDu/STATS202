@@ -1,0 +1,11 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {paragraph}{}{2}{section*.2}
+\contentsline {paragraph}{}{2}{section*.3}
+\contentsline {section}{\numberline {2}Treatment Effects}{2}{section.2}
+\contentsline {paragraph}{}{2}{section*.4}
+\contentsline {paragraph}{}{2}{section*.5}
+\contentsline {paragraph}{}{2}{section*.6}
+\contentsline {section}{\numberline {3}Patient Segmentation}{2}{section.3}
+\contentsline {section}{\numberline {4}Patient PANSS Forecasting}{2}{section.4}
+\contentsline {section}{\numberline {5}Assessment Validity Classification}{2}{section.5}

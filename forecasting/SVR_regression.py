@@ -20,7 +20,7 @@ import forecasting.forecasting_utility as utils
 
 # **** Modify model here ****
 
-PARAMS = {'C': 128, 'gamma': 1e-05, 'kernel': 'rbf'}
+PARAMS = {'degree': 3, 'kernel': 'poly', 'C': 4, 'gamma': 0.0001}
 
 # **** add configuration here ****
 # Scope for rbf.
