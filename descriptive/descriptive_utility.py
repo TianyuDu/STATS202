@@ -26,17 +26,13 @@ if __name__ == "__main__":
     df["N_Total"] = df[["N{}".format(x) for x in range(1, 8)]].sum(axis=1)
     df["G_Total"] = df[["G{}".format(x) for x in range(1, 17)]].sum(axis=1)
     # Save the loaded data to local file
-    df.to_csv(path_or_buf="./Study_A_to_E_all.csv", index=False)
     # Select treatment group
     TREATMENT = df["TxGroup"] == "Treatment"
-    sns.lmplot(
-        x="VisitDay", y="PANSS_Total", hue="TxGroup",
-        data=df, ci=0.95,
-        lowess=True, markers=["o", "x"],
-        scatter_kws={"alpha": 0.3},
-        line_kws={"alpha": 0.8}
-    )
-    plt.savefig("{}lwlm_te.png".format(PATH), dpi=300)
+    sns.distplot(df["VisitDay"], kde=False)
+    plt.savefig(PATH + "dist_visit_day_all.png", dpi=300)
+    LESS95 = df["VisitDay"] <= df["VisitDay"].quantile(0.95)
+    # Drop the top 5% observations.
+    df = df[LESS95]
     # Initial Distribution of scores
     INITIAL = df["VisitDay"] == 0
     f, axes = plt.subplots(2, 2, figsize=(7, 7), sharex=True)
@@ -57,3 +53,13 @@ if __name__ == "__main__":
         )
     f.legend(labels=['Treatment', 'Control'])
     plt.savefig("{}dist_initial_scores.png".format(PATH), dpi=300)
+    for target in ["PANSS_Total", "P_Total", "N_Total", "G_Total"]:
+        sns.lmplot(
+            x="VisitDay", y=target, hue="TxGroup",
+            data=df, ci=0.95,
+            lowess=True, markers=["o", "x"],
+            scatter_kws={"alpha": 0.3},
+            line_kws={"alpha": 0.8}
+        )
+        plt.savefig("{}lwlm_te_{}.png".format(PATH, target), dpi=300)
+    df.to_csv(path_or_buf="./Study_A_to_E_95.csv", index=False)

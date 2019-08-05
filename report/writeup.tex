@@ -37,14 +37,36 @@
 	
 	\paragraph{}Multiple evidences were found to support that there were indeed no treatment effect in this study. Firstly, the effects on four aggregate scores are analyzed, namely sum of all PANSS scores, and sums of scores from positive (\texttt{P\_Total}), negative (\texttt{N\_Total}), and general (\texttt{G\_Total}) sub-categories respectively.
 	
-	\paragraph{}One challenge associated with treatment effect analysis is the initial status of patients in different groups.
-	Figure 1 below presents the distributions of the four aggregate scores at day 0 visit. 	The figure suggested similar distributions were shared among the treatment and control groups.
+	\paragraph{}One challenge associated with treatment effect analysis is the initial status of patients in different groups. In some cases, the \emph{prior} psychological status for a randomly selected patient from the treatment group is expected to be different from that of a random patient in the control group. In these cases, even if significant differences in PANSS scores \emph{posterior} to the treatment were supported, one will not be able to distinguish whether the "effect" came from the discrepancy in the prior distributions or the treatment, and the treatment effect is not well-identifies.
+	Figure 1 below presents the distributions of the four aggregate scores at day 0 visit. Both groups shared similar histograms in terms of all four metrics. Moreover, the estimated kernel densities collided, which provided further evidence that there were no significant prior discrepancies between patients from these two groups. Therefore, one can conclude that most posterior differences in PANSS metrics were resulted from the treatment assigned.
+
+%	\begin{figure}[H]
+%		\centering
+%		\includegraphics[width=0.7\linewidth]{figures/dist_initial_scores.png}
+%		\caption{Distributions of Aggregate Scores at Day 0}
+%	\end{figure}
+
+	\paragraph{}The evolving path of these four above mentioned metrics can provide reasonable proxies to the treatment effect. As mentioned before, we believed the data failed to provide sufficient evidence to support the existence of treatment effect. Let $t \in \N$ denote the \texttt{VisitDay} variable in the dataset, $t$ ranges from 0 to 480 in the complete dataset. Figure 2 presents the distribution of $t$, the 95-percent quantile is located at $t_{95\%} = 297$. Therefore, the top 5\% of observations occupied more than on third of the total range of $t$, these observations are potentially troublesome as outliers. To deal with this issue, the top 5\% observations are excluded from following analysis.
+
+%	\begin{figure}[H]
+%		\centering
+%		\includegraphics[width=0.7\linewidth]{figures/dist_visit_day_all.png}
+%		\caption{Distribution of \texttt{VisitDay}}
+%	\end{figure}
 	
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.7\linewidth]{figures/dist_initial_scores.png}
-		\caption{Distributions of Aggregate Scores at Day 0}
-	\end{figure}
+	\paragraph{}The general strategy to identify treatment effect here uses linear models. Let $Y$ denote the target metric, which takes value from the four aggregate PANSS metrics: $\mc{M} := \{ \Sigma_{PANSS}, \Sigma_P, \Sigma_N, \Sigma_G\}$. Let $X$ denote the set other characteristics of the patient. And a hybrid linear model is fit:
+	\begin{align}
+		Y &= f_0(X, t) + \id{\texttt{Treatment}} f_1(X, t)
+	\end{align}
+	where $f_0$ and $f_1$ are two additive linear models, so that $f_0$ captures the evolving path of $Y$ over time for the population of the control group, and the additive term $f_1$ measures the discrepancy of the treatment group.
+	Should the treatment dummy variable is statistically significant, then one can conclude the existence of treatment effect.
+	\subsection{Evolving Paths of Metrics Over Time}
+	\paragraph{}Figure 3 below shows the scatter plot of $\Sigma_{PANSS}$ scores against time for both groups with corresponding locally weighted linear regression estimations (LOWESS). The LOWESS for the treatment and control groups almost collide perfectly, which means the trends for both group estimated from non-parametric model are essentially identical, this provides preliminary evidence supporting our claim that there was no significant treatment effect. 
+%	\begin{figure}[H]
+%		\centering
+%		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_PANSS_Total.png}
+%		\caption{Changes of \texttt{PANSS\_Total} Over Time and LOWESS}
+%	\end{figure}
 	
 	\section{Patient Segmentation}
 	\section{Patient PANSS Forecasting}

@@ -6,6 +6,10 @@
 \contentsline {paragraph}{}{2}{section*.4}
 \contentsline {paragraph}{}{2}{section*.5}
 \contentsline {paragraph}{}{2}{section*.6}
-\contentsline {section}{\numberline {3}Patient Segmentation}{2}{section.3}
-\contentsline {section}{\numberline {4}Patient PANSS Forecasting}{2}{section.4}
-\contentsline {section}{\numberline {5}Assessment Validity Classification}{2}{section.5}
+\contentsline {paragraph}{}{2}{section*.7}
+\contentsline {paragraph}{}{3}{section*.8}
+\contentsline {subsection}{\numberline {2.1}Evolving Paths of Metrics Over Time}{3}{subsection.2.1}
+\contentsline {paragraph}{}{3}{section*.9}
+\contentsline {section}{\numberline {3}Patient Segmentation}{3}{section.3}
+\contentsline {section}{\numberline {4}Patient PANSS Forecasting}{3}{section.4}
+\contentsline {section}{\numberline {5}Assessment Validity Classification}{3}{section.5}
