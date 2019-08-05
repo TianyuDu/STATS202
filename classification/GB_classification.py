@@ -36,10 +36,15 @@ PARAMS = {
 
 # **** add configuration here ****
 PARAM_SCOPE = {
+<<<<<<< HEAD
     "max_depth": [2 ** x for x in range(5, 14)],
     # "max_depth": [3, 6, 9, 12, 15, 18],
+=======
+    # "max_depth": [2 ** x for x in range(5, 14)],
+    "max_depth": [3, 6, 9, 12],
+>>>>>>> 10b725c42b835a6be8af62b81b39eca673347dcf
     "learning_rate": [0.01, 0.03, 0.1, 0.3],
-    "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "n_estimators": [100 * x for x in range(1, 20, 2)],
     "max_features": ["auto", "sqrt", "log2"],
     "criterion": ["friedman_mse"],
 }
