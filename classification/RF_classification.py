@@ -19,6 +19,24 @@ from sklearn.metrics import log_loss
 sys.path.append("../")
 import classification.classification_utility as utils
 
+# **** Modify model here ****
+PARAMS = {
+    "n_estimators": 500,
+    "max_depth": 100,
+    "criterion": "gini",
+}
+
+# **** add configuration here ****
+PARAM_SCOPE = {
+    "max_depth": [None] + [2 ** x for x in range(5, 15)],
+    "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "criterion": ["entropy", "gini"],
+    "max_features": ["auto", "sqrt", "log2"],
+}
+
+SCORE = "neg_log_loss"
+# **** end ****
+
 
 def predict(path: Union[str, None] = None) -> None:
     """
@@ -28,12 +46,6 @@ def predict(path: Union[str, None] = None) -> None:
     """
     # Reading the training data.
     X_train, y_train, X_test = utils.get_data()
-    # **** Modify model here ****
-    PARAMS = {
-        "n_estimators": 500,
-        "max_depth": 100,
-        "criterion": "gini",
-    }
     model = RandomForestClassifier(
         **PARAMS,
         random_state=42,
@@ -73,26 +85,16 @@ def predict(path: Union[str, None] = None) -> None:
 
 def grid_search(path: Union[str, None] = None) -> None:
     X_train, y_train, X_test = utils.get_data()
-    X_train, X_dev, y_train, y_dev = train_test_split(
-        X_train, y_train, test_size=0.3, random_state=0)
+    # X_train, X_dev, y_train, y_dev = train_test_split(
+    #     X_train, y_train, test_size=0.1, random_state=0)
 
-    # **** add configuration here ****
-    param_scope = {
-        "max_depth": [None, 20, 30, 50, 100, 200, 300, 500, 1000, 2000],
-        "n_estimators": [100 * x for x in range(1, 40, 2)],
-        "criterion": ["entropy", "gini"],
-    }
-
-    score = "neg_log_loss"
-    # **** end ****
-
-    print("# Tuning hyper-parameters for {}\n".format(score))
+    print("# Tuning hyper-parameters for {}\n".format(SCORE))
 
     model = GridSearchCV(
         RandomForestClassifier(),
-        param_scope,
+        PARAM_SCOPE,
         cv=5,
-        scoring=score,
+        scoring=SCORE,
         error_score=np.nan,
         n_jobs=-1,
         verbose=1
@@ -111,11 +113,11 @@ def grid_search(path: Union[str, None] = None) -> None:
     for mean, std, params in zip(means, stds, model.cv_results_["params"]):
         print("%0.3f (+/-%0.03f) for %r"
               % (mean, std * 2, params))
-    print("\nDetailed classification report:\n")
-    print("The model is trained on the full development set.")
-    print("The scores are computed on the full evaluation set.")
-    y_true, y_pred = y_dev, model.predict(X_dev)
-    print(metrics.classification_report(y_true, y_pred))
+    # print("\nDetailed classification report:\n")
+    # print("The model is trained on the full development set.")
+    # print("The scores are computed on the full evaluation set.")
+    # y_true, y_pred = y_dev, model.predict(X_dev)
+    # print(metrics.classification_report(y_true, y_pred))
 
 
 if __name__ == "__main__":
