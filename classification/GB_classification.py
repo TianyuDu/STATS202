@@ -36,13 +36,8 @@ PARAMS = {
 
 # **** add configuration here ****
 PARAM_SCOPE = {
-<<<<<<< HEAD
-    "max_depth": [2 ** x for x in range(5, 14)],
-    # "max_depth": [3, 6, 9, 12, 15, 18],
-=======
     # "max_depth": [2 ** x for x in range(5, 14)],
     "max_depth": [3, 6, 9, 12],
->>>>>>> 10b725c42b835a6be8af62b81b39eca673347dcf
     "learning_rate": [0.01, 0.03, 0.1, 0.3],
     "n_estimators": [100 * x for x in range(1, 20, 2)],
     "max_features": ["auto", "sqrt", "log2"],
@@ -142,7 +137,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--logdir", default=None, type=str)
     args = parser.parse_args()
-    if args.task == "classify":
+    if args.task == "predict":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
