@@ -1,0 +1,30 @@
+./GB_regression.py: 3: ./GB_regression.py: 
+The main file for gradient boosting regressor.
+: not found
+./GB_regression.py: 4: ./GB_regression.py: import: not found
+from: can't read /var/mail/typing
+./GB_regression.py: 6: ./GB_regression.py: import: not found
+./GB_regression.py: 7: ./GB_regression.py: import: not found
+from: can't read /var/mail/datetime
+./GB_regression.py: 10: ./GB_regression.py: import: not found
+./GB_regression.py: 11: ./GB_regression.py: import: not found
+from: can't read /var/mail/sklearn.ensemble
+from: can't read /var/mail/sklearn.model_selection
+from: can't read /var/mail/sklearn.model_selection
+from: can't read /var/mail/sklearn
+./GB_regression.py: 18: ./GB_regression.py: Syntax error: word unexpected (expecting ")")
+./GB_regression.py: 3: ./GB_regression.py: 
+The main file for gradient boosting regressor.
+: not found
+./GB_regression.py: 4: ./GB_regression.py: import: not found
+from: can't read /var/mail/typing
+./GB_regression.py: 6: ./GB_regression.py: import: not found
+./GB_regression.py: 7: ./GB_regression.py: import: not found
+from: can't read /var/mail/datetime
+./GB_regression.py: 10: ./GB_regression.py: import: not found
+./GB_regression.py: 11: ./GB_regression.py: import: not found
+from: can't read /var/mail/sklearn.ensemble
+from: can't read /var/mail/sklearn.model_selection
+from: can't read /var/mail/sklearn.model_selection
+from: can't read /var/mail/sklearn
+./GB_regression.py: 18: ./GB_regression.py: Syntax error: word unexpected (expecting ")")
