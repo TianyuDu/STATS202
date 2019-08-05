@@ -18,6 +18,22 @@ from sklearn import metrics
 sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
+# **** add configuration here ****
+PARAM_SCOPE = {
+    "max_depth": [None] + [2 ** x for x in range(5, 14)],
+    "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "criterion": ["mse"],
+    "max_features": ["auto", "sqrt", "log2"]
+}
+# PARAM_SCOPE = {
+#     "max_depth": [None],
+#     "n_estimators": [10, 20],
+#     "criterion": ["mse"],
+#     "max_features": ["auto", "sqrt"]
+# }
+
+SCORE = "neg_mean_squared_error"
+# **** end ****
 
 def predict(path: Union[str, None] = None) -> None:
     """
@@ -79,30 +95,13 @@ def grid_search(path: Union[str, None] = None) -> None:
     X_train, X_dev, y_train, y_dev = train_test_split(
         X_train, y_train, test_size=0.1, random_state=0)
 
-    # **** add configuration here ****
-    param_scope = {
-        "max_depth": [None] + [2 ** x for x in range(5, 14)],
-        "n_estimators": [100 * x for x in range(1, 40, 2)],
-        "criterion": ["mse"],
-        "max_features": ["auto", "sqrt", "log2"]
-    }
-    # param_scope = {
-    #     "max_depth": [None],
-    #     "n_estimators": [10, 20],
-    #     "criterion": ["mse"],
-    #     "max_features": ["auto", "sqrt"]
-    # }
-
-    score = "neg_mean_squared_error"
-    # **** end ****
-
-    print("# Tuning hyper-parameters for {}\n".format(score))
+    print("# Tuning hyper-parameters for {}\n".format(SCORE))
 
     model = GridSearchCV(
         RandomForestRegressor(),
-        param_scope,
+        PARAM_SCOPE,
         cv=5,
-        scoring=score,
+        scoring=SCORE,
         error_score=np.nan,
         n_jobs=-1,
         verbose=1,
