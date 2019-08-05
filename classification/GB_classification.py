@@ -127,7 +127,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--logdir", default=None, type=str)
     args = parser.parse_args()
-    if args.task == "classify":
+    if args.task == "predict":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
