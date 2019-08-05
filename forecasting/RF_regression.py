@@ -18,6 +18,13 @@ from sklearn import metrics
 sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
+# **** Modify model here ****
+PARAMS = {
+    "n_estimators": 1700,
+    "max_depth": 200,
+    "criterion": "mse",
+}
+
 # **** add configuration here ****
 PARAM_SCOPE = {
     "max_depth": [None] + [2 ** x for x in range(5, 14)],
@@ -35,6 +42,7 @@ PARAM_SCOPE = {
 SCORE = "neg_mean_squared_error"
 # **** end ****
 
+
 def predict(path: Union[str, None] = None) -> None:
     """
     Generates the classification result for the given dataset.
@@ -47,12 +55,6 @@ def predict(path: Union[str, None] = None) -> None:
     X_train = X_train.values
     y_train = y_train.values.reshape(-1,)
     X_test = X_test.values
-    # **** Modify model here ****
-    PARAMS = {
-        "n_estimators": 1700,
-        "max_depth": 200,
-        "criterion": "mse",
-    }
     model = RandomForestRegressor(
         **PARAMS,
         random_state=42,
