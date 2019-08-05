@@ -53,7 +53,7 @@ def predict(path: Union[str, None] = None) -> None:
     classification prediction to the destination file.
     """
     # Reading the training data.
-    X_train, y_train, X_test = utils.read_from_disk()
+    X_train, y_train, X_test = utils.get_data()
     # **** Extract ndarray ****
     X_train = X_train.values
     y_train = y_train.values.reshape(-1,)
@@ -80,7 +80,7 @@ def predict(path: Union[str, None] = None) -> None:
     ))
     print("Phase 2: fitting model on the entire training set ...")
     # Re-fit using the entire traininig set.
-    X_train, y_train, X_test = utils.read_from_disk()
+    X_train, y_train, X_test = utils.get_data()
     model.fit(X_train, y_train)
     print("Predicting on the test set ...")
     pred_test = model.predict(X_test)
@@ -91,7 +91,7 @@ def predict(path: Union[str, None] = None) -> None:
 
 
 def grid_search(path: Union[str, None] = None) -> None:
-    X_train, y_train, X_test = utils.read_from_disk()
+    X_train, y_train, X_test = utils.get_data()
     # **** Extract ndarray ****
     X_train = X_train.values
     y_train = y_train.values.reshape(-1,)
