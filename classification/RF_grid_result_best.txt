@@ -1,0 +1,1 @@
+{'max_features': 'log2', 'criterion': 'gini', 'n_estimators': 1900, 'max_depth': 64}
