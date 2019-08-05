@@ -1,0 +1,1 @@
+{'degree': 3, 'kernel': 'poly', 'C': 4, 'gamma': 0.0001}
