@@ -24,10 +24,21 @@ import classification.classification_utility as utils
 PARAMS = {'max_depth': 6, 'n_estimators': 300, 'max_features': 'sqrt', 'criterion': 'friedman_mse', 'learning_rate': 0.01}
 
 # **** add configuration here ****
+# The first parametere scope for larger lr.
+# PARAM_SCOPE = {
+#     # "max_depth": [2 ** x for x in range(5, 14)],
+#     "max_depth": [3, 6, 9, 12],
+#     "learning_rate": [0.01, 0.03, 0.1, 0.3],
+#     "n_estimators": [100 * x for x in range(1, 20, 2)],
+#     "max_features": ["auto", "sqrt", "log2"],
+#     "criterion": ["friedman_mse"],
+# }
+
+# Try smaller learning rate
 PARAM_SCOPE = {
     # "max_depth": [2 ** x for x in range(5, 14)],
     "max_depth": [3, 6, 9, 12],
-    "learning_rate": [0.01, 0.03, 0.1, 0.3],
+    "learning_rate": [0.001, 0.003],
     "n_estimators": [100 * x for x in range(1, 20, 2)],
     "max_features": ["auto", "sqrt", "log2"],
     "criterion": ["friedman_mse"],
