@@ -1,11 +1,11 @@
 # Analyze the treatment effects.
 # Aug. 4 2019.
-df <- read.csv("./Study_A_to_E_all.csv", header=TRUE, sep=",")
+df <- read.csv("./Study_A_to_E_95.csv", header=TRUE, sep=",")
 
-POLY <- 3
+POLY <- 2
 
 model <- lm(
-    formula=log(PANSS_Total) ~ poly(VisitDay, POLY)*Treatment + Treatment + as.factor(Study),
+    formula=log(PANSS_Total) ~ poly(VisitDay, POLY)*Treatment + Treatment + as.factor(Study) + as.factor(Country),
     data=df
 )
 summary(model)
