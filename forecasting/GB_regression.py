@@ -18,8 +18,36 @@ from sklearn import metrics
 sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
+# **** Modify model here ****
+PARAMS = {
+    "n_estimators": 1700,
+    "max_depth": 200,
+    "learning_rate": 0.1,
+    "loss": "ls",
+    "subsample": 1.0,
+    "criterion": "friedman_mse",
+    "max_features": "auto",
+}
 
-def regress(path: Union[str, None] = None) -> None:
+PARAMS = {'criterion': 'friedman_mse', 'learning_rate': 0.01,
+          'max_depth': 3, 'max_features': 'auto', 'n_estimators': 500}
+
+# **** add configuration here ****
+PARAM_SCOPE = {
+    # "max_depth": [2 ** x for x in range(5, 14)],
+    "max_depth": [3, 6],
+    "learning_rate": [0.01, 0.03, 0.1],
+    # "n_estimators": [100 * x for x in range(1, 40, 2)],
+    "n_estimators": [10, 100, 300, 500],
+    "max_features": ["auto"],
+    "criterion": ["friedman_mse"],
+}
+
+SCORE = "neg_mean_squared_error"
+# **** end ****
+
+
+def predict(path: Union[str, None] = None) -> None:
     """
     Generates the classification result for the given dataset.
     If a path of destination is given, this methods will write
@@ -31,20 +59,10 @@ def regress(path: Union[str, None] = None) -> None:
     X_train = X_train.values
     y_train = y_train.values.reshape(-1,)
     X_test = X_test.values
-    # **** Modify model here ****
-    PARAMS = {
-        "n_estimators": 1700,
-        "max_depth": 200,
-        "learning_rate": 0.1,
-        "loss": "ls",
-        "subsample": 1.0,
-        "criterion": "friedman_mse",
-        "max_features": "auto",
-    }
+
     model = GradientBoostingRegressor(
         **PARAMS,
         random_state=42,
-        n_jobs=-1,
         verbose=1
     )
     # **** End modification ****
@@ -83,35 +101,13 @@ def grid_search(path: Union[str, None] = None) -> None:
     X_train, X_dev, y_train, y_dev = train_test_split(
         X_train, y_train, test_size=0.1, random_state=0)
 
-    # **** add configuration here ****
-    param_scope = {
-        # "max_depth": [2 ** x for x in range(5, 14)],
-        "max_depth": [3],
-        # "n_estimators": [100 * x for x in range(1, 40, 2)],
-        "n_estimators": [10, 100, 300, 500],
-        "max_features": ["auto"],
-        "criterion": ["friedman_mse"],
-    }
-    # PARAMS = {
-    #     "n_estimators": 1700,
-    #     "max_depth": 200,
-    #     "learning_rate": 0.1,
-    #     "loss": "ls",
-    #     "subsample": 1.0,
-    #     "criterion": "friedman_mse",
-    #     "max_features": "auto",
-    # }
-
-    score = "neg_mean_squared_error"
-    # **** end ****
-
-    print("# Tuning hyper-parameters for {}\n".format(score))
+    print("# Tuning hyper-parameters for {}\n".format(SCORE))
 
     model = GridSearchCV(
         GradientBoostingRegressor(),
-        param_scope,
+        PARAM_SCOPE,
         cv=5,
-        scoring=score,
+        scoring=SCORE,
         error_score=np.nan,
         n_jobs=-1,
         verbose=1,
@@ -145,20 +141,17 @@ def grid_search(path: Union[str, None] = None) -> None:
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    parser = argparse.ArgumentParser(description="RF for regression.")
+    parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", "--task", type=str, default=None,
-        help="The task to perform: options: 'regress': run new model for regression.\
-            'grid': grid search for hparams.")
+        "-t", "--task", type=str, default=None)
     parser.add_argument(
-        "--logdir", default=None, type=str,
-        help="The directory to store submission file.")
+        "--logdir", default=None, type=str)
     args = parser.parse_args()
-    if args.task == "regress":
+    if args.task == "predict":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
             print("No log directory is provided, no submission file will be generated.")
-        regress(path=args.logdir)
+        predict(path=args.logdir)
     elif args.task == "grid":
         print("Execute task: {}".format(args.task))
         if args.logdir is None:
