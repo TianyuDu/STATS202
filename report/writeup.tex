@@ -170,24 +170,48 @@
 	\end{table}
  
  	\subsection{Ensemble Model: Gradient Boosting}
- 	\paragraph{} Gradient boosting is another type of ensemble models, in contrast to the parallel ensemble strategy of random forests, GBs ensemble multiple models vertically. For GBs, Friedman mean squared error was used to measure the quality of splits in the boosting process. The table below presents 
+ 	\paragraph{} Gradient boosting is another type of ensemble models, in contrast to the parallel ensemble strategy of random forests, GBs ensemble multiple models vertically. For GBs, Friedman mean squared error was used to measure the quality of splits in the boosting process. The table below presents the scope of grid searching and the best combination of hyper parameters identified among all 480 candidates. Note that the optimal values were all in the interior of our pre-defined scope $\mc{G}$.
  	\begin{table}
  		\centering
  		\begin{tabular}{l|c|c|c}
  		H-Param & Range & Best & Total \\
  		\hline
- 			
+ 		Max Depth ($\theta$) & $\{3, 6, 9, 12\}$ & 6 & 4 \\
+ 		Learning Rate ($\alpha$) & $\{0.001, 0.003, 0.01, 0.03, 0.1, 0.3\}$ & 0.003 & 6 \\
+ 		Num Estimators ($\tau$) & $\{100, 300, \cdots, 1900\}$ & 700 & 10 \\
+ 		Max Features ($\phi$) & $\log_2(p), \sqrt{p}$& $\sqrt{p}$ & 2\\
+ 		\hline
+ 		All Combinations & & & 480
  		\end{tabular}
  		\caption{Hyper-parameter Scope and Result for Gradient Boosting Machines}
  	\end{table}
  	
  	\subsection{Support Vector Classifier}
+ 	\paragraph{} Gradient boosting machines used the entire raw feature space and recursively fit new model on the residual of previous model, then ensemble all hierarchical models together. Each tree in a random forest actively omit some features at random to prevent overfitting. In contrast to these models, support vector machines implicitly engineer input features (i.e. map features to a higher dimensional space using some feature mappings) with different kernels. By using a radial basis function (RBF) kernel, SVMs effectively map input features to an infinite-dimensional space before fitting the dataset. Because SVMs generally take longer to fit than other methods on large dataset, only two hyper-parameters were searched over: the penalty for error terms $C$, and the radius of RBF kernel $\gamma$.
+ 	\begin{table}[H]
+ 		\centering
+ 		\begin{tabular}{l|c|c|c}
+ 		H-Param & Range & Best & Total \\
+ 		\hline
+ 		Err. Penalty $C$ & $\{2, 4, 8, \cdots, 512\}$ & 512 & 9 \\
+ 		Radius of RBF $\gamma$ & $\{\frac{1}{p}, 0.1, 0.01, \cdots, 10^{-9}\}$ & 0.0001 & 10 \\
+ 		\hline
+ 		All Combinations & & & 90
+ 		\end{tabular}	
+ 	\end{table}
+
+ 	
+%# PARAM_SCOPE = {
+%#     "kernel": ["rbf"],
+%#     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
+%#     "C": [2 ** x for x in range(1, 10)],
+%#     "probability": [True],
+%# }
  	
  	\subsection{Deep Neural Network}
  	
  	\subsection{Calibration}
- 	
- 	\subsection{Threshold and Accuracy}
+ 	\paragraph{} Models in this section were built to predict a \emph{probability} for one assessment to be flagged. Therefore, calibration methods were used to refine model outputs. The non-parametric isotonic regression was deployed instead of Platt scaling since the dataset was sufficiently large.
  	
 	\section{Appendix}
 \end{document}

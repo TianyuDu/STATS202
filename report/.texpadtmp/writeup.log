@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  6 AUG 2019 15:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  6 AUG 2019 16:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -746,12 +746,12 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
  [1
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <figures/dist_initial_scores.png, id=101, 505.89pt x 505.89pt>
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <figures/dist_initial_scores.png, id=96, 505.89pt x 505.89pt>
 File: figures/dist_initial_scores.png Graphic file (type png)
  <use figures/dist_initial_scores.png>
 Package pdftex.def Info: figures/dist_initial_scores.png used on input line 45.
 (pdftex.def)             Requested size: 328.82707pt x 328.8323pt.
- [2] <figures/dist_visit_day_all.png, id=113, 578.16pt x 289.08pt>
+ [2] <figures/dist_visit_day_all.png, id=108, 578.16pt x 289.08pt>
 File: figures/dist_visit_day_all.png Graphic file (type png)
  <use figures/dist_visit_day_all.png>
 Package pdftex.def Info: figures/dist_visit_day_all.png used on input line 53.
@@ -760,7 +760,7 @@ Package pdftex.def Info: figures/dist_visit_day_all.png used on input line 53.
 LaTeX Font Info:    Try loading font information for U+dsrom on input line 60.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-) <figures/lwlm_te_PANSS_Total.png, id=125, 450.2421pt x 361.35pt>
+) <figures/lwlm_te_PANSS_Total.png, id=120, 450.2421pt x 361.35pt>
 File: figures/lwlm_te_PANSS_Total.png Graphic file (type png)
  <use figures/lwlm_te_PANSS_Total.png>
 Package pdftex.def Info: figures/lwlm_te_PANSS_Total.png used on input line 67.
@@ -770,32 +770,32 @@ Overfull \hbox (21.32455pt too wide) in paragraph at lines 82--101
  [][] 
  []
 
-[5 <./figures/lwlm_te_PANSS_Total.png>] <figures/dist_country.png, id=156, 578.16pt x 289.08pt>
+[5 <./figures/lwlm_te_PANSS_Total.png>] <figures/dist_country.png, id=151, 578.16pt x 289.08pt>
 File: figures/dist_country.png Graphic file (type png)
  <use figures/dist_country.png>
 Package pdftex.def Info: figures/dist_country.png used on input line 115.
 (pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
- [6] <figures/alert_ratio_days.png, id=167, 578.16pt x 289.08pt>
+ [6] <figures/alert_ratio_days.png, id=161, 578.16pt x 289.08pt>
 File: figures/alert_ratio_days.png Graphic file (type png)
  <use figures/alert_ratio_days.png>
 Package pdftex.def Info: figures/alert_ratio_days.png used on input line 127.
 (pdftex.def)             Requested size: 328.82707pt x 164.4112pt.
- [7 <./figures/dist_country.png>] [8 <./figures/alert_ratio_days.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 184.
- [9] [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 184.
+ [7 <./figures/dist_country.png>] [8 <./figures/alert_ratio_days.png>] [9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
  (/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/STATS202/STATS202/report/.texpadtmp/writeup.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 184.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 184.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
 Package rerunfilecheck Info: File `writeup.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 184.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 217.
  ) 
 Here is how much of TeX's memory you used:
- 8478 strings out of 493014
- 120565 string characters out of 6133351
+ 8479 strings out of 493014
+ 120564 string characters out of 6133351
  230797 words of memory out of 5000000
- 11783 multiletter control sequences out of 15000+600000
+ 11782 multiletter control sequences out of 15000+600000
  16863 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,13n,35p,1172b,363s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -804,10 +804,10 @@ pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist,
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/STATS202/STATS202/report/.texpadtmp/writeup.pdf" (10 pages, 1941592 bytes).
+Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/STATS202/STATS202/report/.texpadtmp/writeup.pdf" (10 pages, 1945593 bytes).
 PDF statistics:
- 279 PDF objects out of 1000 (max. 8388607)
- 235 compressed objects within 3 object streams
- 66 named destinations out of 1000 (max. 500000)
- 162 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 278 PDF objects out of 1000 (max. 8388607)
+ 234 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
