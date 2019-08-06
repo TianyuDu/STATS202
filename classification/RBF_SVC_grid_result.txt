@@ -1,0 +1,1 @@
+{'kernel': 'rbf', 'gamma': 0.0001, 'probability': True, 'C': 512}

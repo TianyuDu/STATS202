@@ -25,21 +25,21 @@ PARAMS = {'degree': 3, 'kernel': 'poly', 'C': 4, 'gamma': 0.0001, "probability":
 
 # **** add configuration here ****
 # Scope for rbf.
-PARAM_SCOPE = {
-    "kernel": ["rbf"],
-    "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
-    "C": [2 ** x for x in range(1, 10)],
-    "probability": [True],
-}
-
-# Scope for poly kernel
 # PARAM_SCOPE = {
-#     "kernel": ["poly"],
-#     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 5)],
-#     "C": [2 ** x for x in range(1, 5)],
-#     "degree": list(range(3, 7)),
+#     "kernel": ["rbf"],
+#     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
+#     "C": [2 ** x for x in range(1, 10)],
 #     "probability": [True],
 # }
+
+# Scope for poly kernel
+PARAM_SCOPE = {
+    "kernel": ["poly"],
+    "gamma": ["auto"],
+    "C": [1.0],
+    "degree": [3],
+    "probability": [True],
+}
 
 SCORE = "neg_log_loss"
 # **** end ****
@@ -96,7 +96,7 @@ def grid_search(path: Union[str, None] = None) -> None:
     model = GridSearchCV(
         SVC(),
         PARAM_SCOPE,
-        cv=5,
+        cv=3,
         scoring=SCORE,
         error_score=np.nan,
         n_jobs=-1,
