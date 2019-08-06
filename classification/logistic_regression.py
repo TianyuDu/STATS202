@@ -24,8 +24,8 @@ import classification.classification_utility as utils
 # Elastic Net
 PARAM_SCOPE = {
     "penalty": ["elasticnet"],
-    "C": [2 ** x for x in range(-5, 5)],
-    "l1_ratio": [0.02 * x for x in range(1, 50)],
+    "C": [2 ** x for x in range(-10, 10)],
+    "l1_ratio": [0.02 * x for x in range(51)],
     "solver": ["saga"]
 }
 

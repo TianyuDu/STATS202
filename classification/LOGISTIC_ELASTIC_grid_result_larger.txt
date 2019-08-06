@@ -1,0 +1,1 @@
+{'solver': 'saga', 'C': 0.00390625, 'l1_ratio': 0.98, 'penalty': 'elasticnet'}
