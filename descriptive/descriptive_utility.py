@@ -16,6 +16,18 @@ from util.data_proc import load_whole
 if __name__ == "__main__":
     PATH = "../report/figures/"
     df = load_whole(path="../data/")
+    emperical_ratio = []
+    visit_days = []
+    for t in set(df.VisitDay):
+        subset = df[df.VisitDay == t]
+        emperical_ratio.append(subset.Alert.mean())
+        visit_days.append(t)
+    df2 = pd.DataFrame({"Ratio": emperical_ratio, "VisitDay": visit_days})
+    sns.lmplot(
+        x="VisitDay", y="Ratio",
+        size=4, aspect=2,
+        data=df2, lowess=True)
+    plt.savefig(PATH + "alert_ratio_days.png", dpi=300)
     print(df["TxGroup"].value_counts())
     # sns.catplot(x="TxGroup", kind="count", palette="ch:.25", data=df)
     # Clean data
@@ -62,4 +74,11 @@ if __name__ == "__main__":
             line_kws={"alpha": 0.8}
         )
         plt.savefig("{}lwlm_te_{}.png".format(PATH, target), dpi=300)
+
+    # Plot country distribution
+    plt.close()
+    plt.figure(figsize=(20, 10))
+    g = sns.catplot(x="Country", kind="count", height=4, aspect=2, data=df)
+    g.set_xticklabels(rotation=70)
+    plt.savefig(PATH + "dist_country.png", dpi=300)
     df.to_csv(path_or_buf="./Study_A_to_E_95.csv", index=False)
