@@ -20,11 +20,8 @@ sys.path.append("../")
 import classification.classification_utility as utils
 
 # **** Modify model here ****
-PARAMS = {
-    "n_estimators": 500,
-    "max_depth": 100,
-    "criterion": "gini",
-}
+PARAMS = {'max_features': 'log2', 'criterion': 'gini',
+'n_estimators': 1900, 'max_depth': 64}
 
 # **** add configuration here ****
 PARAM_SCOPE = {

@@ -1,15 +1,18 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
-\contentsline {paragraph}{}{2}{section*.2}
-\contentsline {paragraph}{}{2}{section*.3}
-\contentsline {section}{\numberline {2}Treatment Effects}{2}{section.2}
-\contentsline {paragraph}{}{2}{section*.4}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {paragraph}{}{1}{section*.2}
+\contentsline {paragraph}{}{1}{section*.3}
+\contentsline {section}{\numberline {2}Treatment Effects}{1}{section.2}
+\contentsline {paragraph}{}{1}{section*.4}
 \contentsline {paragraph}{}{2}{section*.5}
 \contentsline {paragraph}{}{2}{section*.6}
-\contentsline {paragraph}{}{2}{section*.7}
+\contentsline {paragraph}{}{3}{section*.7}
 \contentsline {paragraph}{}{3}{section*.8}
-\contentsline {subsection}{\numberline {2.1}Evolving Paths of Metrics Over Time}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.1}Patterns of PANSS over Time}{3}{subsection.2.1}
 \contentsline {paragraph}{}{3}{section*.9}
-\contentsline {section}{\numberline {3}Patient Segmentation}{3}{section.3}
-\contentsline {section}{\numberline {4}Patient PANSS Forecasting}{3}{section.4}
-\contentsline {section}{\numberline {5}Assessment Validity Classification}{3}{section.5}
+\contentsline {subsection}{\numberline {2.2}Identifying Treatment Effect with Hypothesis Testing}{4}{subsection.2.2}
+\contentsline {paragraph}{}{4}{section*.10}
+\contentsline {section}{\numberline {3}Patient Segmentation}{5}{section.3}
+\contentsline {section}{\numberline {4}Patient PANSS Forecasting}{5}{section.4}
+\contentsline {section}{\numberline {5}Assessment Validity Classification}{5}{section.5}
+\contentsline {section}{\numberline {6}Appendix}{5}{section.6}

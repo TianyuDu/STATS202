@@ -9,6 +9,8 @@ if __name__ == "__main__":
     plt.plot(mpv, fop, marker=".")
     plt.show()
 
-    calibrator = calibration.CalibratedClassifierCV(model, method="isotonic", cv=5)
+    calibrator = calibration.CalibratedClassifierCV(model, method="sigmoid", cv=10)
     calibrator.fit(X_train, y_train)
     pred_dev = calibrator.predict_proba(X_dev)
+
+    pred_test = calibrator.predict_proba(X_test)
