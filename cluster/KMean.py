@@ -78,6 +78,8 @@ def gen_2d_plots(n_clusters: int, path: str = None):
                 df[index == g][var2],
                 alpha=0.3
             )
+        plt.xlabel(var1)
+        plt.ylabel(var2)
         dest = path + "{}_means_{}_{}.png".format(n_clusters, var1, var2)
         plt.savefig(dest, dpi=300)
         print("Clustering visualization saved to: {}".format(dest))
