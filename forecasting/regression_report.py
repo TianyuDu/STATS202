@@ -59,6 +59,8 @@ if __name__ == "__main__":
     record = list()
     for (model, name, params) in best_models:
         print("Running CV for: {}".format(name))
+        print("Parameter:")
+        print(params)
         start_time = datetime.now()
         constructed_model = model(**params)
         cv_loss = model_cv_test(
