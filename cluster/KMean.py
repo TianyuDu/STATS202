@@ -70,13 +70,13 @@ def gen_2d_plots(n_clusters: int, path: str = None):
     df["N_Total"] = df[["N" + str(i) for i in range(1, 8)]].sum(axis=1)
     df["G_Total"] = df[["G" + str(i) for i in range(1, 17)]].sum(axis=1)
     # Plot out the clustering result
-    fig = plt.figure()
     for var1, var2 in [("P_Total", "N_Total"), ("P_Total", "G_Total"), ("N_Total", "G_Total")]:
+        fig = plt.figure()
         for g in set(index):
             plt.scatter(
                 df[index == g][var1],
                 df[index == g][var2],
-                alpha=0.6
+                alpha=0.3
             )
         dest = path + "{}_means_{}_{}.png".format(n_clusters, var1, var2)
         plt.savefig(dest, dpi=300)
