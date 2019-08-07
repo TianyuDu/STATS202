@@ -32,8 +32,6 @@ def color_pca(n_clusters: int, n_components: int, path: str = None):
     # Fit KMeans using 30 standardized sub-scores only.
     kmeans.fit(standardized)
     index = kmeans.predict(standardized)
-    # index = cluster.AgglomerativeClustering(
-    #     n_clusters=n_clusters, linkage="average").fit_predict(standardized)
     print("Computing PCA...")
     df = utils.get_data()
     df.drop(columns=["PANSS_Total"], inplace=True)
@@ -58,7 +56,7 @@ def color_pca(n_clusters: int, n_components: int, path: str = None):
                 reduced[index == g][:, 0],
                 reduced[index == g][:, 1],
                 reduced[index == g][:, 2],
-                alpha=0.6
+                alpha=0.4
             )
         ax.set_xlabel("First Principle Component")
         ax.set_ylabel("Second Principle Component")
