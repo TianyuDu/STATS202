@@ -38,7 +38,12 @@ def pca_reduction(n_components: int, path: str = None):
         ax.set_xlabel("First Principle Component")
         ax.set_ylabel("Second Principle Component")
         ax.set_zlabel("Third Principle Component")
-    plt.show()
+    if path is None:
+        plt.show()
+    else:
+        dest = path + "{}_PCA.png".format(n_components)
+        plt.savefig(dest, dpi=300)
+        print("PCA visualization saved to: {}".format(dest))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
