@@ -21,7 +21,7 @@ def k_mean(n_clusters: int, path: str = None):
     scaler = preprocessing.StandardScaler()
     standardized = scaler.fit_transform(
         df.drop(columns=["PANSS_Total"]).values)
-    # Create K mean..
+    # Create K mean.
     kmeans = cluster.KMeans(n_clusters=n_clusters, random_state=0)
     # Fit KMeans using 30 standardized sub-scores only.
     kmeans.fit(standardized)
