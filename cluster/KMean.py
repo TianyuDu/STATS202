@@ -13,17 +13,24 @@ sys.path.append("../")
 import cluster.clustering_utility as utils
 
 
-def k_mean(n_clusters: int):
-    df = utils.get_data()  # This dataset 
+def k_mean(n_clusters: int, path: str = None):
+    df = utils.get_data()  # This dataset contains 30 PANSS sub-scores and PANSS_Total
+    # K-Mean is sensitive to scale of data.
+    # Eventhough the prior ranges of all sub-scores are the same, but they have different
+    # empericial ranges and variance.
     scaler = preprocessing.StandardScaler()
     standardized = scaler.fit_transform(
         df.drop(columns=["PANSS_Total"]).values)
+    # Create K mean..
     kmeans = cluster.KMeans(n_clusters=n_clusters, random_state=0)
+    # Fit KMeans using 30 standardized sub-scores only.
     kmeans.fit(standardized)
     index = kmeans.predict(standardized)
+    # Create summary metrics for better visualization.
     df["P_Total"] = df[["P" + str(i) for i in range(1, 8)]].sum(axis=1)
     df["N_Total"] = df[["N" + str(i) for i in range(1, 8)]].sum(axis=1)
     df["G_Total"] = df[["G" + str(i) for i in range(1, 17)]].sum(axis=1)
+    # Plot out the clustering result
     fig = plt.figure()
     ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=48, azim=134)
     var1, var2, var3 = "P_Total", "N_Total", "G_Total"
@@ -37,10 +44,16 @@ def k_mean(n_clusters: int):
     ax.set_xlabel(var1)
     ax.set_ylabel(var2)
     ax.set_zlabel(var3)
-    plt.show()
+    if path is None:
+        plt.show()
+    else:
+        dest = path + "{}_means.png".format(n_clusters)
+        plt.savefig(dest, dpi=300)
+        print("Clustering visualization saved to: {}".format(dest))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-n", type=int, default=2)
+    parser.add_argument("--n", type=int, default=2)
+    parser.add_argument("--logdir", type=str, default=None)
     args = parser.parse_args()
-    k_mean(args.n)
+    k_mean(args.n, args.logdir)
