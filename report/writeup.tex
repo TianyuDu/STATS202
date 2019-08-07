@@ -103,12 +103,69 @@
 
 	
 	\section{Patient Segmentation}
+	\paragraph{} In this section, segmentation methods were deployed to cluster 2438 patients based on their PANSS metrics at day zero. Two decisions must be made during this process: (i) how many clusters to use(ii); and what type of cluster to use.
+	\subsection{Preprocessing}
+	\paragraph{} Even though the prior ranges of all PANSS sub-scores were the same, they had different sample variance. Most clustering algorithms are sensitive to the mean and variance of features. To avoid potential issues, all 30 sub-scores were standardized before applying clustering on them.
+
+	\subsection{Identify Optimal Number of Clusters}
+	\paragraph{} Elbow method can provide us song rough idea on the number of clusters to use. By analyzing the improvement in total (within group) sum of squares from adding more clusters, one can observe that adding one more cluster after $k=7$ did not provide much improvement. We can conclude that the optimal $k$ would lie between 2 and 7.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/Elbow_method.png}
+		\caption{Elbow Method to Identify Number of Clusters}
+	\end{figure}
+	
+	\paragraph{} To find the optimal value of $k$, we used \texttt{NbClust} package in \texttt{R}, which implemented 30 criterions to identify the optimal $k$. Each criterion proposed one optimal $k$, and the final number of clusters was set to be the one proposed by most criterions. According to the result, three was the number of clusters supported by most criterions (by 14 criterions).
+
+	\subsection{Choosing Clustering Algorithms}
+	\paragraph{} Agglomerative algorithms with four different types of linkages were deployed together with k-means. As mentioned above, the optimal number of clusters was identified to be three. The experiment implied k-means delivered a more balanced segmentation in terms of group sizes when $k=3$. As a result, k-means with three clusters were used in following sections.
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|c|c|c}
+			Model & 2 Clusters & 3 Clusters & 4 Clusters \\
+			\hline
+			\hline
+			Agglomerative \\
+			\hline
+			Ward & (1714, 724) & (1714, 452, 272) & (860, 854, 452, 272) \\
+			Complete & (2178, 260) & (2177, 260, 1) & (1580, 597, 260, 1) \\
+			Average & (2437, 1) & (2436, 1, 1) & (2435, 1, 1, 1) \\
+			Single & (2437, 1) & (2436, 1, 1) & (2435, 1, 1, 1) \\
+			\hline
+			\hline
+			K-Means & (1411, 1027) & (882, 828, 728) & (787, 642, 543, 466)
+		\end{tabular}
+		\caption{Group Sizes from Different Algorithms}
+	\end{table}
+	
+	\subsection{Visualization and Evaluation}
+	\paragraph{} Ideally, one create a scatter plot of observations, and then mark instances belonging to different clusters using different colours, and tell whether the clustering algorithm provides reasonable segmentation. However, it is impossible for us to visualize feature space beyond three dimensions.\footnote{Theoretically, one can draw the fourth dimension by colouring observations differently. But in our case, colours are used to identify clusters.} Instead, clustering results were plotted using reduced feature spaces. PANSS sub-scores were inherently defined using three sub-groups, it is natural to use the summations of sub-scores belongs positive, negative, and general scores as three axes of the reduced feature space.
+	\paragraph{} In additional, the reduced feature space of the first three principle components was used as well. Since the clustering algorithm only had access to standardized scores but not principle components, a clustering algorithm is dong a good job if the clustering result provided also segment the principle component space reasonably as well. Figures below present the clustering result on both reduced feature spaces mentioned above. From the plot on PANSS scores, one can observed that the green group was featured by high scores in all three aggregate metrics, which is likely corresponding to the high-severity patients.	While the orange group was characterized by low positive score with moderate negative and general scores. This group could be low-severity patients. Members in the blue group in general had above average positive scores, average general score, and low negative scores.\footnote{Statements here might be hard to observe using the static 3D plot, one can either run the script to generate an interactive 3D plot or check corresponding 2D plots in appendix.}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/kmean_3.png}
+		\caption{K-Mean Result On Aggregate Metrics of PANSS}
+	\end{figure}
+	Moreover, k-mean clustering result seemed to stay valid on the principle component space, which further fortify the algorithm chosen.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/k_mean_on_pca.png}
+		\caption{K-Mean Result on Principle Components}
+	\end{figure}
+	
 	\section{Patient 18-th Week PANSS Forecasting}
 	\subsection{Feature Space}
 	\paragraph{} This section is devoted to forecasting the total PANSS scores in the last visit of each participating patient. Several variables including indicator for treatment and country were invariant throughout the experiment period. The binary \texttt{TxGroup} variable was simply reduced to one binary variable \texttt{Treatment} $:= \id{\texttt{TxGroup} = \tx{Treatment}}$.
 	
 	\paragraph{} There are 284 unique site IDs and 639 unique rater IDs. Because IDs are numerical but not ordinal values, adding these two features would require an addition of more than 900 one-hot variable, which is significantly larger than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
 	\paragraph{} Assessments in the dataset came from 27 different countries (figure below). Note that there are 18 assessments (belong to 3 patients) do not possess valid values for country. To reduce the dimension of feature space, and handle issue when there are incoming patients from countries not in the training set (there were patients from UK in the test set, but not in the training set), only information on the top five countries was preserved, and all other countries were reduced to one single "other" category. As a result, the \texttt{Country} feature in the raw dataset was transformed into six one-hot-encoded dummies: \texttt{Country\_USA}, \texttt{Country\_Ukraine}, \texttt{Country\_Japan}, \texttt{Country\_Russia}, \texttt{Country\_China}, and \texttt{Country\_Other}.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/dist_country.png}
+		\caption{Distribution of \texttt{Country}}
+	\end{figure}
 	
 	\paragraph{} Each of the 1826 patients in the training set had different numbers of visits on record, most statistical learning models admit dataset in which all training instances have the same number of features. To accommodate this, summary statistics of PANSS scores instead of all scores were used together with time-invariant features like country and treatment. Specifically, the mean, maximum, minimum, and standard deviations of each PANSS sub-score were included. In additional, scores at day 0 and the last visit before the 18-th week visit were used as well to better capture patient's psychological status.
 
@@ -143,13 +200,9 @@
 	\end{table}
 
 	\subsection{Ensemble Method: Gradient Boosting}
+	\paragraph{} Gradient boosting machines refine predictions by iteratively fitting additional models on the residual from previous models.
 	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\linewidth]{figures/dist_country.png}
-		\caption{Distribution of \texttt{Country}}
-	\end{figure}
-
+	\subsection{Summary on Model Performance}
 
 	\section{Assessment Validity Classification}
 	\subsection{Feature Space}
@@ -171,7 +224,7 @@
 	 \paragraph{} After the best hyper-parameter set for each type of learner was identify, they were evaluated again using $k$-fold cross validation techniques to make comparisons across different types of models, where $k$ depends on the actual time taken to train particular model.
 	
 	\subsection{Baseline Model: Logistic Regression}
-	\paragraph{} A logistic regression model is used as a performance baseline. There are only few customization can be made on logistic regression, the grid search looked over the inverse of regularization strength $C$ and the form of regularization. An elastic net regularization was applied to the baseline logistic regression and the regularization takes form $\alpha \norm{\theta}_1 + (1 - \alpha) \norm{\theta}_2$, where $\alpha \in [0, 1]$ controls the exact form of regularization term.
+	\paragraph{} A logistic regression model is used as a performance baseline. There are only few customization can be made on logistic regression, the grid search looked over the inverse of regularization strength $C$ and the form of regularization. An elastic net regularization was applied to the baseline logistic regression and the regularization takes form $\alpha \norm{\theta}_1 + (1 - \alpha) \norm{\theta}_2$, where $\alpha \in [0, 1]$ controls the exact form of regularization term. The grid search results suggested a logistic regression with almost fully L-1 regularization performed the best.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{l|c|c|c}
@@ -284,6 +337,21 @@
  	\end{figure}
  	
 	\section{Appendix}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/3_means_N_Total_G_Total.png}
+		\caption{2D Plots of K-Mean Result}
+	\end{figure}
+	\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.7\linewidth]{figures/3_means_P_Total_G_Total.png}
+		\caption{2D Plots of K-Mean Result}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/3_means_P_Total_N_Total.png}
+		\caption{2D Plots of K-Mean Result}
+	\end{figure}
 \end{document}
 
 

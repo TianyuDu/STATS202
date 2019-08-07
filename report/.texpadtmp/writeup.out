@@ -3,18 +3,23 @@
 \BOOKMARK [2][-]{subsection.2.1}{Patterns of PANSS over Time}{section.2}% 3
 \BOOKMARK [2][-]{subsection.2.2}{Identifying Treatment Effect with Hypothesis Testing}{section.2}% 4
 \BOOKMARK [1][-]{section.3}{Patient Segmentation}{}% 5
-\BOOKMARK [1][-]{section.4}{Patient 18-th Week PANSS Forecasting}{}% 6
-\BOOKMARK [2][-]{subsection.4.1}{Feature Space}{section.4}% 7
-\BOOKMARK [2][-]{subsection.4.2}{Support Vector Regression with Polynomial and RBF Kernel}{section.4}% 8
-\BOOKMARK [2][-]{subsection.4.3}{Ensemble Method: Random Forest}{section.4}% 9
-\BOOKMARK [2][-]{subsection.4.4}{Ensemble Method: Gradient Boosting}{section.4}% 10
-\BOOKMARK [1][-]{section.5}{Assessment Validity Classification}{}% 11
-\BOOKMARK [2][-]{subsection.5.1}{Feature Space}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.2}{General Strategy to Identify the Best Learner}{section.5}% 13
-\BOOKMARK [2][-]{subsection.5.3}{Baseline Model: Logistic Regression}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.4}{Ensemble Model: Random Forest}{section.5}% 15
-\BOOKMARK [2][-]{subsection.5.5}{Ensemble Model: Gradient Boosting}{section.5}% 16
-\BOOKMARK [2][-]{subsection.5.6}{Support Vector Classifier}{section.5}% 17
-\BOOKMARK [2][-]{subsection.5.7}{Calibration}{section.5}% 18
-\BOOKMARK [2][-]{subsection.5.8}{Summary on Model Performances}{section.5}% 19
-\BOOKMARK [1][-]{section.6}{Appendix}{}% 20
+\BOOKMARK [2][-]{subsection.3.1}{Preprocessing}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Identify Optimal Number of Clusters}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Choosing Clustering Algorithms}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Visualization and Evaluation}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Patient 18-th Week PANSS Forecasting}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Feature Space}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Ensemble Method: Random Forest}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Support Vector Regression with Polynomial and RBF Kernel}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Ensemble Method: Gradient Boosting}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.5}{Summary on Model Performance}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Assessment Validity Classification}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Feature Space}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{General Strategy to Identify the Best Learner}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.3}{Baseline Model: Logistic Regression}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.4}{Ensemble Model: Random Forest}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.5}{Ensemble Model: Gradient Boosting}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.6}{Support Vector Classifier}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.7}{Calibration}{section.5}% 23
+\BOOKMARK [2][-]{subsection.5.8}{Summary on Model Performances}{section.5}% 24
+\BOOKMARK [1][-]{section.6}{Appendix}{}% 25
