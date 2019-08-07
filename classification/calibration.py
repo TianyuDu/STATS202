@@ -1,5 +1,6 @@
 import sys
 import matplotlib.pyplot as plt
+import argparse
 
 import numpy as np
 
@@ -25,7 +26,7 @@ def calibrate_model(
         X, y, test_size=0.3, random_state=42
     )
     model.fit(X_train, y_train)
-    pred_dev = model.predict_proba(pred_dev)
+    pred_dev = model.predict_proba(X_dev)
     fop, mpv = calibration.calibration_curve(y_dev, pred_dev[:, 1], n_bins=100)
     plt.plot([0, 1], [0, 1], linestyle="--")
     plt.plot(mpv, fop, marker=".")
@@ -57,6 +58,9 @@ def calibrate_model(
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--logdir", type=str, default=None)
+    args = parser.parse_args()
     X_train, y_train, X_test = utils.get_data()
     PARAMS = {
         'max_features': 'log2', 'criterion': 'gini',
@@ -67,4 +71,4 @@ if __name__ == "__main__":
         random_state=42,
         n_jobs=-1,
     )
-    calibrate_model(model, X_train.values, y_train.values, path="./")
+    calibrate_model(model, X_train.values, y_train.values, path=args.logdir)
