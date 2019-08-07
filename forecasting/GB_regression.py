@@ -35,7 +35,7 @@ PARAMS = {'criterion': 'friedman_mse', 'learning_rate': 0.01,
 # **** add configuration here ****
 PARAM_SCOPE = {
     # "max_depth": [2 ** x for x in range(5, 14)],
-    "max_depth": [3, 6, 9],
+    "max_depth": [3, 6, 9, 12],
     "learning_rate": [0.001, 0.003, 0.01, 0.03, 0.1, 0.3],
     "n_estimators": [100 * x for x in range(1, 40, 4)],
     "max_features": ["auto", "sqrt", "log2"],
