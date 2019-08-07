@@ -104,12 +104,46 @@
 	
 	\section{Patient Segmentation}
 	\section{Patient 18-th Week PANSS Forecasting}
-
+	\subsection{Feature Space}
 	\paragraph{} This section is devoted to forecasting the total PANSS scores in the last visit of each participating patient. Several variables including indicator for treatment and country were invariant throughout the experiment period. The binary \texttt{TxGroup} variable was simply reduced to one binary variable \texttt{Treatment} $:= \id{\texttt{TxGroup} = \tx{Treatment}}$.
 	
 	\paragraph{} There are 284 unique site IDs and 639 unique rater IDs. Because IDs are numerical but not ordinal values, adding these two features would require an addition of more than 900 one-hot variable, which is significantly larger than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
 	\paragraph{} Assessments in the dataset came from 27 different countries (figure below). Note that there are 18 assessments (belong to 3 patients) do not possess valid values for country. To reduce the dimension of feature space, and handle issue when there are incoming patients from countries not in the training set (there were patients from UK in the test set, but not in the training set), only information on the top five countries was preserved, and all other countries were reduced to one single "other" category. As a result, the \texttt{Country} feature in the raw dataset was transformed into six one-hot-encoded dummies: \texttt{Country\_USA}, \texttt{Country\_Ukraine}, \texttt{Country\_Japan}, \texttt{Country\_Russia}, \texttt{Country\_China}, and \texttt{Country\_Other}.
+	
+	\paragraph{} Each of the 1826 patients in the training set had different numbers of visits on record, most statistical learning models admit dataset in which all training instances have the same number of features. To accommodate this, summary statistics of PANSS scores instead of all scores were used together with time-invariant features like country and treatment. Specifically, the mean, maximum, minimum, and standard deviations of each PANSS sub-score were included. In additional, scores at day 0 and the last visit before the 18-th week visit were used as well to better capture patient's psychological status.
 
+	\subsection{Ensemble Method: Random Forest}
+	\paragraph{} Even though not all PANSS records were fed to the model, there were still hundreds of features actually used. To prevent risks from overfitting, a random forest model is proposed. The grid searching suggested that an ensemble of 500 deep trees with depth of 4096 preformed best in terms of MSE estimated using 5-fold cross validation.
+
+	\subsection{Support Vector Regression with Polynomial and RBF Kernel}
+	\paragraph{} Support vector regressions use different kernels to engineer input features implicitly. Two commonly chosen kernels are polynomial and RBF kernels. SVRs in general take longer to fit than other methods, but deliver superior performances. The scopes of hyper-parameter searching for different kernels are presented in tables below.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|c|c|c}
+ 		H-Param & Range & Best & Total \\
+ 		\hline
+ 		\hline
+ 		Polynomial Kernel \\
+ 		\hline
+ 		Kernel Size ($\gamma$) & $\{\frac{1}{p}, 0.1, 0.01, 0.001, 0.0001\}$ & 0.0001 & 5 \\
+ 		Err. Penalty ($C$)& $\{2, 4, 8, 16\}$ & 4 & 4 \\
+ 		Polynomial Deg. ($\delta$)& $\{3, 4, 5, 6\}$ & 3 & 4 \\
+ 		\hline
+ 		All Combinations & & & 80 \\
+ 		\hline
+ 		\hline
+ 		RBF Kernel \\
+ 		\hline
+ 		Kernel Size ($\gamma$) & $\{\frac{1}{p}, 10^{-10}, 10^{-9}, \cdots 0.1\}$ & $10^{-5}$ & 10 \\
+ 		Err. Penalty ($C$)& $\{2, 4, 8, \cdots, 516\}$ & 128 & 9 \\
+ 		\hline
+ 		All Combinations & & & 90
+		\end{tabular}
+		\caption{Hyper-parameter Scope and Result for Support Vector Regression}
+	\end{table}
+
+	\subsection{Ensemble Method: Gradient Boosting}
+	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/dist_country.png}
@@ -137,7 +171,19 @@
 	 \paragraph{} After the best hyper-parameter set for each type of learner was identify, they were evaluated again using $k$-fold cross validation techniques to make comparisons across different types of models, where $k$ depends on the actual time taken to train particular model.
 	
 	\subsection{Baseline Model: Logistic Regression}
-	\paragraph{} A logistic regression model is used as a performance baseline.
+	\paragraph{} A logistic regression model is used as a performance baseline. There are only few customization can be made on logistic regression, the grid search looked over the inverse of regularization strength $C$ and the form of regularization. An elastic net regularization was applied to the baseline logistic regression and the regularization takes form $\alpha \norm{\theta}_1 + (1 - \alpha) \norm{\theta}_2$, where $\alpha \in [0, 1]$ controls the exact form of regularization term.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|c|c|c}
+		H-Param & Range & Best & Total \\
+ 		\hline
+ 		Inverse Reg. ($C$) & $\{2^{-10}, 2^{-9}, \cdots, 2^9\}$ & $2^{-8}$ & 20 \\
+ 		L1 Reg. Weight ($\alpha$) & $\{0, 0.2, 0.4, \cdots, 0.98, 1\}$ & 0.98 & 51 \\
+ 		\hline
+ 		All Combinations & & & 1020 
+		\end{tabular}
+		\caption{Hyper-parameter Scope and Result for Logistic Regression}
+	\end{table}
  	
  	\subsection{Ensemble Model: Random Forest}
  	\paragraph{} Random forests handles overfitting problems naturally as an ensemble method. Several hyper-parameters play crucial rules while fitting a random forest, including number of tree built, the criterion for choosing the best split, the number of features to consider while identifying the best split, as well as the maximum depth of each tree. Let $\mc{G}$ and $p$ denote the proposed hyper-parameter space and number of features respectively. The table below shows the scope of above mentioned hyper-parameters searched over during the grid search process.
@@ -197,21 +243,45 @@
  		Radius of RBF $\gamma$ & $\{\frac{1}{p}, 0.1, 0.01, \cdots, 10^{-9}\}$ & 0.0001 & 10 \\
  		\hline
  		All Combinations & & & 90
- 		\end{tabular}	
+ 		\end{tabular}
  	\end{table}
 
- 	
-%# PARAM_SCOPE = {
-%#     "kernel": ["rbf"],
-%#     "gamma": ["auto"] + [10 ** (-x) for x in range(1, 10)],
-%#     "C": [2 ** x for x in range(1, 10)],
-%#     "probability": [True],
-%# }
- 	
- 	\subsection{Deep Neural Network}
- 	
+% 	\subsection{Deep Neural Network}
+% 	\paragraph{} Neural networks can be deemed as feature extractors and select important features to propagate forwards. All products of pairs of PANSS scores were added to features. Then, deep neural network with 0.2 dropout rate on input layer and 0.5 dropout rate on following hidden layers was trained. The dropout works in a manner similar to random forests, and prevents neural networks from overfitting the training set. To better corporate with dropout applied, activation functions for hidden layers were chosen to be ReLU, and the activation for the output layer was sigmoid.
+% 	
+% 	\paragraph{} After searching over hundreds of possible models, a deep neural network with five hidden layers and 1024 neurons on each hidden layer was selected. Moreover, a stop point at 150 epochs, training rate of 0.0003, and 512 batch size were used.
+% 	
  	\subsection{Calibration}
- 	\paragraph{} Models in this section were built to predict a \emph{probability} for one assessment to be flagged. Therefore, calibration methods were used to refine model outputs. The non-parametric isotonic regression was deployed instead of Platt scaling since the dataset was sufficiently large.
+ 	\paragraph{} Models in this section were built to predict a \emph{probability} for one assessment to be flagged. Therefore, calibration methods were used to refine model outputs. The non-parametric isotonic regression was deployed instead of Platt scaling since the dataset was sufficiently large. Figure below presents a comparison between the uncalibrated random forest and the one calibrated using isotonic regression with 10-fold CV, in which the curve for the calibrated curve adhered the 45-degree line (i.e. perfect prediction) better. In reality, calibration does not guarantee improvements in the entropy loss, the model with best CV performance was selected.
+ 	\begin{figure}[H]
+ 		\centering
+ 		\includegraphics[width=0.7\linewidth]{figures/calibration_curve_raw_model.png}
+ 		\includegraphics[width=0.7\linewidth]{figures/calibration_curve_calibrated_model.png}
+ 		\caption{Calibration Curve of Raw Model and Isotonic Calibrated Model}
+ 	\end{figure}
+ 	\subsection{Summary on Model Performances}
+ 	\paragraph{} Cross validations and the cross entropy (i.e. the log loss) were used to compare the relative performance across different types of models. It turned out that the uncalibrated random forest performed best.
+ 	
+ 	\begin{table}[H]
+ 		\centering
+ 		\begin{tabular}{l|c|c}
+ 			Model & Uncalibrated & Calibrated \\
+ 			\hline 
+ 			Logistic Regression & $0.5041 \pm 0.007183$ & $0.5301 \pm 0.01452$\\
+ 			Random Forest & \red{$0.3689 \pm 0.008212$} & $0.3919 \pm 0.009972$\\
+ 			Gradient Boosting & $0.4354 \pm 0.01348$ & $0.4277 \pm 0.002407$\\
+ 			Support Vector Classifier & $0.4523 \pm 0.01080$ & $0.4686 \pm 0.007865$ \\
+%  			Deep Neural Network & & --
+ 		\end{tabular}
+ 		\caption{Relative Performances of Selected Models}
+ 	\end{table}
+ 	
+ 	Random forest also provided insights on relative importances of each features. From the feature importance plot, one can see that whether an assessment was taken in china or not, the visit day when the assessment was made, and the total PANSS score played were three major most correlated with the validity of assessment.
+ 	\begin{figure}[H]
+ 		\centering
+ 		\includegraphics[width=0.9\linewidth]{figures/classification_feature_importance.png}
+ 		\caption{Feature Importance from Random Forest}
+ 	\end{figure}
  	
 	\section{Appendix}
 \end{document}

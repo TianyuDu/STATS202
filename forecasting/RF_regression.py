@@ -19,8 +19,7 @@ sys.path.append("../")
 import forecasting.forecasting_utility as utils
 
 # **** Modify model here ****
-PARAMS = {'criterion': 'mse', 'max_depth': 4096,
-          'max_features': 'auto', 'n_estimators': 500}
+PARAMS = {'criterion': 'mse', 'max_depth': 4096, 'max_features': 'auto', 'n_estimators': 500}
 
 # **** add configuration here ****
 PARAM_SCOPE = {

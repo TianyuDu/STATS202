@@ -4,13 +4,17 @@
 \BOOKMARK [2][-]{subsection.2.2}{Identifying Treatment Effect with Hypothesis Testing}{section.2}% 4
 \BOOKMARK [1][-]{section.3}{Patient Segmentation}{}% 5
 \BOOKMARK [1][-]{section.4}{Patient 18-th Week PANSS Forecasting}{}% 6
-\BOOKMARK [1][-]{section.5}{Assessment Validity Classification}{}% 7
-\BOOKMARK [2][-]{subsection.5.1}{Feature Space}{section.5}% 8
-\BOOKMARK [2][-]{subsection.5.2}{General Strategy to Identify the Best Learner}{section.5}% 9
-\BOOKMARK [2][-]{subsection.5.3}{Baseline Model: Logistic Regression}{section.5}% 10
-\BOOKMARK [2][-]{subsection.5.4}{Ensemble Model: Random Forest}{section.5}% 11
-\BOOKMARK [2][-]{subsection.5.5}{Ensemble Model: Gradient Boosting}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.6}{Support Vector Classifier}{section.5}% 13
-\BOOKMARK [2][-]{subsection.5.7}{Deep Neural Network}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.8}{Calibration}{section.5}% 15
-\BOOKMARK [1][-]{section.6}{Appendix}{}% 16
+\BOOKMARK [2][-]{subsection.4.1}{Feature Space}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{Support Vector Regression with Polynomial and RBF Kernel}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{Ensemble Method: Random Forest}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{Ensemble Method: Gradient Boosting}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Assessment Validity Classification}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{Feature Space}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.2}{General Strategy to Identify the Best Learner}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.3}{Baseline Model: Logistic Regression}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.4}{Ensemble Model: Random Forest}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.5}{Ensemble Model: Gradient Boosting}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.6}{Support Vector Classifier}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.7}{Calibration}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.8}{Summary on Model Performances}{section.5}% 19
+\BOOKMARK [1][-]{section.6}{Appendix}{}% 20

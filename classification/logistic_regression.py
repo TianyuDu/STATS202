@@ -17,8 +17,7 @@ import classification.classification_utility as utils
 
 
 # **** Modify model here ****
-# PARAMS = {'max_features': 'log2', 'criterion': 'gini',
-#           'n_estimators': 1900, 'max_depth': 64}
+PARAMS = {'solver': 'saga', 'C': 0.00390625, 'l1_ratio': 0.98, 'penalty': 'elasticnet'}
 
 # **** add configuration here ****
 # Elastic Net

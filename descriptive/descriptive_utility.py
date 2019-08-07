@@ -40,7 +40,8 @@ if __name__ == "__main__":
     # Save the loaded data to local file
     # Select treatment group
     TREATMENT = df["TxGroup"] == "Treatment"
-    sns.distplot(df["VisitDay"], kde=False)
+    plt.close()
+    sns.distplot(df["VisitDay"], bins=40, hist=True, kde=False)
     plt.savefig(PATH + "dist_visit_day_all.png", dpi=300)
     LESS95 = df["VisitDay"] <= df["VisitDay"].quantile(0.95)
     # Drop the top 5% observations.

@@ -8,6 +8,7 @@ from datetime import datetime
 from sklearn import metrics
 from sklearn import model_selection
 from sklearn import ensemble
+from sklearn import calibration
 
 sys.path.append("../")
 import classification.classification_utility as utils
@@ -43,9 +44,9 @@ def model_cv_test(model, X, y, pred_fn: str, n_fold: int = 5):
 def record_cv_loss(name: str, cv_loss: list) -> pd.DataFrame:
     result = pd.DataFrame({
         "model": [name],
+        "mean": [np.mean(cv_loss)],
         "min": [np.min(cv_loss)],
         "max": [np.max(cv_loss)],
-        "mean": [np.mean(cv_loss)]
     })
     return result
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     X_train, y_train, X_test = utils.get_data()
     start_time_overall = datetime.now()
     record = list()
-
+    # Test baseline models
     for (model, name, params, pred_fn) in best_models:
         print("Running CV for: {}".format(name))
         start_time = datetime.now()
@@ -69,40 +70,28 @@ if __name__ == "__main__":
         cv_loss = model_cv_test(
             constructed_model,
             X_train.values, y_train.values,
-            pred_fn=pred_fn
+            pred_fn=pred_fn,
+            n_fold=5
+        )
+        record.append(record_cv_loss(name, cv_loss))
+        end_time = datetime.now()
+        print("Time taken: {}".format(str(end_time - start_time)))
+    # Test Calibrated models
+    for (base_model, name, params, pred_fn) in best_models:
+        name = name + "_cali"
+        print("Running CV for: {}".format(name))
+        start_time = datetime.now()
+        constructed_model = calibration.CalibratedClassifierCV(
+            base_model(**params)
+        )
+        cv_loss = model_cv_test(
+            constructed_model,
+            X_train.values, y_train.values,
+            pred_fn=pred_fn,
+            n_fold=5
         )
         record.append(record_cv_loss(name, cv_loss))
         end_time = datetime.now()
         print("Time taken: {}".format(str(end_time - start_time)))
     record = pd.concat(record)
     record.to_csv(args.logdir, index=False)
-
-    # # ==== Gradient Boosting Small LR ====
-    # start_time = datetime.now()
-    # PARAMS = {
-    #     'max_features': 'sqrt', 'n_estimators': 700,
-    #     'criterion': 'friedman_mse', 'max_depth': 6,
-    #     'learning_rate': 0.003}
-    # gbc_1 = ensemble.GradientBoostingClassifier(
-    #     **PARAMS, random_state=42, verbose=0
-    # )
-    # cv_loss = model_cv_test(gbc_1, X_train.values, y_train.values, pred_fn="predict_proba")
-    # record.append(record_cv_loss("GB_small_lr", cv_loss))
-    # end_time = datetime.now()
-    # print("Time taken: {}".format(str(end_time - start_time)))
-
-    # # ==== Gradient Boosting with large LR ====
-    # del(PARAMS)
-    # PARAMS = {
-    #     'max_depth': 6, 'n_estimators': 300, 'max_features': 'sqrt',
-    #     'criterion': 'friedman_mse', 'learning_rate': 0.01}
-    # gbc_2 = ensemble.GradientBoostingClassifier(
-    #     **PARAMS, random_state=42, verbose=0
-    # )
-    # cv_loss = model_cv_test(
-    #     gbc_2, X_train.values,
-    #     y_train.values, pred_fn="predict_proba"
-    # )
-    # record.append(record_cv_loss("GB_small_lr", cv_loss))
-    # end_time = datetime.now()
-    # print("Time taken: {}".format(str(end_time - start_time)))
