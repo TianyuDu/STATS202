@@ -27,9 +27,12 @@ def calibrate_model(
     )
     model.fit(X_train, y_train)
     pred_dev = model.predict_proba(X_dev)
-    fop, mpv = calibration.calibration_curve(y_dev, pred_dev[:, 1], n_bins=100)
+    prob_true, prob_pred = calibration.calibration_curve(y_dev, pred_dev[:, 1], n_bins=50)
+    plt.close()
     plt.plot([0, 1], [0, 1], linestyle="--")
-    plt.plot(mpv, fop, marker=".")
+    plt.plot(prob_pred, prob_true, marker=".")
+    plt.xlabel("Predicted Probability")
+    plt.ylabel("True Probability")
     if path is None:
         plt.show()
     else:
@@ -41,9 +44,12 @@ def calibrate_model(
     calibrator.fit(X_train, y_train)
     pred_dev = calibrator.predict_proba(X_dev)
 
-    fop, mpv = calibration.calibration_curve(y_dev, pred_dev[:, 1], n_bins=100)
+    prob_true, prob_pred = calibration.calibration_curve(y_dev, pred_dev[:, 1], n_bins=50)
+    plt.close()
     plt.plot([0, 1], [0, 1], linestyle="--")
-    plt.plot(mpv, fop, marker=".")
+    plt.plot(prob_pred, prob_true, marker=".")
+    plt.xlabel("Predicted Probability")
+    plt.ylabel("True Probability")
     if path is None:
         plt.show()
     else:
