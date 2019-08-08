@@ -25,10 +25,6 @@ def model_cv_test(model, X, y, n_fold: int = 5):
         model.fit(X_train, y_train)
         # Test the model
         pred_test = model.predict(X_test)
-        # Some model predicts both prob y=0 and prob y=1.
-        # Extract prob y=1 only.
-        if pred_test.shape[1] == 2:
-            pred_test = pred_test[:, 1]
         loss = metrics.mean_squared_error(y_test, pred_test)
         print("mse loss: {}".format(loss))
         cv_loss.append(loss)
