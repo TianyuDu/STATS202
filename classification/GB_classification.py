@@ -90,6 +90,10 @@ def predict(path: Union[str, None] = None) -> None:
 
 
 def grid_search(path: Union[str, None] = None) -> None:
+    """
+    Searches over all hyper-parameters in the scope provided above (see header of this file).
+    And the results are either printed or saved to a local file specificed.
+    """
     X_train, y_train, X_test = utils.get_data()
     # X_train, X_dev, y_train, y_dev = train_test_split(
     #     X_train, y_train, test_size=0.3, random_state=0)

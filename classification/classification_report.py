@@ -16,6 +16,9 @@ from classification.best_models import best_models
 
 
 def model_cv_test(model, X, y, pred_fn: str, n_fold: int = 5):
+    """
+    Generates reports of model performances using cross validation.
+    """
     kf = model_selection.KFold(n_splits=n_fold, shuffle=True)
     cv_loss = []
     for train_index, test_index in kf.split(X):
