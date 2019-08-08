@@ -33,12 +33,12 @@
 	\paragraph{}The entire dataset consists of five different studies ranging from study A to study E. In this practice, the first four datasets are used as a training to fit, select, and evaluate models. Then, these selected models are used to recover missing data in study E.
 	
 	\section{Treatment Effects}
-	\paragraph{}This section is devoted to analyze whether the treatment assigned leads to significant improvements on patients' psychological status. Because the 18-th week assessments are missing in the dataset of study E, in this section, only data from study A to D are considered. There are 20947 observations (assessments) from above-mentioned dataset, in which 10524 observations came from patients assigned to the control group, and the remaining 10423 were from participants belonged to the treatment group. The evenly-split dataset allows us to deploy various models to analyze whether there exists significant treatment effects.
+	\paragraph{}This section is devoted to analyze whether the treatment assigned led to significant improvements on patients' psychological status. Because the 18-th week assessments were missing in the dataset of study E, in this section, only data from study A to D were considered. There were 20947 observations (assessments) from above-mentioned dataset, in which 10524 observations came from patients assigned to the control group, and the remaining 10423 were from participants belonged to the treatment group. The evenly-split dataset allowed us to deploy various models to analyze whether there exists significant treatment effects.
 	
-	\paragraph{}Multiple evidences were found to support that there were indeed no treatment effect in this study. Firstly, the effects on four aggregate scores are analyzed, namely sum of all PANSS scores, and sums of scores from positive (\texttt{P\_Total}), negative (\texttt{N\_Total}), and general (\texttt{G\_Total}) sub-categories respectively.
+	\paragraph{}Multiple evidences were found to support that there were indeed no treatment effect in this study. Firstly, the effects on four aggregate scores were analyzed, namely sum of all PANSS scores, and sums of scores from positive (\texttt{P\_Total}), negative (\texttt{N\_Total}), and general (\texttt{G\_Total}) sub-categories respectively.
 	
-	\paragraph{}One challenge associated with treatment effect analysis is the initial status of patients in different groups. In some cases, the \emph{prior} psychological status for a randomly selected patient from the treatment group is expected to be different from that of a random patient in the control group. In these cases, even if significant differences in PANSS scores \emph{posterior} to the treatment were supported, one will not be able to distinguish whether the "effect" came from the discrepancy in the prior distributions or the treatment, and the treatment effect is not well-identifies.
-	Figure 1 below presents the distributions of the four aggregate scores at day 0 visit. Both groups shared similar histograms in terms of all four metrics. Moreover, the estimated kernel densities collided, which provided further evidence that there were no significant prior discrepancies between patients from these two groups. Therefore, one can conclude that most posterior differences in PANSS metrics were resulted from the treatment assigned.
+	\paragraph{}One challenge associated with treatment effect analysis was the initial status of patients in different groups. In some cases, the \emph{prior} psychological status for a randomly selected patient from the treatment group is expected to be different from that of a random patient in the control group. In these cases, even if significant differences in PANSS scores \emph{posterior} to the treatment were implied, one will not be able to distinguish whether the "effect" came from the discrepancy in the prior distributions or the treatment, and the treatment effect is not well-identifies.
+	Figure 1 below presents the distributions of the four aggregate scores at day 0 visit. Both groups shared similar histograms in terms of all four metrics. Moreover, the estimated kernel densities collided, which provided further evidence that there were no significant prior discrepancies between patients from these two groups. Therefore, one can conclude that most posterior differences in PANSS metrics were resulted from the treatment assigned instead of the prior discrepancy.
 
 	\begin{figure}[H]
 		\centering
@@ -46,7 +46,7 @@
 		\caption{Distributions of Aggregate Scores at Day 0}
 	\end{figure}
 
-	\paragraph{}The evolving path of these four above mentioned metrics can provide reasonable proxies to the treatment effect. As mentioned before, we believed the data failed to provide sufficient evidence to support the existence of treatment effect. Let $t \in \N$ denote the \texttt{VisitDay} variable in the dataset, $t$ ranges from 0 to 480 in the complete dataset. Figure 2 presents the distribution of $t$, the 95-percent quantile is located at $t_{95\%} = 297$. Therefore, the top 5\% of observations occupied more than on third of the total range of $t$, these observations are potentially troublesome as outliers. To deal with this issue, the top 5\% observations are excluded from following analysis.
+	\paragraph{}The evolving path of these four above mentioned metrics over time could provide reasonable proxies to the treatment effect. As mentioned before, we believed the data failed to provide sufficient evidence to support the existence of treatment effect. Let $t \in \N$ denote the \texttt{VisitDay} variable in the dataset, $t$ ranges from 0 to 480 in the complete dataset. Figure 2 presents the distribution of $t$, the 95-percent quantile was located at $t_{95\%} = 297$. Therefore, the top 5\% of observations occupied more than on third of the total range of $t$, these observations were potentially troublesome as outliers. To deal with this issue, the top 5\% observations were excluded in following analysis.
 
 	\begin{figure}[H]
 		\centering
@@ -54,14 +54,14 @@
 		\caption{Distribution of \texttt{VisitDay}}
 	\end{figure}
 	
-	\paragraph{}The general strategy to identify treatment effect here uses linear models. Let $Y$ denote the target metric, which takes value from the four aggregate PANSS metrics: $\mc{M} := \{ \Sigma_{PANSS}, \Sigma_P, \Sigma_N, \Sigma_G\}$. Let $X$ denote the set other characteristics of the patient. And a hybrid linear model is fit:
+	\paragraph{}The general strategy to identify treatment effect utilized linear models. Let $Y$ denote the target metric, which takes value from the four aggregate PANSS metrics: $\mc{M} := \{ \Sigma_{PANSS}, \Sigma_P, \Sigma_N, \Sigma_G\}$. Let $X$ denote the set other characteristics of the patient. And then a hybrid linear model was fit:
 	\begin{align}
 		Y &= f_0(X, t) + \id{\texttt{Treatment}} f_1(X, t)
 	\end{align}
 	where $f_0$ and $f_1$ are two additive linear models, so that $f_0$ captures the evolving path of $Y$ over time for the population of the control group, and the additive term $f_1$ measures the discrepancy of the treatment group.
 	Should the treatment dummy variable is statistically significant, then one can conclude the existence of treatment effect.
 	\subsection{Patterns of PANSS over Time}
-	\paragraph{}Figure 3 below shows the scatter plot of $\Sigma_{PANSS}$ scores against time for both groups with corresponding locally weighted linear regression estimations (LOWESS). The LOWESS for the treatment and control groups almost collide perfectly, which means the trends for both group estimated from non-parametric model are essentially identical, this provides preliminary evidence supporting our claim that there was no significant treatment effect.
+	\paragraph{}Figure 3 below shows the scatter plot of $\Sigma_{PANSS}$ scores against time for both groups with corresponding locally weighted linear regression estimations (LOWESS). The LOWESS for the treatment and control groups collide almost perfectly, which means the trends for both group estimated from non-parametric model are essentially identical, this provides preliminary evidence supporting our claim that there was no significant treatment effect.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_PANSS_Total.png}
@@ -76,7 +76,7 @@
 		&= \theta_0 + \theta_1 t + \theta_2 t^2 + \theta_3 \id{\texttt{Treatment}} + \theta_4 \id{\texttt{Treatment}} t + \theta_5 \id{\texttt{Treatment}} t^2 + \\
 		&+\vec{\gamma}_0 \texttt{Country} + \vec{\delta}_0 \texttt{Study} + Z + \varepsilon
 	\end{align}
-	where $\texttt{Study}$ and $\texttt{Country}$ denote the collection of dummy variables, and $Z$ denotes the set of interaction terms between variables in $X$ and $\id{\texttt{Treatment}}$. It could be controversial whether to include interacting terms between $\id{\texttt{Treatment}}$ and variables other than $t$. As a result, regression results under all combinations of optional covariates are reported in table 1\footnote{Significance codes:  $0 *** 0.001 ** 0.01 * 0.05 \dagger 0.1 \quad 1$}, in which \texttt{S}, \texttt{C}, and \texttt{T} stand for \texttt{Study}, \texttt{Country}, and \texttt{Treatment} respectively. The negative coefficients of $\texttt{T} \times t$ in different settings suggest the treatment actually helped reduce the severity of schizophrenia. However, due to the large standard error of estimator, almost all of these coefficients were found insignificant. Even though in some rare cases, the treatment indicator on the intercept term were different from zero significantly. Consequently, we conclude that the treatment did no affect how PANSS metrics changed over time, so there are no treatment effect.
+	where $\texttt{Study}$ and $\texttt{Country}$ denote the collection of dummy variables, and $Z$ denotes the set of interaction terms between variables in $X$ and $\id{\texttt{Treatment}}$. It could be controversial whether to include interacting terms between $\id{\texttt{Treatment}}$ and variables other than $t$. As a result, regression results under all combinations of optional covariates are reported in table 1\footnote{Significance codes:  $0 *** 0.001 ** 0.01 * 0.05 \dagger 0.1 \quad 1$}, in which \texttt{S}, \texttt{C}, and \texttt{T} stand for \texttt{Study}, \texttt{Country}, and \texttt{Treatment} respectively. The negative coefficients of $\texttt{T} \times t$ in all settings suggest the treatment actually helped reduce the severity of schizophrenia. However, due to the large standard errors of estimators, almost all of these coefficients were found insignificant. Even though in some rare cases, the treatment indicator on intercept terms were found significant. Consequently, we conclude that the treatment did no affect how PANSS metrics changed over time, so there were no treatment effect.
 	\begin{table}[H]
 	\centering
 	\begin{tabular}{l|c|c|c|c}
@@ -105,10 +105,10 @@
 	\section{Patient Segmentation}
 	\paragraph{} In this section, segmentation methods were deployed to cluster 2438 patients based on their PANSS metrics at day zero. Two decisions must be made during this process: (i) how many clusters to use(ii); and what type of cluster to use.
 	\subsection{Preprocessing}
-	\paragraph{} Even though the prior ranges of all PANSS sub-scores were the same, they had different sample variance. Most clustering algorithms are sensitive to the mean and variance of features. To avoid potential issues, all 30 sub-scores were standardized before applying clustering on them.
+	\paragraph{} Even though the prior ranges of all PANSS sub-scores were the same, they had different sample means and variances. Most clustering algorithms are sensitive to the means and variances of features. To avoid potential issues, all 30 sub-scores were standardized before applying clustering on them, so that they all shared zero mean and unitary variance.
 
 	\subsection{Identify Optimal Number of Clusters}
-	\paragraph{} Elbow method can provide us song rough idea on the number of clusters to use. By analyzing the improvement in total (within group) sum of squares from adding more clusters, one can observe that adding one more cluster after $k=7$ did not provide much improvement. We can conclude that the optimal $k$ would lie between 2 and 7.
+	\paragraph{} Elbow method can provide some rough ideas on the optimal number of clusters to use. By analyzing the improvement in total (within group) sum of squares from adding more clusters, one can observe that adding extra cluster after $k=7$ did not offer significant improvement. We can conclude that the optimal $k$ would lie between 2 and 7.
 	
 	\begin{figure}[H]
 		\centering
@@ -116,10 +116,10 @@
 		\caption{Elbow Method to Identify Number of Clusters}
 	\end{figure}
 	
-	\paragraph{} To find the optimal value of $k$, we used \texttt{NbClust} package in \texttt{R}, which implemented 30 criterions to identify the optimal $k$. Each criterion proposed one optimal $k$, and the final number of clusters was set to be the one proposed by most criterions. According to the result, three was the number of clusters supported by most criterions (by 14 criterions).
+	\paragraph{} To find the optimal value of $k$, we used \texttt{NbClust} package in \texttt{R}, which implemented 30 criterions to identify the optimal $k$. Each criterion proposed one optimal $k$, and the final number of clusters was set to be the one proposed by most criterions. According to the result, three was the number of clusters supported by most criterions (14 criterions).
 
 	\subsection{Choosing Clustering Algorithms}
-	\paragraph{} Agglomerative algorithms with four different types of linkages were deployed together with k-means. As mentioned above, the optimal number of clusters was identified to be three. The experiment implied k-means delivered a more balanced segmentation in terms of group sizes when $k=3$. As a result, k-means with three clusters were used in following sections.
+	\paragraph{} Agglomerative algorithms with four different types of linkages were deployed together with k-means. As mentioned before, the optimal number of clusters was identified to be three. The experiment implied k-means delivered a more balanced segmentation in terms of group sizes when $k=3$. As a result, k-mean with three clusters was used in following sections.
 	
 	\begin{table}[H]
 		\centering
@@ -141,14 +141,14 @@
 	\end{table}
 	
 	\subsection{Visualization and Evaluation}
-	\paragraph{} Ideally, one create a scatter plot of observations, and then mark instances belonging to different clusters using different colours, and tell whether the clustering algorithm provides reasonable segmentation. However, it is impossible for us to visualize feature space beyond three dimensions.\footnote{Theoretically, one can draw the fourth dimension by colouring observations differently. But in our case, colours are used to identify clusters.} Instead, clustering results were plotted using reduced feature spaces. PANSS sub-scores were inherently defined using three sub-groups, it is natural to use the summations of sub-scores belongs positive, negative, and general scores as three axes of the reduced feature space.
-	\paragraph{} In additional, the reduced feature space of the first three principle components was used as well. Since the clustering algorithm only had access to standardized scores but not principle components, a clustering algorithm is dong a good job if the clustering result provided also segment the principle component space reasonably as well. Figures below present the clustering result on both reduced feature spaces mentioned above. From the plot on PANSS scores, one can observed that the green group was featured by high scores in all three aggregate metrics, which is likely corresponding to the high-severity patients.	While the orange group was characterized by low positive score with moderate negative and general scores. This group could be low-severity patients. Members in the blue group in general had above average positive scores, average general score, and low negative scores.\footnote{Statements here might be hard to observe using the static 3D plot, one can either run the script to generate an interactive 3D plot or check corresponding 2D plots in appendix.}
+	\paragraph{} Ideally, one can create a scatter plot of observations in their feature space, and then mark instances belonging to different clusters using different colours, and tell whether the clustering algorithm provides reasonable segmentation. However, it is impossible for us to visualize feature space beyond three dimensions.\footnote{Theoretically, one can draw the fourth dimension by colouring observations differently. But in our case, colours are used to identify clusters.} Instead, clustering results were plotted using reduced feature spaces. PANSS sub-scores were inherently defined using three sub-groups, it is natural to use the totals of sub-scores belongs positive, negative, and general scores as three axes of the reduced feature space.
+	\paragraph{} In additional, the reduced feature space of the first three principle components was used as well. Since the clustering algorithm only had access to standardized scores but not their principle components, a clustering algorithm is dong a good job if the clustering result also segment the principle component space reasonably as well. Figures below present the clustering result on both reduced feature spaces mentioned above. From the plot on PANSS scores, one can observed that the green group was featured by high scores in all three aggregate metrics, which is likely corresponding to the high-severity patients.	While the orange group was characterized by low positive score with moderate negative and general scores. This group could be low-severity patients. Members in the blue group in general had above average positive scores, average general score, and low negative scores.\footnote{Statements here might be hard to observe using the static 3D plot, one can either run the script to generate an interactive 3D plot or check corresponding 2D plots in appendix.}
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/kmean_3.png}
 		\caption{K-Mean Result On Aggregate Metrics of PANSS}
 	\end{figure}
-	Moreover, k-mean clustering result seemed to stay valid on the principle component space, which further fortify the algorithm chosen.
+	Moreover, k-mean segmentation seemed to be reasonable on the principle component space as well, which further fortify the algorithm chosen.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/k_mean_on_pca.png}
@@ -156,21 +156,42 @@
 	\end{figure}
 	
 	\section{Patient 18-th Week PANSS Forecasting}
+	\subsection{General Strategy to Identify the Best Learner} 
+	\paragraph{} In the following two sections, various models are proposed for forecasting and classification. In general, the hyper-parameters of each model must be tuned over a large hyper-parameter space $\mc{M}$. However, it is infeasible to search over the entire hyper-parameter space as there are uncountably infinite combinations of hyper-parameters for each model. Instead, a grid search algorithm with cross-validation was implemented. Firstly, a finite subset of $\mc{M}$, $\mc{G}$, was constructed manually, in which each element $g \in \mc{G}$ characterized a valid model. Then for each $g \in \mc{G}$, the grid search algorithm fit the model with hyper-parameter set $g$ five times on different training sets given by a 5-fold cross validation.
+	\footnote{Due to the time constraint, 5-fold CV was used instead of the more conventional 10-fold CV. Typically, hundreds of possible configurations were searched over for each type of model, using $k$-fold CV requires $k \times |\mc{G}|$ model fitting. While $k=5$, the grid search for each type of model took around 4 hours on a 64-core server, it seemed to be infeasible to run grid search with $k=10$.}
+	And the generalization error for such model was estimated using the collection of different CV test sets. Then, for each category of models (random forests, support vector machines, etc), the hyper-parameter set  achieved the best CV performance measured by mean squared error or cross-entropy loss was selected to represent the best performance for this model category.
+	
+	 \paragraph{} After the best hyper-parameter set for each type of learner was identified, these models were evaluated again using 5-fold cross validation techniques to make comparisons across different types of models.
+
 	\subsection{Feature Space}
 	\paragraph{} This section is devoted to forecasting the total PANSS scores in the last visit of each participating patient. Several variables including indicator for treatment and country were invariant throughout the experiment period. The binary \texttt{TxGroup} variable was simply reduced to one binary variable \texttt{Treatment} $:= \id{\texttt{TxGroup} = \tx{Treatment}}$.
 	
-	\paragraph{} There are 284 unique site IDs and 639 unique rater IDs. Because IDs are numerical but not ordinal values, adding these two features would require an addition of more than 900 one-hot variable, which is significantly larger than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
-	\paragraph{} Assessments in the dataset came from 27 different countries (figure below). Note that there are 18 assessments (belong to 3 patients) do not possess valid values for country. To reduce the dimension of feature space, and handle issue when there are incoming patients from countries not in the training set (there were patients from UK in the test set, but not in the training set), only information on the top five countries was preserved, and all other countries were reduced to one single "other" category. As a result, the \texttt{Country} feature in the raw dataset was transformed into six one-hot-encoded dummies: \texttt{Country\_USA}, \texttt{Country\_Ukraine}, \texttt{Country\_Japan}, \texttt{Country\_Russia}, \texttt{Country\_China}, and \texttt{Country\_Other}.
+	\paragraph{} There were 284 unique site IDs and 639 unique rater IDs. Because IDs were numerical but not ordinal, adding these two features would require an addition of more than 900 one-hot-encoded variables, which are significantly more than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
+	\paragraph{} Assessments in the dataset came from 27 different countries (figure below). Note that there were 18 assessments (belonged to 3 patients) did not possess valid values for country. To reduce the dimension of feature space, and handle issue when there are incoming patients from countries not in the training set (there were patients from UK in the test set, but not in the training set), only information on the top five countries was preserved, and all other countries were reduced to one single "other" category. As a result, the \texttt{Country} feature in the raw dataset was transformed into six one-hot-encoded dummies: \texttt{Country\_USA}, \texttt{Country\_Ukraine}, \texttt{Country\_Japan}, \texttt{Country\_Russia}, \texttt{Country\_China}, and \texttt{Country\_Other}.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/dist_country.png}
 		\caption{Distribution of \texttt{Country}}
 	\end{figure}
 	
-	\paragraph{} Each of the 1826 patients in the training set had different numbers of visits on record, most statistical learning models admit dataset in which all training instances have the same number of features. To accommodate this, summary statistics of PANSS scores instead of all scores were used together with time-invariant features like country and treatment. Specifically, the mean, maximum, minimum, and standard deviations of each PANSS sub-score were included. In additional, scores at day 0 and the last visit before the 18-th week visit were used as well to better capture patient's psychological status.
+	\paragraph{} Each of the 1826 patients in the training set had different numbers of visits on record, most statistical learning models admit dataset in which all training instances have the same number of features. To accommodate this, summary statistics of PANSS scores were used together with time-invariant features like country and treatment. Specifically, the mean, maximum, minimum, and standard deviations of each PANSS sub-score were included. In additional, scores at day 0 and the last visit before the 18-th week visit were used as well to help the model capture patient's psychological status better.
 
 	\subsection{Ensemble Method: Random Forest}
-	\paragraph{} Even though not all PANSS records were fed to the model, there were still hundreds of features actually used. To prevent risks from overfitting, a random forest model is proposed. The grid searching suggested that an ensemble of 500 deep trees with depth of 4096 preformed best in terms of MSE estimated using 5-fold cross validation.
+	\paragraph{} Even though not all PANSS records were fed to the model, there were still hundreds of features actually used. To prevent potential overfitting, a random forest model was proposed. The grid searching suggested that an ensemble of 500 deep trees with depth of 4096 preformed best in terms of MSE estimated using 5-fold cross validation.
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|c|c|c}
+		H-Param & Range & Best & Total \\
+			\hline 
+			Max Depth ($\delta$) & $\{\infty, 32, 64, 128, \cdots, 8192\}$ & 4096 & 10 \\
+			Num. Trees ($\tau$) & $\{100, 300, 500, \cdots, 3900\}$ & 500 & 20 \\
+			Max. Features ($\phi$) & $\{p, \sqrt{p}, \log_2(p)\}$ & $p$ & 3 \\
+			\hline
+			All Combinations & & & 600
+		\end{tabular}
+		\caption{Hyper-parameter Scope and Result for Random Forest}
+	\end{table}
 
 	\subsection{Support Vector Regression with Polynomial and RBF Kernel}
 	\paragraph{} Support vector regressions use different kernels to engineer input features implicitly. Two commonly chosen kernels are polynomial and RBF kernels. SVRs in general take longer to fit than other methods, but deliver superior performances. The scopes of hyper-parameter searching for different kernels are presented in tables below.
@@ -200,31 +221,49 @@
 	\end{table}
 
 	\subsection{Ensemble Method: Gradient Boosting}
-	\paragraph{} Gradient boosting machines refine predictions by iteratively fitting additional models on the residual from previous models.
+	\paragraph{} Gradient boosting machines refine predictions by iteratively fitting additional models on the residual from previous models. The table below summaries the scope of hyper-parameters searched.
+	
+	\begin{table}[H]
+		\begin{tabular}{l|c|c|c}
+		H-Param & Range & Best & Total \\
+		\hline
+		Max Depth ($\delta$) & $\{3, 6, 9, 12\}$ & 3 & 4\\
+		Learning Rate ($\alpha$) & $\{0.001, 0.003, 0.01, 0.03, 0.1, 0.3\}$ & 0.003 & 6 \\
+		Num. Estimators ($\tau$) & $\{100, 500, 900, 1300, 1700, 2100, 2500, 2900, 3300, 3700\}$ & 1700 & 10 \\
+		Max. Features ($\phi$) & $\{p, \sqrt{p}, \log_2(p)\}$ & $p$ & 3 \\
+		\hline
+		All Combinations & & & 720
+		\end{tabular}
+	\end{table}
 	
 	\subsection{Summary on Model Performance}
-
+	\paragraph{} After selecting the best hyper-parameter profile for each type of model, the relative performances of the four candidate models were estimated using similar 5-fold cross validations on the entire dataset. From the result, one can see that support vector regression with RBF kernel and large random forest delivered superior performances on this forecasting task.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|c|c|c}
+			Model & Mean & Max & Min \\
+			\hline
+			Random Forest & 78.59 & 61.04 & 96.03 \\
+			SVM Poly. Kernel & 95.24 & 85.31 & 107.8 \\
+			SVM RBF Kernel & $\red{75.93}$ & 65.91 & 87.36 \\
+			Gradient Boosting & 130.17 & 110.27 & 147.24
+		\end{tabular}
+		\caption{Relative Performance (MSE) of Selected Models on 5-Fold Cross Validation}
+	\end{table}
+	
 	\section{Assessment Validity Classification}
 	\subsection{Feature Space}
-	\paragraph{} In this section, each assessment becomes one training instance. The feature space consists of 30 PANSS scores and several identifiers such as country and rater's ID. In this study, all 30 PANSS scores and \texttt{PANSS\_Total} were taken to be preliminary features. As for treatment and country identifiers, the same procedure mentioned in the previous section was followed.
-	\paragraph{} In the training set, the standard deviations of 30 PANSS sub-scores range from 0.9374 to 1.562, and their averages range from 1.572 to 3.258. To eliminate this discrepancy, These 30 metrics were standardized so that all of them share mean of zero and standard deviation of one.
-	\paragraph{} Moreover, the figure below plots out the fraction for an assessment taken on particular visiting day to be flagged or assigned to CS. The plot suggests a nontrivial relation between the empirical probability of anomaly assessment and the day of visit. Therefore, \texttt{VisitDay} is also included as a feature.
+	\paragraph{} In this section, each training instance became one assessment instead of one patient. The feature space consisted of 30 PANSS scores and several identifiers such as country and rater's ID. In this study, all 30 PANSS scores and \texttt{PANSS\_Total} were taken to be preliminary features. As for treatment and country identifiers, the same procedure mentioned in the previous section was followed.
+	\paragraph{} In the training set, the standard deviations of 30 PANSS sub-scores ranged from 0.9374 to 1.562, and their averages ranged from 1.572 to 3.258. To eliminate this discrepancy, these 30 metrics were standardized so that all of them shared mean of zero and standard deviation of one.
+	\paragraph{} Moreover, the figure below plots out the fraction for an assessment taken on particular visiting day to be flagged or assigned to CS (i.e. the empirical probability of positive class). The plot suggests there exists nontrivial relation between the empirical probability of anomaly assessment and the day of visit. Therefore, \texttt{VisitDay} was also included as a feature.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/alert_ratio_days.png}
 		\caption{Fraction of Assessments Flagged on Each Day}
 	\end{figure}
 	
-	\subsection{General Strategy to Identify the Best Learner}
-	\paragraph{} In the following parts of this section, various models are proposed for the classification task using features mentioned before.
-	\paragraph{} In general, the hyper-parameters of each model must be tuned over a large hyper-parameter space $\mc{M}$. However, it is infeasible to search over the entire hyper-parameter space as there are uncountably infinite combination of hyper-parameters for each model. Instead, a grid search algorithm with cross-validation was deployed. Firstly, a finite subset of $\mc{M}$, $\mc{G}$, was constructed manually, in which each element $g \in \mc{G}$ characterizes a valid model. Then for each $g \in \mc{G}$, the grid search algorithm fit a model with hyper-parameter set $g$ five times on different training sets given by a 5-fold cross validation.
-	\footnote{Due to the time constraint, 5-fold CV was used instead of the more conventional 10-fold CV. Typically, hundreds of possible configurations were searched over for each type of model, using $k$-fold CV requires $k \times |\mc{G}|$ model fitting. While $k=5$, the grid search for each type of model took around 4 hours on a 64-core server, it seemed to be infeasible to run grid search with $k=10$.}
-	And the generalization error for such model is estimated using the collection of different CV test sets. Then, for each category of models (random forest, neural nets, etc), the hyper-parameter set  achieved the best CV performance measured by cross-entropy loss was saved to represent the best performance for this model category.
-	
-	 \paragraph{} After the best hyper-parameter set for each type of learner was identify, they were evaluated again using $k$-fold cross validation techniques to make comparisons across different types of models, where $k$ depends on the actual time taken to train particular model.
-	
 	\subsection{Baseline Model: Logistic Regression}
-	\paragraph{} A logistic regression model is used as a performance baseline. There are only few customization can be made on logistic regression, the grid search looked over the inverse of regularization strength $C$ and the form of regularization. An elastic net regularization was applied to the baseline logistic regression and the regularization takes form $\alpha \norm{\theta}_1 + (1 - \alpha) \norm{\theta}_2$, where $\alpha \in [0, 1]$ controls the exact form of regularization term. The grid search results suggested a logistic regression with almost fully L-1 regularization performed the best.
+	\paragraph{} A logistic regression model was used as a performance baseline. There were only few customizations can be made on logistic regression, the grid search looked over the inverse of regularization strength $C$ and the form of regularization. An elastic net regularization was applied to the baseline logistic regression and the regularization takes form $\alpha \norm{\theta}_1 + (1 - \alpha) \norm{\theta}_2$, where $\alpha \in [0, 1]$ controlled the exact form of regularization term. The grid search results suggested a logistic regression with almost fully L-1 regularization performed the best.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{l|c|c|c}
@@ -239,7 +278,7 @@
 	\end{table}
  	
  	\subsection{Ensemble Model: Random Forest}
- 	\paragraph{} Random forests handles overfitting problems naturally as an ensemble method. Several hyper-parameters play crucial rules while fitting a random forest, including number of tree built, the criterion for choosing the best split, the number of features to consider while identifying the best split, as well as the maximum depth of each tree. Let $\mc{G}$ and $p$ denote the proposed hyper-parameter space and number of features respectively. The table below shows the scope of above mentioned hyper-parameters searched over during the grid search process.
+ 	\paragraph{} Random forests handles overfitting problems naturally as an ensemble method. Several hyper-parameters play crucial rules while fitting a random forest, including number of tree built, the criterion for choosing the best split, the number of features to consider while identifying the best split, as well as the maximum depth of each tree. The table below shows the scope of above mentioned hyper-parameters searched over during the grid search process.
  	\begin{table}[H]
  		\centering
  		\begin{tabular}{l|c|c|c}
@@ -270,7 +309,7 @@
  
  	\subsection{Ensemble Model: Gradient Boosting}
  	\paragraph{} Gradient boosting is another type of ensemble models, in contrast to the parallel ensemble strategy of random forests, GBs ensemble multiple models vertically. For GBs, Friedman mean squared error was used to measure the quality of splits in the boosting process. The table below presents the scope of grid searching and the best combination of hyper parameters identified among all 480 candidates. Note that the optimal values were all in the interior of our pre-defined scope $\mc{G}$.
- 	\begin{table}
+ 	\begin{table}[H]
  		\centering
  		\begin{tabular}{l|c|c|c}
  		H-Param & Range & Best & Total \\
@@ -305,15 +344,15 @@
 % 	\paragraph{} After searching over hundreds of possible models, a deep neural network with five hidden layers and 1024 neurons on each hidden layer was selected. Moreover, a stop point at 150 epochs, training rate of 0.0003, and 512 batch size were used.
 % 	
  	\subsection{Calibration}
- 	\paragraph{} Models in this section were built to predict a \emph{probability} for one assessment to be flagged. Therefore, calibration methods were used to refine model outputs. The non-parametric isotonic regression was deployed instead of Platt scaling since the dataset was sufficiently large. Figure below presents a comparison between the uncalibrated random forest and the one calibrated using isotonic regression with 10-fold CV, in which the curve for the calibrated curve adhered the 45-degree line (i.e. perfect prediction) better. In reality, calibration does not guarantee improvements in the entropy loss, the model with best CV performance was selected.
+ 	\paragraph{} Models in this section were built to predict a \emph{probability} for one assessment to be flagged, calibration methods were used to refine model outputs. The non-parametric isotonic regression was deployed instead of Platt scaling since the dataset was sufficiently large. Figure below presents a comparison between the uncalibrated random forest and the one calibrated using isotonic regression with 10-fold CV, in which the curve for the calibrated curve adhered the 45-degree line (i.e. perfect prediction) better. In reality, calibration does not guarantee improvements in the entropy loss, the model with best CV performance would be selected  selected even if it was uncalibrated.
  	\begin{figure}[H]
  		\centering
- 		\includegraphics[width=0.7\linewidth]{figures/calibration_curve_raw_model.png}
- 		\includegraphics[width=0.7\linewidth]{figures/calibration_curve_calibrated_model.png}
+ 		\includegraphics[width=0.5\linewidth]{figures/calibration_curve_raw_model.png}
+ 		\includegraphics[width=0.5\linewidth]{figures/calibration_curve_calibrated_model.png}
  		\caption{Calibration Curve of Raw Model and Isotonic Calibrated Model}
  	\end{figure}
  	\subsection{Summary on Model Performances}
- 	\paragraph{} Cross validations and the cross entropy (i.e. the log loss) were used to compare the relative performance across different types of models. It turned out that the uncalibrated random forest performed best.
+ 	\paragraph{} Cross validations and the cross entropy were used to compare the relative performance across different types of models. It turned out that the uncalibrated random forest performed best.
  	
  	\begin{table}[H]
  		\centering
@@ -326,10 +365,10 @@
  			Support Vector Classifier & $0.4523 \pm 0.01080$ & $0.4686 \pm 0.007865$ \\
 %  			Deep Neural Network & & --
  		\end{tabular}
- 		\caption{Relative Performances of Selected Models}
+ 		\caption{Relative Performances (log-loss/entropy) of Selected Models}
  	\end{table}
  	
- 	Random forest also provided insights on relative importances of each features. From the feature importance plot, one can see that whether an assessment was taken in china or not, the visit day when the assessment was made, and the total PANSS score played were three major most correlated with the validity of assessment.
+ 	Random forest also provided insights on relative importances of each features. From the feature importance plot, one can see that whether an assessment was taken in china or not, the visit day when the assessment was made, and the total PANSS score were three major most correlated with the validity of assessment.
  	\begin{figure}[H]
  		\centering
  		\includegraphics[width=0.9\linewidth]{figures/classification_feature_importance.png}
@@ -337,6 +376,24 @@
  	\end{figure}
  	
 	\section{Appendix}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_P_Total.png}
+		\caption{Positive Score against Time}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_N_Total.png}
+		\caption{Negative Score against Time}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_G_Total.png}
+		\caption{General Score against Time}
+	\end{figure}
+	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/3_means_N_Total_G_Total.png}

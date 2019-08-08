@@ -25,37 +25,37 @@
 \contentsline {paragraph}{}{8}{section*.16}
 \contentsline {paragraph}{}{8}{section*.17}
 \contentsline {section}{\numberline {4}Patient 18-th Week PANSS Forecasting}{9}{section.4}
-\contentsline {subsection}{\numberline {4.1}Feature Space}{9}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.1}General Strategy to Identify the Best Learner}{9}{subsection.4.1}
 \contentsline {paragraph}{}{9}{section*.18}
-\contentsline {paragraph}{}{9}{section*.19}
-\contentsline {paragraph}{}{9}{section*.20}
+\contentsline {paragraph}{}{10}{section*.19}
+\contentsline {subsection}{\numberline {4.2}Feature Space}{10}{subsection.4.2}
+\contentsline {paragraph}{}{10}{section*.20}
 \contentsline {paragraph}{}{10}{section*.21}
-\contentsline {subsection}{\numberline {4.2}Ensemble Method: Random Forest}{10}{subsection.4.2}
 \contentsline {paragraph}{}{10}{section*.22}
-\contentsline {subsection}{\numberline {4.3}Support Vector Regression with Polynomial and RBF Kernel}{10}{subsection.4.3}
 \contentsline {paragraph}{}{10}{section*.23}
-\contentsline {subsection}{\numberline {4.4}Ensemble Method: Gradient Boosting}{11}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.3}Ensemble Method: Random Forest}{11}{subsection.4.3}
 \contentsline {paragraph}{}{11}{section*.24}
-\contentsline {subsection}{\numberline {4.5}Summary on Model Performance}{11}{subsection.4.5}
-\contentsline {section}{\numberline {5}Assessment Validity Classification}{11}{section.5}
-\contentsline {subsection}{\numberline {5.1}Feature Space}{11}{subsection.5.1}
+\contentsline {subsection}{\numberline {4.4}Support Vector Regression with Polynomial and RBF Kernel}{11}{subsection.4.4}
 \contentsline {paragraph}{}{11}{section*.25}
+\contentsline {subsection}{\numberline {4.5}Ensemble Method: Gradient Boosting}{11}{subsection.4.5}
 \contentsline {paragraph}{}{11}{section*.26}
-\contentsline {paragraph}{}{11}{section*.27}
-\contentsline {subsection}{\numberline {5.2}General Strategy to Identify the Best Learner}{12}{subsection.5.2}
+\contentsline {subsection}{\numberline {4.6}Summary on Model Performance}{12}{subsection.4.6}
+\contentsline {paragraph}{}{12}{section*.27}
+\contentsline {section}{\numberline {5}Assessment Validity Classification}{12}{section.5}
+\contentsline {subsection}{\numberline {5.1}Feature Space}{12}{subsection.5.1}
 \contentsline {paragraph}{}{12}{section*.28}
 \contentsline {paragraph}{}{12}{section*.29}
 \contentsline {paragraph}{}{12}{section*.30}
-\contentsline {subsection}{\numberline {5.3}Baseline Model: Logistic Regression}{12}{subsection.5.3}
-\contentsline {paragraph}{}{12}{section*.31}
-\contentsline {subsection}{\numberline {5.4}Ensemble Model: Random Forest}{13}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.2}Baseline Model: Logistic Regression}{13}{subsection.5.2}
+\contentsline {paragraph}{}{13}{section*.31}
+\contentsline {subsection}{\numberline {5.3}Ensemble Model: Random Forest}{13}{subsection.5.3}
 \contentsline {paragraph}{}{13}{section*.32}
-\contentsline {subsection}{\numberline {5.5}Ensemble Model: Gradient Boosting}{14}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.4}Ensemble Model: Gradient Boosting}{14}{subsection.5.4}
 \contentsline {paragraph}{}{14}{section*.33}
-\contentsline {subsection}{\numberline {5.6}Support Vector Classifier}{14}{subsection.5.6}
+\contentsline {subsection}{\numberline {5.5}Support Vector Classifier}{14}{subsection.5.5}
 \contentsline {paragraph}{}{14}{section*.34}
-\contentsline {subsection}{\numberline {5.7}Calibration}{14}{subsection.5.7}
-\contentsline {paragraph}{}{14}{section*.35}
-\contentsline {subsection}{\numberline {5.8}Summary on Model Performances}{15}{subsection.5.8}
-\contentsline {paragraph}{}{15}{section*.36}
+\contentsline {subsection}{\numberline {5.6}Calibration}{15}{subsection.5.6}
+\contentsline {paragraph}{}{15}{section*.35}
+\contentsline {subsection}{\numberline {5.7}Summary on Model Performances}{16}{subsection.5.7}
+\contentsline {paragraph}{}{16}{section*.36}
 \contentsline {section}{\numberline {6}Appendix}{17}{section.6}
