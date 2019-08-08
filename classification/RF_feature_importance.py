@@ -18,8 +18,8 @@ from sklearn.metrics import log_loss
 sys.path.append("../")
 import classification.classification_utility as utils
 
-if __name__ == "__main__":
-    model = ...
+
+def plot_feature_importance(model, X_train) -> None:
     importances = model.feature_importances_
     std = np.std([
         tree.feature_importances_
@@ -29,17 +29,16 @@ if __name__ == "__main__":
 
     print("Feature ranking:")
 
-for f in range(X_train.shape[1]):
-    print("%d. feature %s (%f)" % (f + 1, X_train.columns[indices[f]], importances[indices[f]]))
-plt.figure()
-plt.title("Feature importances")
-plt.bar(range(X_train.shape[1]), importances[indices],
-        color="r", yerr=std[indices], align="center",
-        alpha=0.6)
-plt.xticks(range(X_train.shape[1]), X_train.columns[indices], rotation="vertical")
-plt.xlim([-1, X_train.shape[1]])
-plt.show()
+    for f in range(X_train.shape[1]):
+        print("%d. feature %s (%f)" % (f + 1, X_train.columns[indices[f]], importances[indices[f]]))
+    plt.figure()
+    plt.title("Feature importances")
+    plt.bar(range(X_train.shape[1]), importances[indices],
+            color="r", yerr=std[indices], align="center",
+            alpha=0.6)
+    plt.xticks(range(X_train.shape[1]), X_train.columns[indices], rotation="vertical")
+    plt.xlim([-1, X_train.shape[1]])
+    plt.show()
 
-
-for var, imp in zip(X_train.columns, importances):
+    for var, imp in zip(X_train.columns, importances):
     print("{}: {}".format(var, imp))
