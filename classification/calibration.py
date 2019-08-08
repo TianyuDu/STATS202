@@ -16,10 +16,15 @@ import classification.classification_utility as utils
 
 def calibrate_model(
     model: "Estimator",
-    X, y,
+    X: pd.DataFrame,
+    y: pd.DataFrame,
     path: str = None,
     X_test: Union[np.ndarray, None] = None
 ) -> Optional[np.array]:
+    """
+    Calibrates an estimator and generates the calibration plots
+    before and after calibration process.
+    """
     # Evaluate baseline model.
     print("Evaluating the uncalibrated model...")
     X_train, X_dev, y_train, y_dev = model_selection.train_test_split(
