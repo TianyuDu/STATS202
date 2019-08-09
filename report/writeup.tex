@@ -23,6 +23,12 @@
 
 \begin{document}
 	\maketitle
+	\paragraph{Notes}
+	\begin{itemize}
+		\item I am using my real name as user name on Kaggle;
+		\item This report is 10-page long without tables and figures;
+		\item All source codes are on Github.
+	\end{itemize}
 	\tableofcontents
 %	\newpage
 
@@ -30,14 +36,14 @@
 %	\subsection{PANSS Dataset}
 	\paragraph{}The Positive and Negative Syndrome Scale (PANSS) score is widely used as a measure for schizophrenia and other disorders in clinical trials. PANSS scores are collected by trained raters and reported by patients or their relatives. One assessment of PANSS scores consists 30 sub-scores from 3 sub-categories: 7 positive scores, 7 negative scores, and 16 general scores. Every score ranges from 1 to 7 denoting increasing levels of psychopathology. The aggregation of all 30 scores provides a detailed assessment of patient's current psychological status.
 	
-	\paragraph{}The entire dataset consists of five different studies ranging from study A to study E. In this practice, the first four datasets are used as a training to fit, select, and evaluate models. Then, these selected models are used to recover missing data in study E.
+	\paragraph{}The entire dataset consists of five different studies ranging from study A to study E. In this practice, the first four datasets were used as a training to fit, select, and evaluate models. Then, these selected models were used to recover missing data in study E.
 	
 	\section{Treatment Effects}
-	\paragraph{}This section is devoted to analyze whether the treatment assigned led to significant improvements on patients' psychological status. Because the 18-th week assessments were missing in the dataset of study E, in this section, only data from study A to D were considered. There were 20947 observations (assessments) from above-mentioned dataset, in which 10524 observations came from patients assigned to the control group, and the remaining 10423 were from participants belonged to the treatment group. The evenly-split dataset allowed us to deploy various models to analyze whether there exists significant treatment effects.
+	\paragraph{}This section is devoted to analyze whether the treatment assigned led to significant improvements on patients' psychological status. Because the 18-th week assessments were missing in the dataset of study E, in this section, only data from study A to D were considered. There were 20947 observations (assessments) from above-mentioned dataset, in which 10524 observations came from patients assigned to the control group, and the remaining 10423 observations were from participants belonged to the treatment group. The evenly-split dataset allowed us to deploy various models to analyze whether there exists significant treatment effects.
 	
 	\paragraph{}Multiple evidences were found to support that there were indeed no treatment effect in this study. Firstly, the effects on four aggregate scores were analyzed, namely sum of all PANSS scores, and sums of scores from positive (\texttt{P\_Total}), negative (\texttt{N\_Total}), and general (\texttt{G\_Total}) sub-categories respectively.
 	
-	\paragraph{}One challenge associated with treatment effect analysis was the initial status of patients in different groups. In some cases, the \emph{prior} psychological status for a randomly selected patient from the treatment group is expected to be different from that of a random patient in the control group. In these cases, even if significant differences in PANSS scores \emph{posterior} to the treatment were implied, one will not be able to distinguish whether the "effect" came from the discrepancy in the prior distributions or the treatment, and the treatment effect is not well-identifies.
+	\paragraph{}One challenge associated with treatment effect analysis was the initial status of patients in different groups. In some cases, the \emph{prior} psychological status for a randomly selected patient from the treatment group is expected to be different from that of a random patient in the control group. In these cases, even if significant differences in PANSS scores \emph{posterior} to the treatment were implied, one would not be able to distinguish whether the "effect" came from the discrepancy in the prior distributions or the treatment, and the treatment effect was not well-identifies.
 	Figure 1 below presents the distributions of the four aggregate scores at day 0 visit. Both groups shared similar histograms in terms of all four metrics. Moreover, the estimated kernel densities collided, which provided further evidence that there were no significant prior discrepancies between patients from these two groups. Therefore, one can conclude that most posterior differences in PANSS metrics were resulted from the treatment assigned instead of the prior discrepancy.
 
 	\begin{figure}[H]
@@ -59,9 +65,9 @@
 		Y &= f_0(X, t) + \id{\texttt{Treatment}} f_1(X, t)
 	\end{align}
 	where $f_0$ and $f_1$ are two additive linear models, so that $f_0$ captures the evolving path of $Y$ over time for the population of the control group, and the additive term $f_1$ measures the discrepancy of the treatment group.
-	Should the treatment dummy variable is statistically significant, then one can conclude the existence of treatment effect.
+	If the treatment dummy variable is statistically significant, then one can conclude the existence of treatment effect.
 	\subsection{Patterns of PANSS over Time}
-	\paragraph{}Figure 3 below shows the scatter plot of $\Sigma_{PANSS}$ scores against time for both groups with corresponding locally weighted linear regression estimations (LOWESS). The LOWESS for the treatment and control groups collide almost perfectly, which means the trends for both group estimated from non-parametric model are essentially identical, this provides preliminary evidence supporting our claim that there was no significant treatment effect.
+	\paragraph{}Figure 3 below shows the scatter plot of $\Sigma_{PANSS}$ scores against time for both groups with corresponding locally weighted linear regression estimations (LOWESS). The LOWESS for the treatment and control groups collided almost perfectly, which means the trends for both group estimated from non-parametric model were essentially identical. This provides preliminary evidence supporting our claim that there was no significant treatment effect.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/lwlm_te_PANSS_Total.png}
@@ -116,10 +122,10 @@
 		\caption{Elbow Method to Identify Number of Clusters}
 	\end{figure}
 	
-	\paragraph{} To find the optimal value of $k$, we used \texttt{NbClust} package in \texttt{R}, which implemented 30 criterions to identify the optimal $k$. Each criterion proposed one optimal $k$, and the final number of clusters was set to be the one proposed by most criterions. According to the result, three was the number of clusters supported by most criterions (14 criterions).
+	\paragraph{} To find the optimal value of $k$, we used \texttt{NbClust} package in \texttt{R}, which implemented 30 criterions to identify the optimal $k$. Each criterion proposed one optimal $k$, and the final number of clusters was set to be the one proposed by most criterions. According to the result, 3 was the number of clusters supported by most criterions (14 criterions).
 
 	\subsection{Choosing Clustering Algorithms}
-	\paragraph{} Agglomerative algorithms with four different types of linkages were deployed together with k-means. As mentioned before, the optimal number of clusters was identified to be three. The experiment implied k-means delivered a more balanced segmentation in terms of group sizes when $k=3$. As a result, k-mean with three clusters was used in following sections.
+	\paragraph{} Agglomerative algorithms with four different types of linkages were deployed together with k-means. As mentioned before, the optimal number of clusters was identified to be 3. The experiment implied k-means delivered a more balanced segmentation in terms of group sizes when $k=3$. As a result, k-mean with three clusters was used in following sections.
 	
 	\begin{table}[H]
 		\centering
@@ -141,7 +147,7 @@
 	\end{table}
 	
 	\subsection{Visualization and Evaluation}
-	\paragraph{} Ideally, one can create a scatter plot of observations in their feature space, and then mark instances belonging to different clusters using different colours, and tell whether the clustering algorithm provides reasonable segmentation. However, it is impossible for us to visualize feature space beyond three dimensions.\footnote{Theoretically, one can draw the fourth dimension by colouring observations differently. But in our case, colours are used to identify clusters.} Instead, clustering results were plotted using reduced feature spaces. PANSS sub-scores were inherently defined using three sub-groups, it is natural to use the totals of sub-scores belongs positive, negative, and general scores as three axes of the reduced feature space.
+	\paragraph{} Ideally, one can create a scatter plot of observations in their feature space, and then mark instances belonging to different clusters using different colours, to tell whether the clustering algorithm provides reasonable segmentation. However, it is impossible for us to visualize feature space beyond three dimensions.\footnote{Theoretically, one can draw the fourth dimension by colouring observations differently. But in our case, colours are used to identify clusters.} Instead, clustering results were plotted using reduced feature spaces. PANSS sub-scores were inherently defined using three sub-groups, it is natural to use the totals of sub-scores belongs positive, negative, and general scores as three axes of the reduced feature space.
 	\paragraph{} In additional, the reduced feature space of the first three principle components was used as well. Since the clustering algorithm only had access to standardized scores but not their principle components, a clustering algorithm is dong a good job if the clustering result also segment the principle component space reasonably as well. Figures below present the clustering result on both reduced feature spaces mentioned above. From the plot on PANSS scores, one can observed that the green group was featured by high scores in all three aggregate metrics, which is likely corresponding to the high-severity patients.	While the orange group was characterized by low positive score with moderate negative and general scores. This group could be low-severity patients. Members in the blue group in general had above average positive scores, average general score, and low negative scores.\footnote{Statements here might be hard to observe using the static 3D plot, one can either run the script to generate an interactive 3D plot or check corresponding 2D plots in appendix.}
 	\begin{figure}[H]
 		\centering
@@ -159,14 +165,14 @@
 	\subsection{General Strategy to Identify the Best Learner} 
 	\paragraph{} In the following two sections, various models are proposed for forecasting and classification. In general, the hyper-parameters of each model must be tuned over a large hyper-parameter space $\mc{M}$. However, it is infeasible to search over the entire hyper-parameter space as there are uncountably infinite combinations of hyper-parameters for each model. Instead, a grid search algorithm with cross-validation was implemented. Firstly, a finite subset of $\mc{M}$, $\mc{G}$, was constructed manually, in which each element $g \in \mc{G}$ characterized a valid model. Then for each $g \in \mc{G}$, the grid search algorithm fit the model with hyper-parameter set $g$ five times on different training sets given by a 5-fold cross validation.
 	\footnote{Due to the time constraint, 5-fold CV was used instead of the more conventional 10-fold CV. Typically, hundreds of possible configurations were searched over for each type of model, using $k$-fold CV requires $k \times |\mc{G}|$ model fitting. While $k=5$, the grid search for each type of model took around 4 hours on a 64-core server, it seemed to be infeasible to run grid search with $k=10$.}
-	And the generalization error for such model was estimated using the collection of different CV test sets. Then, for each category of models (random forests, support vector machines, etc), the hyper-parameter set  achieved the best CV performance measured by mean squared error or cross-entropy loss was selected to represent the best performance for this model category.
+	And the generalization error for such model was estimated using the collection of different CV test sets. After this, for each category of models (random forests, support vector machines, etc), the hyper-parameter set  achieved the best CV performance measured by mean squared error or cross-entropy loss was selected to represent the best performance for this model category.
 	
 	 \paragraph{} After the best hyper-parameter set for each type of learner was identified, these models were evaluated again using 5-fold cross validation techniques to make comparisons across different types of models.
 
 	\subsection{Feature Space}
 	\paragraph{} This section is devoted to forecasting the total PANSS scores in the last visit of each participating patient. Several variables including indicator for treatment and country were invariant throughout the experiment period. The binary \texttt{TxGroup} variable was simply reduced to one binary variable \texttt{Treatment} $:= \id{\texttt{TxGroup} = \tx{Treatment}}$.
 	
-	\paragraph{} There were 284 unique site IDs and 639 unique rater IDs. Because IDs were numerical but not ordinal, adding these two features would require an addition of more than 900 one-hot-encoded variables, which are significantly more than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
+	\paragraph{} There were 284 unique site IDs and 639 unique rater IDs. Because IDs were numerical but not ordinal, adding these two features would require an addition of more than 900 one-hot-encoded variables, which were significantly more than the number of raw PANSS scores. Including them could be helpful, but at a risk of potential overfitting and cruise of dimensionality. Therefore, these IDs were excluded.
 	\paragraph{} Assessments in the dataset came from 27 different countries (figure below). Note that there were 18 assessments (belonged to 3 patients) did not possess valid values for country. To reduce the dimension of feature space, and handle issue when there are incoming patients from countries not in the training set (there were patients from UK in the test set, but not in the training set), only information on the top five countries was preserved, and all other countries were reduced to one single "other" category. As a result, the \texttt{Country} feature in the raw dataset was transformed into six one-hot-encoded dummies: \texttt{Country\_USA}, \texttt{Country\_Ukraine}, \texttt{Country\_Japan}, \texttt{Country\_Russia}, \texttt{Country\_China}, and \texttt{Country\_Other}.
 	\begin{figure}[H]
 		\centering
@@ -221,7 +227,7 @@
 	\end{table}
 
 	\subsection{Ensemble Method: Gradient Boosting}
-	\paragraph{} Gradient boosting machines refine predictions by iteratively fitting additional models on the residual from previous models. The table below summaries the scope of hyper-parameters searched.
+	\paragraph{} Gradient boosting machines refine predictions by iteratively fitting additional models on the residuals from previous models. The table below summaries the scope of hyper-parameters searched.
 	
 	\begin{table}[H]
 		\begin{tabular}{l|c|c|c}
@@ -255,7 +261,7 @@
 	\subsection{Feature Space}
 	\paragraph{} In this section, each training instance became one assessment instead of one patient. The feature space consisted of 30 PANSS scores and several identifiers such as country and rater's ID. In this study, all 30 PANSS scores and \texttt{PANSS\_Total} were taken to be preliminary features. As for treatment and country identifiers, the same procedure mentioned in the previous section was followed.
 	\paragraph{} In the training set, the standard deviations of 30 PANSS sub-scores ranged from 0.9374 to 1.562, and their averages ranged from 1.572 to 3.258. To eliminate this discrepancy, these 30 metrics were standardized so that all of them shared mean of zero and standard deviation of one.
-	\paragraph{} Moreover, the figure below plots out the fraction for an assessment taken on particular visiting day to be flagged or assigned to CS (i.e. the empirical probability of positive class). The plot suggests there exists nontrivial relation between the empirical probability of anomaly assessment and the day of visit. Therefore, \texttt{VisitDay} was also included as a feature.
+	\paragraph{} Moreover, the figure below plots out the fraction for an assessment taken on particular visiting day to be flagged or assigned to CS (i.e. the empirical probability of positive class). The plot suggests that there exists nontrivial relation between the empirical probability of anomaly assessment and the day of visit. Therefore, \texttt{VisitDay} was also included as a feature.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\linewidth]{figures/alert_ratio_days.png}
@@ -278,7 +284,7 @@
 	\end{table}
  	
  	\subsection{Ensemble Model: Random Forest}
- 	\paragraph{} Random forests handles overfitting problems naturally as an ensemble method. Several hyper-parameters play crucial rules while fitting a random forest, including number of tree built, the criterion for choosing the best split, the number of features to consider while identifying the best split, as well as the maximum depth of each tree. The table below shows the scope of above mentioned hyper-parameters searched over during the grid search process.
+ 	\paragraph{} Random forests handles overfitting problems naturally as an ensemble method. Several hyper-parameters play crucial rules while fitting a random forest, including number of trees built, the criterion for choosing the best split, the number of features to consider while identifying the best split, as well as the maximum depth of each tree. The table below shows the scope of above mentioned hyper-parameters searched over during the grid search process.
  	\begin{table}[H]
  		\centering
  		\begin{tabular}{l|c|c|c}
