@@ -18,6 +18,16 @@ A more detailed description of the four tasks for this project (mentioned above)
 
 A 17-page report for this project was uploaded as well: [`./report/writeup.pdf`](./report/writeup.pdf)
 
+## Methods and Dependencies
+
+Most of this project was done using python while the hypothesis testing part used R;
+
+K-Mean, PCA, and agglomerative clustering in clustering task were from `sklearn`;
+
+Boosting, random forest, support vector regression, and support vector classification were from  `sklearn`;
+
+Deep neural networks were from `tensorflow` .
+
 ## Directories
 
 `./classification/`  Assessment validity classification (task 4).
