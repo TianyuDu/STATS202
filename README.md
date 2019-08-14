@@ -36,12 +36,6 @@ A 17-page report for this project was uploaded as well: [`./report/writeup.pdf`]
 
 To verify the validity of k-mean clustering, the clustering results were visualized no a principal component space instead of the feature space. 
 
-Static plots:
-
-![K-Mean Visualized on Feature Space](./report/figures/kmean_3.png)
-
-![K-Mean with 3 Clusters Visualized on Principal Component Space](./report/figures/k_mean_on_pca.png)
-
 Run code below using bash to generate an interactive 3D plot.
 
 ```bash
@@ -49,7 +43,11 @@ cd ./clustering
 python3.7 ./KMean_PCA.py --clusters=3 --components=3
 ```
 
+Sample static plots (axes were adjusted for better illustration):
 
+![K-Mean Visualized on Feature Space](./report/figures/kmean_3.png)
+
+![K-Mean with 3 Clusters Visualized on Principal Component Space](./report/figures/k_mean_on_pca.png)
 
 
 
