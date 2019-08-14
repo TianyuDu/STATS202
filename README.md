@@ -12,27 +12,47 @@ Please note that datasets `./data/Study_[A, B, C, D].csv` are labelled training 
 
 ## Tasks
 
-The final project consisted of four sub-tasks: testing for treatment effect, clustering patients, classifying assessment validity, and forecasting further PANSS scores. 
+The final project consisted of four tasks: testing for treatment effect, clustering patients, classifying assessment validity, and forecasting further PANSS scores. 
 
 A more detailed description of the four tasks for this project (mentioned above) can be found in the instruction document at [`./final_project.pdf`](./final_project.pdf)
 
+A 17-page report for this project was uploaded as well: [`./report/writeup.pdf`](./report/writeup.pdf)
+
 ## Directories
 
-`./classification/`
+`./classification/`  Assessment validity classification (task 4).
 
-`./cluster/`
+`./cluster/`  Patient classification (task 2).
 
-`./descriptive/`
+`./descriptive/`  Data visualization and treatment effect testing (task 1).
 
-`./forecasting/`
+`./forecasting/`  Forecasting PANSS scores (task 3).
 
-`./report/`
+`./report/`  The writeup report for this final project.
 
-`./util/`
+`./util/`  Data manipulation utilities.
 
 ## Demonstrations
+
+To verify the validity of k-mean clustering, the clustering results were visualized no a principal component space instead of the feature space. 
+
+Static plots:
+
+![K-Mean Visualized on Feature Space](./report/figures/kmean_3.png)
+
+![K-Mean with 3 Clusters Visualized on Principal Component Space](./report/figures/k_mean_on_pca.png)
+
+Run code below using bash to generate an interactive 3D plot.
+
+```bash
+cd ./clustering
+python3.7 ./KMean_PCA.py --clusters=3 --components=3
+```
+
+
 
 
 
 ## References
 
+References for what PANSS scores are and how they are measured can be found at `./references/`
